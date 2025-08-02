@@ -39,7 +39,7 @@ export default function WelcomeScreen() {
             Find best trip with{"\n"}AI assistance
           </Typo>
 
-          <Button onPress={() => router.push("/(tabs)/index")}>
+          <Button onPress={() => router.push("/(tabs)")}>
             <Typo size={18} fontFamily={font.bold} color={colors.text.primary}>
               START ✈️
             </Typo>

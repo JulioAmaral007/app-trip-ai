@@ -1,29 +1,23 @@
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Button } from "./Button";
-import { Typo } from "./Typo";
+import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Button } from './Button';
+import { Typo } from './Typo';
 
 export function Categories() {
   const categoriesData = [
     {
       id: 1,
-      title: "Beach",
-      image: require("../assets/images/beach.png"),
+      title: 'Beach',
+      image: require('../assets/images/beach.png'),
     },
     {
       id: 2,
-      title: "Mountain",
-      image: require("../assets/images/beach.png"),
+      title: 'Mountain',
+      image: require('../assets/images/beach.png'),
     },
     {
       id: 3,
-      title: "City",
-      image: require("../assets/images/beach.png"),
+      title: 'City',
+      image: require('../assets/images/beach.png'),
     },
   ];
 
@@ -39,8 +33,7 @@ export function Categories() {
       <ScrollView
         horizontal
         contentContainerStyle={styles.scrollContent}
-        showsHorizontalScrollIndicator={false}
-      >
+        showsHorizontalScrollIndicator={false}>
         {categoriesData.map((cat, index) => {
           return (
             <TouchableOpacity key={index} style={styles.categoryItem}>
@@ -59,16 +52,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 14,
   },
   scrollContent: {
     paddingHorizontal: 15,
   },
   categoryItem: {
-    alignItems: "center",
+    alignItems: 'center',
     marginRight: 16,
   },
   categoryImage: {

@@ -1,5 +1,5 @@
-import { colors } from "@/constants/theme";
-import React from "react";
+import { colors } from '@/constants/theme';
+import React from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -7,7 +7,7 @@ import {
   type TextInputProps,
   type TextStyle,
   type ViewStyle,
-} from "react-native";
+} from 'react-native';
 
 export interface InputProps extends TextInputProps {
   icon?: React.ReactNode;
@@ -20,9 +20,7 @@ export interface InputProps extends TextInputProps {
 
 export function Input(props: InputProps) {
   return (
-    <View
-      style={[styles.container, props.containerStyle && props.containerStyle]}
-    >
+    <View style={[styles.container, props.containerStyle && props.containerStyle]}>
       {props.icon && props.icon}
       <TextInput
         style={[styles.input, props.inputStyle]}
@@ -36,14 +34,14 @@ export function Input(props: InputProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     height: 54,
-    justifyContent: "center",
+    justifyContent: 'center',
     borderWidth: 1,
     borderColor: colors.border.primary,
     borderRadius: 17,
-    borderCurve: "continuous",
+    borderCurve: 'continuous',
     paddingHorizontal: 15,
     gap: 10,
   },

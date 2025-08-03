@@ -1,11 +1,11 @@
-import { colors, font } from "@/constants/theme";
-import type { TextProps, TextStyle } from "react-native";
-import { Text } from "react-native";
+import { colors, font } from '@/constants/theme';
+import type { TextProps, TextStyle } from 'react-native';
+import { Text } from 'react-native';
 
 export type TypoProps = {
   size?: number;
   color?: string;
-  fontFamily?: TextStyle["fontFamily"];
+  fontFamily?: TextStyle['fontFamily'];
   children: any | null;
   style?: TextStyle;
   textProps?: TextProps;

@@ -1,7 +1,7 @@
-import { colors } from "@/constants/theme";
-import { Modal, StyleSheet, View } from "react-native";
-import { Button } from "./Button";
-import { Typo } from "./Typo";
+import { colors } from '@/constants/theme';
+import { Modal, StyleSheet, View } from 'react-native';
+import { Button } from './Button';
+import { Typo } from './Typo';
 
 export type ConfirmationModalProps = {
   visible: boolean;
@@ -20,8 +20,8 @@ export function ConfirmationModal({
   message,
   onConfirm,
   onClose,
-  confirmText = "Deletar",
-  cancelText = "Cancelar",
+  confirmText = 'Deletar',
+  cancelText = 'Cancelar',
   loading = false,
 }: ConfirmationModalProps) {
   return (
@@ -37,11 +37,7 @@ export function ConfirmationModal({
               <Typo style={styles.cancelButtonText}>{cancelText}</Typo>
             </Button>
 
-            <Button
-              style={styles.confirmButton}
-              onPress={onConfirm}
-              disabled={loading}
-            >
+            <Button style={styles.confirmButton} onPress={onConfirm} disabled={loading}>
               <Typo style={styles.confirmButtonText}>{confirmText}</Typo>
             </Button>
           </View>
@@ -54,30 +50,30 @@ export function ConfirmationModal({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   container: {
     backgroundColor: colors.background.card,
     borderRadius: 20,
     padding: 20,
-    width: "80%",
+    width: '80%',
     gap: 20,
   },
   title: {
     fontSize: 22,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
     color: colors.primary.orange,
   },
   message: {
     fontSize: 14,
     color: colors.text.secondary,
-    textAlign: "center",
+    textAlign: 'center',
   },
   buttonContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 12,
   },
   cancelButton: {
@@ -89,8 +85,8 @@ const styles = StyleSheet.create({
   cancelButtonText: {
     color: colors.text.primary,
     fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   confirmButton: {
     flex: 1,
@@ -101,7 +97,7 @@ const styles = StyleSheet.create({
   confirmButtonText: {
     color: colors.text.primary,
     fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });

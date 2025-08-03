@@ -1,18 +1,18 @@
-import { colors } from "@/constants/theme";
-import { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { Button } from "./Button";
-import { Typo } from "./Typo";
+import { colors } from '@/constants/theme'
+import { useState } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { Button } from './Button'
+import { Typo } from './Typo'
 
 export function SortCategories() {
-  const [activeSort, setActiveSort] = useState("Popular");
+  const [activeSort, setActiveSort] = useState('Popular')
 
-  const sortCategoryData = ["Popular", "Recommended", "Recent", "Trending"];
+  const sortCategoryData = ['Popular', 'Recommended', 'Recent', 'Trending']
 
   return (
     <View style={styles.container}>
       {sortCategoryData.map((sort, index) => {
-        let isActive = sort == activeSort;
+        let isActive = sort == activeSort
 
         return (
           <Button
@@ -21,26 +21,22 @@ export function SortCategories() {
               ...styles.button,
               ...(isActive && styles.activeButton),
             }}
-            key={index}
-          >
-            <Typo
-              size={12}
-              color={isActive ? colors.text.secondary : colors.text.primary}
-            >
+            key={index}>
+            <Typo size={12} color={isActive ? colors.text.secondary : colors.text.primary}>
               {sort}
             </Typo>
           </Button>
-        );
+        )
       })}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
     backgroundColor: colors.background.secondary,
     borderRadius: 25,
     padding: 8,
@@ -52,7 +48,7 @@ const styles = StyleSheet.create({
   },
   activeButton: {
     backgroundColor: colors.background.tertiary,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -61,4 +57,4 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-});
+})

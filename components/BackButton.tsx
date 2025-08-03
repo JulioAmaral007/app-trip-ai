@@ -1,7 +1,7 @@
-import { colors } from "@/constants/theme";
-import { useRouter } from "expo-router";
-import { CaretLeft } from "phosphor-react-native";
-import { StyleSheet, TouchableOpacity, type ViewStyle } from "react-native";
+import { colors } from '@/constants/theme';
+import { useRouter } from 'expo-router';
+import { CaretLeft } from 'phosphor-react-native';
+import { StyleSheet, TouchableOpacity, type ViewStyle } from 'react-native';
 
 export type BackButtonProps = {
   style?: ViewStyle;
@@ -12,10 +12,7 @@ export function BackButton({ style, iconSize = 26 }: BackButtonProps) {
   const router = useRouter();
 
   return (
-    <TouchableOpacity
-      onPress={() => router.back()}
-      style={[styles.button, style]}
-    >
+    <TouchableOpacity onPress={() => router.back()} style={[styles.button, style]}>
       <CaretLeft size={iconSize} color="#fff" weight="bold" />
     </TouchableOpacity>
   );
@@ -25,9 +22,9 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.background.card,
     borderRadius: 12,
-    borderCurve: "continuous",
+    borderCurve: 'continuous',
     padding: 5,
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
     marginTop: 10,
   },
 });

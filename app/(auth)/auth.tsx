@@ -1,27 +1,19 @@
-import { ScreenWrapper } from "@/components/ScreenWrapper";
-import { router } from "expo-router";
-import { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ScreenWrapper } from '@/components/ScreenWrapper'
+import { router } from 'expo-router'
+import { useState } from 'react'
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 export default function AuthScreen() {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [fullName, setFullName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   return (
     <ScreenWrapper>
       <View style={styles.header}>
         <Text style={styles.title}>Create your account</Text>
-        <Text style={styles.subtitle}>
-          Create your free account. Sign Up to your free account
-        </Text>
+        <Text style={styles.subtitle}>Create your free account. Sign Up to your free account</Text>
       </View>
 
       <TouchableOpacity style={styles.loginLink}>
@@ -70,18 +62,12 @@ export default function AuthScreen() {
             onChangeText={setPassword}
             secureTextEntry={!showPassword}
           />
-          <TouchableOpacity
-            style={styles.eyeButton}
-            onPress={() => setShowPassword(!showPassword)}
-          >
+          <TouchableOpacity style={styles.eyeButton} onPress={() => setShowPassword(!showPassword)}>
             <Text style={styles.eyeIcon}>👁️</Text>
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity
-          style={styles.createButton}
-          onPress={() => router.push("/travelers")}
-        >
+        <TouchableOpacity style={styles.createButton} onPress={() => router.push('/travelers')}>
           <Text style={styles.createButtonText}>Create an Account</Text>
         </TouchableOpacity>
 
@@ -92,14 +78,13 @@ export default function AuthScreen() {
 
       <View style={styles.footer}>
         <Text style={styles.footerText}>
-          By proceeding, you agree with our{" "}
-          <Text style={styles.linkText}>Terms of Service</Text>,{" "}
-          <Text style={styles.linkText}>Privacy Policy</Text> and{" "}
+          By proceeding, you agree with our <Text style={styles.linkText}>Terms of Service</Text>,{' '}
+          <Text style={styles.linkText}>Privacy Policy</Text> and{' '}
           <Text style={styles.linkText}>Cookie Policy</Text>
         </Text>
       </View>
     </ScreenWrapper>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -108,74 +93,74 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: "bold",
-    color: "#fff",
+    fontWeight: 'bold',
+    color: '#fff',
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 14,
-    color: "#999",
+    color: '#999',
     lineHeight: 20,
   },
   loginLink: {
-    alignSelf: "center",
+    alignSelf: 'center',
     marginBottom: 40,
   },
   loginText: {
-    color: "#4A9EFF",
+    color: '#4A9EFF',
     fontSize: 16,
   },
   socialContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
     gap: 20,
     marginBottom: 30,
   },
   socialButton: {
     width: 60,
     height: 60,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   socialButtonText: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   orText: {
-    textAlign: "center",
-    color: "#999",
+    textAlign: 'center',
+    color: '#999',
     marginBottom: 30,
   },
   formContainer: {
     flex: 1,
   },
   input: {
-    backgroundColor: "#2a2a2a",
+    backgroundColor: '#2a2a2a',
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 16,
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#333",
+    borderColor: '#333',
   },
   passwordContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#2a2a2a",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#2a2a2a',
     borderRadius: 12,
     marginBottom: 30,
     borderWidth: 1,
-    borderColor: "#333",
+    borderColor: '#333',
   },
   passwordInput: {
     flex: 1,
     paddingHorizontal: 16,
     paddingVertical: 16,
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
   },
   eyeButton: {
@@ -185,34 +170,34 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   createButton: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     paddingVertical: 16,
     borderRadius: 12,
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 30,
   },
   createButtonText: {
     fontSize: 16,
-    fontWeight: "bold",
-    color: "#1a1a1a",
+    fontWeight: 'bold',
+    color: '#1a1a1a',
   },
   forgotPassword: {
-    alignItems: "center",
+    alignItems: 'center',
   },
   forgotPasswordText: {
-    color: "#999",
+    color: '#999',
     fontSize: 14,
   },
   footer: {
     paddingBottom: 30,
   },
   footerText: {
-    textAlign: "center",
-    color: "#666",
+    textAlign: 'center',
+    color: '#666',
     fontSize: 12,
     lineHeight: 18,
   },
   linkText: {
-    color: "#4A9EFF",
+    color: '#4A9EFF',
   },
-});
+})

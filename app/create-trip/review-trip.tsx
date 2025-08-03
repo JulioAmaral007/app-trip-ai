@@ -1,12 +1,12 @@
-import { BackButton } from "@/components/BackButton";
-import { Button } from "@/components/Button";
-import { Header } from "@/components/Header";
-import { Input } from "@/components/Input";
-import { ScreenWrapper } from "@/components/ScreenWrapper";
-import { Typo } from "@/components/Typo";
-import { colors, font } from "@/constants/theme";
-import { router } from "expo-router";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { BackButton } from '@/components/BackButton';
+import { Button } from '@/components/Button';
+import { Header } from '@/components/Header';
+import { Input } from '@/components/Input';
+import { ScreenWrapper } from '@/components/ScreenWrapper';
+import { Typo } from '@/components/Typo';
+import { colors, font } from '@/constants/theme';
+import { router } from 'expo-router';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 export default function ReviewScreen() {
   return (
@@ -115,10 +115,7 @@ export default function ReviewScreen() {
         </View>
       </View>
 
-      <Button
-        style={styles.searchButton}
-        onPress={() => router.push("/generating")}
-      >
+      <Button style={styles.searchButton} onPress={() => router.push('/generating')}>
         <Typo size={16} fontFamily={font.semiBold} color={colors.text.inverse}>
           Continue
         </Typo>
@@ -133,7 +130,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   tripNameSection: {
     marginBottom: 30,
@@ -145,16 +142,16 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   reviewItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#333",
+    borderBottomColor: '#333',
   },
   reviewItemHeader: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
   },
   reviewItemContent: {
@@ -169,27 +166,27 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   interestTags: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 12,
     marginTop: 8,
   },
   interestTag: {
-    backgroundColor: "#FF6B35",
+    backgroundColor: '#FF6B35',
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 8,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   addInterestButton: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: "#2a2a2a",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#2a2a2a',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 1,
-    borderColor: "#444",
+    borderColor: '#444',
   },
   searchButton: {
     backgroundColor: colors.text.primary,

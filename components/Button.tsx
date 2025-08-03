@@ -4,10 +4,10 @@ import {
   type TouchableOpacityProps,
   View,
   type ViewStyle,
-} from "react-native";
+} from 'react-native';
 
-import { colors } from "@/constants/theme";
-import { Loading } from "./Loading";
+import { colors } from '@/constants/theme';
+import { Loading } from './Loading';
 
 export interface CustomButtonProps extends TouchableOpacityProps {
   style?: ViewStyle;
@@ -16,15 +16,10 @@ export interface CustomButtonProps extends TouchableOpacityProps {
   children: React.ReactNode;
 }
 
-export function Button({
-  style,
-  onPress,
-  loading = false,
-  children,
-}: CustomButtonProps) {
+export function Button({ style, onPress, loading = false, children }: CustomButtonProps) {
   if (loading) {
     return (
-      <View style={[styles.button, style, { backgroundColor: "transparent" }]}>
+      <View style={[styles.button, style, { backgroundColor: 'transparent' }]}>
         <Loading />
       </View>
     );
@@ -40,9 +35,9 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.background.primary,
     borderRadius: 17,
-    borderCurve: "continuous",
+    borderCurve: 'continuous',
     height: 52,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

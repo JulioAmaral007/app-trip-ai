@@ -1,27 +1,27 @@
-import { BackButton } from "@/components/BackButton";
-import { Button } from "@/components/Button";
-import { Header } from "@/components/Header";
-import { Input } from "@/components/Input";
-import { Radio } from "@/components/Radio";
-import { ScreenWrapper } from "@/components/ScreenWrapper";
-import { Typo } from "@/components/Typo";
-import { colors, font } from "@/constants/theme";
-import { router } from "expo-router";
-import { useMemo, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { BarChart } from "react-native-gifted-charts";
+import { BackButton } from '@/components/BackButton';
+import { Button } from '@/components/Button';
+import { Header } from '@/components/Header';
+import { Input } from '@/components/Input';
+import { Radio } from '@/components/Radio';
+import { ScreenWrapper } from '@/components/ScreenWrapper';
+import { Typo } from '@/components/Typo';
+import { colors, font } from '@/constants/theme';
+import { router } from 'expo-router';
+import { useMemo, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { BarChart } from 'react-native-gifted-charts';
 
-type SpendingHabit = "cheap" | "moderate" | "luxury";
+type SpendingHabit = 'cheap' | 'moderate' | 'luxury';
 
 export default function BudgetScreen() {
-  const [minBudget, setMinBudget] = useState("5200");
-  const [maxBudget, setMaxBudget] = useState("55200");
-  const [selectedHabit, setSelectedHabit] = useState<SpendingHabit>("cheap");
+  const [minBudget, setMinBudget] = useState('5200');
+  const [maxBudget, setMaxBudget] = useState('55200');
+  const [selectedHabit, setSelectedHabit] = useState<SpendingHabit>('cheap');
 
   // Gera dados do gráfico baseado nos valores de orçamento
   const chartData = useMemo(() => {
-    const min = parseInt(minBudget.replace(/,/g, "")) || 5200;
-    const max = parseInt(maxBudget.replace(/,/g, "")) || 55200;
+    const min = parseInt(minBudget.replace(/,/g, '')) || 5200;
+    const max = parseInt(maxBudget.replace(/,/g, '')) || 55200;
 
     // Gera 19 pontos de dados distribuídos entre min e max
     const dataPoints = 19;
@@ -45,25 +45,25 @@ export default function BudgetScreen() {
 
   // Calcula o preço médio
   const averagePrice = useMemo(() => {
-    const min = parseInt(minBudget.replace(/,/g, "")) || 5200;
-    const max = parseInt(maxBudget.replace(/,/g, "")) || 55200;
+    const min = parseInt(minBudget.replace(/,/g, '')) || 5200;
+    const max = parseInt(maxBudget.replace(/,/g, '')) || 55200;
     return Math.round((min + max) / 2).toLocaleString();
   }, [minBudget, maxBudget]);
 
   const spendingOptions = [
     {
-      id: "cheap" as SpendingHabit,
-      title: "Cheap",
-      description: "Stay conscious of costs",
+      id: 'cheap' as SpendingHabit,
+      title: 'Cheap',
+      description: 'Stay conscious of costs',
     },
     {
-      id: "moderate" as SpendingHabit,
-      title: "Moderate",
-      description: "Keep costs on the average side",
+      id: 'moderate' as SpendingHabit,
+      title: 'Moderate',
+      description: 'Keep costs on the average side',
     },
     {
-      id: "luxury" as SpendingHabit,
-      title: "Luxury",
+      id: 'luxury' as SpendingHabit,
+      title: 'Luxury',
       description: "Don't worry about it- live a little!",
     },
   ];
@@ -98,19 +98,11 @@ export default function BudgetScreen() {
             />
           </View>
           <View style={styles.chartLabels}>
-            <Typo
-              size={12}
-              fontFamily={font.regular}
-              color={colors.text.secondary}
-            >
-              ${parseInt(minBudget.replace(/,/g, "")) || 5200}
+            <Typo size={12} fontFamily={font.regular} color={colors.text.secondary}>
+              ${parseInt(minBudget.replace(/,/g, '')) || 5200}
             </Typo>
-            <Typo
-              size={12}
-              fontFamily={font.regular}
-              color={colors.text.secondary}
-            >
-              ${parseInt(maxBudget.replace(/,/g, "")) || 55200}
+            <Typo size={12} fontFamily={font.regular} color={colors.text.secondary}>
+              ${parseInt(maxBudget.replace(/,/g, '')) || 55200}
             </Typo>
           </View>
         </View>
@@ -124,11 +116,7 @@ export default function BudgetScreen() {
               keyboardType="numeric"
             />
           </View>
-          <Typo
-            size={18}
-            fontFamily={font.regular}
-            color={colors.text.secondary}
-          >
+          <Typo size={18} fontFamily={font.regular} color={colors.text.secondary}>
             →
           </Typo>
           <View style={styles.inputContainer}>
@@ -151,35 +139,22 @@ export default function BudgetScreen() {
           {spendingOptions.map((option) => (
             <Button
               key={option.id}
-              style={
-                [
-                  styles.option,
-                  selectedHabit === option.id && styles.selectedOption,
-                ] as any
-              }
-              onPress={() => setSelectedHabit(option.id)}
-            >
+              style={[styles.option, selectedHabit === option.id && styles.selectedOption] as any}
+              onPress={() => setSelectedHabit(option.id)}>
               <View style={styles.radioContainer}>
                 <View style={{ marginRight: 16 }}>
                   <Radio selected={selectedHabit === option.id} />
                 </View>
                 <View style={styles.optionText}>
-                  <Typo
-                    size={16}
-                    fontFamily={font.semiBold}
-                    color={colors.text.primary}
-                  >
+                  <Typo size={16} fontFamily={font.semiBold} color={colors.text.primary}>
                     {option.title}
                   </Typo>
                   <Typo
                     size={16}
                     fontFamily={font.regular}
                     color={
-                      selectedHabit === option.id
-                        ? colors.text.primary
-                        : colors.text.secondary
-                    }
-                  >
+                      selectedHabit === option.id ? colors.text.primary : colors.text.secondary
+                    }>
                     {option.description}
                   </Typo>
                 </View>
@@ -189,10 +164,7 @@ export default function BudgetScreen() {
         </View>
       </View>
 
-      <Button
-        style={styles.continueButton}
-        onPress={() => router.push("/create-trip/interests")}
-      >
+      <Button style={styles.continueButton} onPress={() => router.push('/create-trip/interests')}>
         <Typo size={16} fontFamily={font.semiBold} color={colors.text.inverse}>
           Continue
         </Typo>
@@ -208,60 +180,60 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: "#fff",
+    fontWeight: 'bold',
+    color: '#fff',
     marginBottom: 8,
   },
   averagePrice: {
     fontSize: 14,
-    color: "#999",
+    color: '#999',
     marginBottom: 20,
   },
   chartContainer: {
     marginBottom: 20,
   },
   chart: {
-    flexDirection: "row",
-    alignItems: "flex-end",
+    flexDirection: 'row',
+    alignItems: 'flex-end',
     height: 100,
     marginBottom: 10,
     paddingHorizontal: 10,
   },
   chartBar: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     marginHorizontal: 1,
     borderRadius: 1,
   },
   chartLabels: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingHorizontal: 10,
   },
   chartLabel: {
-    color: "#666",
+    color: '#666',
     fontSize: 12,
   },
   budgetInputs: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 16,
   },
   inputContainer: {
     flex: 1,
   },
   budgetInput: {
-    backgroundColor: "#2a2a2a",
+    backgroundColor: '#2a2a2a',
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 16,
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
     borderWidth: 1,
-    borderColor: "#333",
+    borderColor: '#333',
   },
   inputSeparator: {
-    color: "#666",
+    color: '#666',
     fontSize: 18,
   },
   spendingSection: {
@@ -281,8 +253,8 @@ const styles = StyleSheet.create({
     borderColor: colors.primary.orange,
   },
   radioContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   optionText: {
     flex: 1,

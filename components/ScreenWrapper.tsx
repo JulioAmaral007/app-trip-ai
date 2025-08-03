@@ -1,7 +1,7 @@
-import { colors } from "@/constants/theme";
-import { Dimensions, Platform, View, type ViewStyle } from "react-native";
+import { colors } from '@/constants/theme';
+import { Dimensions, Platform, View, type ViewStyle } from 'react-native';
 
-const { height } = Dimensions.get("window");
+const { height } = Dimensions.get('window');
 
 export type ScreenWrapperProps = {
   style?: ViewStyle;
@@ -9,7 +9,7 @@ export type ScreenWrapperProps = {
 };
 
 export function ScreenWrapper({ style, children }: ScreenWrapperProps) {
-  const paddingTop = Platform.OS === "ios" ? height * 0.06 : 30;
+  const paddingTop = Platform.OS === 'ios' ? height * 0.06 : 30;
   return (
     <View
       style={[
@@ -19,8 +19,7 @@ export function ScreenWrapper({ style, children }: ScreenWrapperProps) {
           backgroundColor: colors.background.primary,
         },
         style,
-      ]}
-    >
+      ]}>
       {children}
     </View>
   );

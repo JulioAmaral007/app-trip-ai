@@ -1,5 +1,5 @@
-import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 
 const isLoggedIn = true;
 

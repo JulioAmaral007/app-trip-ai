@@ -1,59 +1,57 @@
-import { ConfirmationModal } from "@/components/ConfirmationModal";
-import { Header } from "@/components/Header";
-import { ScreenWrapper } from "@/components/ScreenWrapper";
-import { Typo } from "@/components/Typo";
-import { colors, font } from "@/constants/theme";
-import { Image } from "expo-image";
-import { useRouter } from "expo-router";
-import * as Icons from "phosphor-react-native";
-import { useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import Animated, { FadeInDown } from "react-native-reanimated";
+import { ConfirmationModal } from '@/components/ConfirmationModal'
+import { Header } from '@/components/Header'
+import { ScreenWrapper } from '@/components/ScreenWrapper'
+import { Typo } from '@/components/Typo'
+import { colors, font } from '@/constants/theme'
+import { Image } from 'expo-image'
+import { useRouter } from 'expo-router'
+import * as Icons from 'phosphor-react-native'
+import { useState } from 'react'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import Animated, { FadeInDown } from 'react-native-reanimated'
 
 export default function ProfileScreen() {
-  const router = useRouter();
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const router = useRouter()
+  const [showLogoutModal, setShowLogoutModal] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const accountOptions = [
     {
-      title: "Edit profile",
+      title: 'Edit profile',
       icon: <Icons.User size={26} color={colors.text.primary} weight="fill" />,
-      bgColor: "#6366f1",
-      routeName: "/(modals)/profileModal",
+      bgColor: '#6366f1',
+      routeName: '/(modals)/profileModal',
     },
     {
-      title: "Settings",
-      icon: (
-        <Icons.GearSix size={26} color={colors.text.primary} weight="fill" />
-      ),
-      bgColor: "#059669",
+      title: 'Settings',
+      icon: <Icons.GearSix size={26} color={colors.text.primary} weight="fill" />,
+      bgColor: '#059669',
       // routeName: '/(modals)/settings',
     },
     {
-      title: "Privacy policy",
+      title: 'Privacy policy',
       icon: <Icons.Lock size={26} color={colors.text.primary} weight="fill" />,
       bgColor: colors.background.secondary,
       // routeName: '/(modals)/profileModal',
     },
     {
-      title: "Log Out",
+      title: 'Log Out',
       icon: <Icons.Power size={26} color={colors.text.primary} weight="fill" />,
-      bgColor: "#e11d48",
+      bgColor: '#e11d48',
       // routeName: '/(modals)/profileModal',
     },
-  ];
+  ]
 
   const handleLogout = async () => {
     // await signOut(auth);
-  };
+  }
 
   const handlePress = async (option: any) => {
-    if (option.title === "Log Out") {
-      setShowLogoutModal(true);
+    if (option.title === 'Log Out') {
+      setShowLogoutModal(true)
     }
-    if (option.routeName) router.push(option.routeName);
-  };
+    if (option.routeName) router.push(option.routeName)
+  }
 
   return (
     <ScreenWrapper>
@@ -62,7 +60,7 @@ export default function ProfileScreen() {
         <View style={styles.userInfo}>
           <View style={styles.avatarContainer}>
             <Image
-              source={require("@/assets/images/icon.png")}
+              source={require('@/assets/images/icon.png')}
               style={styles.avatar}
               contentFit="cover"
               transition={100}
@@ -72,11 +70,7 @@ export default function ProfileScreen() {
             <Typo size={24} fontFamily={font.bold} color={colors.text.primary}>
               John Doe
             </Typo>
-            <Typo
-              size={15}
-              fontFamily={font.medium}
-              color={colors.text.secondary}
-            >
+            <Typo size={15} fontFamily={font.medium} color={colors.text.secondary}>
               john.doe@example.com
             </Typo>
           </View>
@@ -89,33 +83,22 @@ export default function ProfileScreen() {
                 entering={FadeInDown.delay(index * 50)
                   .springify()
                   .damping(14)}
-                style={styles.listItem}
-              >
+                style={styles.listItem}>
                 <TouchableOpacity
                   style={styles.flexRow}
                   onPress={() => {
-                    handlePress(option);
-                  }}
-                >
-                  <View
-                    style={[
-                      styles.listIcon,
-                      { backgroundColor: option?.bgColor },
-                    ]}
-                  >
+                    handlePress(option)
+                  }}>
+                  <View style={[styles.listIcon, { backgroundColor: option?.bgColor }]}>
                     {option.icon && option.icon}
                   </View>
                   <Typo size={16} style={{ flex: 1 }} fontFamily={font.medium}>
                     {option.title}
                   </Typo>
-                  <Icons.CaretRight
-                    size={20}
-                    color={colors.text.primary}
-                    weight="bold"
-                  />
+                  <Icons.CaretRight size={20} color={colors.text.primary} weight="bold" />
                 </TouchableOpacity>
               </Animated.View>
-            );
+            )
           })}
         </View>
       </View>
@@ -130,7 +113,7 @@ export default function ProfileScreen() {
         loading={loading}
       />
     </ScreenWrapper>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -140,22 +123,22 @@ const styles = StyleSheet.create({
   },
   userInfo: {
     marginTop: 30,
-    alignItems: "center",
+    alignItems: 'center',
     gap: 15,
   },
   avatarContainer: {
-    position: "relative",
-    alignSelf: "center",
+    position: 'relative',
+    alignSelf: 'center',
   },
   avatar: {
     height: 135,
     width: 135,
     borderRadius: 200,
     backgroundColor: colors.background.secondary,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   editIcon: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 5,
     right: 8,
     borderRadius: 50,
@@ -169,16 +152,16 @@ const styles = StyleSheet.create({
   },
   nameContainer: {
     gap: 4,
-    alignItems: "center",
+    alignItems: 'center',
   },
   listIcon: {
     height: 44,
     width: 44,
     backgroundColor: colors.background.secondary,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 15,
-    borderCurve: "continuous",
+    borderCurve: 'continuous',
   },
   listItem: {
     marginBottom: 17,
@@ -187,8 +170,8 @@ const styles = StyleSheet.create({
     marginTop: 35,
   },
   flexRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 10,
   },
-});
+})

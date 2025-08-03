@@ -1,19 +1,12 @@
-import {
-  ActivityIndicator,
-  type ActivityIndicatorProps,
-  View,
-} from "react-native";
+import { ActivityIndicator, type ActivityIndicatorProps, View } from 'react-native';
 
-import { colors } from "@/constants/theme";
+import { colors } from '@/constants/theme';
 
 export type LoadingProps = ActivityIndicatorProps;
 
-export function Loading({
-  size = "large",
-  color = colors.primary.orange,
-}: ActivityIndicatorProps) {
+export function Loading({ size = 'large', color = colors.primary.orange }: ActivityIndicatorProps) {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size={size} color={color} />
     </View>
   );

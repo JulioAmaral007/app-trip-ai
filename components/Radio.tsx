@@ -1,6 +1,6 @@
-import { colors } from "@/constants/theme";
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import { colors } from '@/constants/theme';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
 interface RadioProps {
   selected: boolean;
@@ -29,8 +29,7 @@ export const Radio: React.FC<RadioProps> = ({
           borderRadius: size / 2,
           borderColor: selected ? selectedBorderColor : borderColor,
         },
-      ]}
-    >
+      ]}>
       {selected && (
         <View
           style={[
@@ -51,8 +50,8 @@ export const Radio: React.FC<RadioProps> = ({
 const styles = StyleSheet.create({
   radio: {
     borderWidth: 2,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   radioInner: {
     // Estilos serão aplicados dinamicamente

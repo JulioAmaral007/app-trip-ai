@@ -1,27 +1,23 @@
-import { colors } from "@/constants/theme";
-import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import * as Icons from "phosphor-react-native";
-import { type ReactNode } from "react";
-import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
+import { colors } from '@/constants/theme';
+import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import * as Icons from 'phosphor-react-native';
+import { type ReactNode } from 'react';
+import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-export function CustomTabs({
-  state,
-  descriptors,
-  navigation,
-}: BottomTabBarProps) {
+export function CustomTabs({ state, descriptors, navigation }: BottomTabBarProps) {
   const tabbarIcons: { [key: string]: (isFocused: boolean) => ReactNode } = {
     index: (isFocused: boolean) => (
       <Icons.Island
         size={28}
         color={isFocused ? colors.primary.orange : colors.text.primary}
-        weight={isFocused ? "fill" : "regular"}
+        weight={isFocused ? 'fill' : 'regular'}
       />
     ),
     profile: (isFocused: boolean) => (
       <Icons.User
         size={28}
         color={isFocused ? colors.primary.orange : colors.text.primary}
-        weight={isFocused ? "fill" : "regular"}
+        weight={isFocused ? 'fill' : 'regular'}
       />
     ),
   };
@@ -34,7 +30,7 @@ export function CustomTabs({
 
         const onPress = () => {
           const event = navigation.emit({
-            type: "tabPress",
+            type: 'tabPress',
             target: route.key,
             canPreventDefault: true,
           });
@@ -46,7 +42,7 @@ export function CustomTabs({
 
         const onLongPress = () => {
           navigation.emit({
-            type: "tabLongPress",
+            type: 'tabLongPress',
             target: route.key,
           });
         };
@@ -59,8 +55,7 @@ export function CustomTabs({
             testID={options.tabBarButtonTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={styles.tabbarItem}
-          >
+            style={styles.tabbarItem}>
             {tabbarIcons[route.name] && tabbarIcons[route.name](isFocused)}
           </TouchableOpacity>
         );
@@ -71,18 +66,18 @@ export function CustomTabs({
 
 const styles = StyleSheet.create({
   tabbar: {
-    flexDirection: "row",
-    width: "100%",
-    height: Platform.OS === "ios" ? 73 : 55,
+    flexDirection: 'row',
+    width: '100%',
+    height: Platform.OS === 'ios' ? 73 : 55,
     backgroundColor: colors.background.primary,
-    justifyContent: "space-around",
-    alignItems: "center",
+    justifyContent: 'space-around',
+    alignItems: 'center',
     borderTopColor: colors.border.primary,
     borderTopWidth: 1,
   },
   tabbarItem: {
-    marginBottom: Platform.OS === "ios" ? 10 : 5,
-    justifyContent: "center",
-    alignItems: "center",
+    marginBottom: Platform.OS === 'ios' ? 10 : 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

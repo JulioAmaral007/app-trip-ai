@@ -10,8 +10,8 @@ export const colors = {
   // Background Colors
   background: {
     primary: "#1a1a1a",
-    secondary: "#2a2a2a",
-    tertiary: "#333333",
+    secondary: "#FFFFFF",
+    tertiary: "#FF6B35",
     card: "#2a2a2a",
     overlay: "rgba(0, 0, 0, 0.3)",
     input: "#2a2a2a",
@@ -45,72 +45,27 @@ export const colors = {
     info: "#4A9EFF",
   },
 
-  // Social Media Colors
-  social: {
-    google: "#FFFFFF",
-    apple: "#000000",
-    facebook: "#1877F2",
-  },
-
   // Neutral Colors
   neutral: {
     white: "#FFFFFF",
     black: "#000000",
-    gray100: "#F5F5F5",
-    gray200: "#E5E5E5",
-    gray300: "#D4D4D4",
-    gray400: "#A3A3A3",
-    gray500: "#737373",
-    gray600: "#525252",
-    gray700: "#404040",
-    gray800: "#262626",
-    gray900: "#171717",
+    100: "#F5F5F5",
+    200: "#E5E5E5",
+    300: "#D4D4D4",
+    400: "#A3A3A3",
+    500: "#737373",
+    600: "#525252",
+    700: "#404040",
+    800: "#262626",
+    900: "#171717",
   },
 
   // Gradient Colors
   gradients: {
     primary: ["#FF6B35", "#FF8A5C"],
-    secondary: ["#1a1a1a", "#2a2a2a"],
+    secondary: ["rgb(9, 18, 63)", "rgba(20, 20, 22, 1)", "rgb(8, 36, 16)"],
     overlay: ["rgba(0, 0, 0, 0.0)", "rgba(0, 0, 0, 0.6)"],
     mesh: ["#FF6B35", "#FF4081", "#9C27B0"],
-  },
-
-  // Component Specific Colors
-  components: {
-    button: {
-      primary: "#FFFFFF",
-      primaryText: "#1a1a1a",
-      secondary: "#FF6B35",
-      secondaryText: "#FFFFFF",
-      disabled: "#333333",
-      disabledText: "#666666",
-    },
-    input: {
-      background: "#2a2a2a",
-      border: "#333333",
-      borderFocus: "#FF6B35",
-      text: "#FFFFFF",
-      placeholder: "#666666",
-    },
-    card: {
-      background: "#2a2a2a",
-      border: "#333333",
-      shadow: "rgba(0, 0, 0, 0.3)",
-    },
-    tab: {
-      active: "#FF6B35",
-      inactive: "#2a2a2a",
-      activeText: "#FFFFFF",
-      inactiveText: "#999999",
-    },
-    rating: {
-      star: "#FFD700",
-      background: "rgba(255, 215, 0, 0.1)",
-    },
-    progress: {
-      background: "#333333",
-      fill: "#FF6B35",
-    },
   },
 
   // Semantic Colors

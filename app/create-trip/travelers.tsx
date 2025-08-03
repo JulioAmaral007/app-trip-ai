@@ -1,3 +1,4 @@
+import { BackButton } from "@/components/BackButton";
 import { Button } from "@/components/Button";
 import { Header } from "@/components/Header";
 import { Radio } from "@/components/Radio";
@@ -38,7 +39,7 @@ export default function TravelersScreen() {
 
   return (
     <ScreenWrapper style={styles.container}>
-      <Header title="Who's going?" style={{ marginTop: 20 }} />
+      <Header leftIcon={<BackButton />} title="Who's going?" />
 
       <View style={styles.content}>
         <Typo size={22} fontFamily={font.semiBold} style={styles.subtitle}>
@@ -100,12 +101,11 @@ export default function TravelersScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 24,
-  },
+  container: {},
   content: {
     flex: 1,
     justifyContent: "center",
+    paddingHorizontal: 24,
   },
   subtitle: {
     marginBottom: 20,

@@ -19,15 +19,18 @@ export function Header({
   return (
     <View style={[styles.container, style]}>
       <View style={styles.content}>
-        <View style={styles.iconContainer}>{leftIcon}</View>
-
-        <View style={styles.titleContainer}>
-          <Typo size={22} fontFamily={font.bold} style={styles.title}>
-            {title}
-          </Typo>
+        <View style={styles.leftSection}>
+          {leftIcon && <View style={styles.leftIconContainer}>{leftIcon}</View>}
+          <View style={styles.titleContainer}>
+            <Typo size={48} fontFamily={font.bold} style={styles.title}>
+              {title}
+            </Typo>
+          </View>
         </View>
 
-        <View style={styles.iconContainer}>{rightIcon}</View>
+        {rightIcon && (
+          <View style={styles.rightIconContainer}>{rightIcon}</View>
+        )}
       </View>
     </View>
   );
@@ -36,29 +39,35 @@ export function Header({
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: 56,
-    backgroundColor: "transparent",
+    height: "20%",
   },
   content: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
+    justifyContent: "space-around",
+    paddingHorizontal: 20,
   },
-  iconContainer: {
+  leftSection: {
+    flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    flex: 1,
+  },
+  leftIconContainer: {
     width: 40,
-    height: 40,
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 20,
   },
   titleContainer: {
-    flex: 1,
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "center",
-    paddingHorizontal: 8,
   },
   title: {
-    textAlign: "center",
+    textAlign: "left",
+  },
+  rightIconContainer: {
+    width: 40,
   },
 });

@@ -1,20 +1,54 @@
 import { BackButton } from "@/components/BackButton";
 import { Button } from "@/components/Button";
 import { Header } from "@/components/Header";
+import { Input } from "@/components/Input";
 import { Radio } from "@/components/Radio";
 import { ScreenWrapper } from "@/components/ScreenWrapper";
 import { Typo } from "@/components/Typo";
 import { colors, font } from "@/constants/theme";
 import { router } from "expo-router";
-import { useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { useMemo, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { BarChart } from "react-native-gifted-charts";
 
 type SpendingHabit = "cheap" | "moderate" | "luxury";
 
 export default function BudgetScreen() {
   const [minBudget, setMinBudget] = useState("5200");
-  const [maxBudget, setMaxBudget] = useState("55,200");
+  const [maxBudget, setMaxBudget] = useState("55200");
   const [selectedHabit, setSelectedHabit] = useState<SpendingHabit>("cheap");
+
+  // Gera dados do gráfico baseado nos valores de orçamento
+  const chartData = useMemo(() => {
+    const min = parseInt(minBudget.replace(/,/g, "")) || 5200;
+    const max = parseInt(maxBudget.replace(/,/g, "")) || 55200;
+
+    // Gera 19 pontos de dados distribuídos entre min e max
+    const dataPoints = 19;
+    const step = (max - min) / (dataPoints - 1);
+
+    const data = [];
+    for (let i = 0; i < dataPoints; i++) {
+      const baseValue = min + i * step;
+      // Adiciona variação aleatória para simular dados reais
+      const randomFactor = 0.7 + Math.random() * 0.6; // 70% a 130% de variação
+      const value = baseValue * randomFactor;
+
+      data.push({
+        value: Math.round(value),
+        label: `${i + 1}`,
+      });
+    }
+
+    return data;
+  }, [minBudget, maxBudget]);
+
+  // Calcula o preço médio
+  const averagePrice = useMemo(() => {
+    const min = parseInt(minBudget.replace(/,/g, "")) || 5200;
+    const max = parseInt(maxBudget.replace(/,/g, "")) || 55200;
+    return Math.round((min + max) / 2).toLocaleString();
+  }, [minBudget, maxBudget]);
 
   const spendingOptions = [
     {
@@ -35,55 +69,83 @@ export default function BudgetScreen() {
   ];
 
   return (
-    <ScreenWrapper style={styles.container}>
+    <ScreenWrapper>
       <Header title="Budget" leftIcon={<BackButton />} />
 
       <View style={styles.priceRangeSection}>
-        <Text style={styles.sectionTitle}>Price range</Text>
-        <Text style={styles.averagePrice}>
-          The average nightly price is $5,200
-        </Text>
+        <Typo size={20} fontFamily={font.semiBold} color={colors.text.primary}>
+          Price range
+        </Typo>
+        <Typo size={14} fontFamily={font.regular} color={colors.text.secondary}>
+          The average nightly price is ${averagePrice}
+        </Typo>
 
         {/* Price Chart Visualization */}
         <View style={styles.chartContainer}>
           <View style={styles.chart}>
-            {/* Mock chart bars */}
-            {[
-              20, 40, 60, 80, 100, 85, 70, 90, 75, 65, 45, 55, 35, 25, 15, 30,
-              20, 10, 5,
-            ].map((height, index) => (
-              <View key={index} style={[styles.chartBar, { height: height }]} />
-            ))}
+            <BarChart
+              data={chartData}
+              barWidth={8}
+              spacing={2}
+              hideRules
+              xAxisLabelsVerticalShift={0}
+              noOfSections={0}
+              barBorderRadius={1}
+              frontColor={colors.text.primary}
+              backgroundColor="transparent"
+              width={300}
+              height={100}
+            />
           </View>
           <View style={styles.chartLabels}>
-            <Text style={styles.chartLabel}>Minimum</Text>
-            <Text style={styles.chartLabel}>Maximum</Text>
+            <Typo
+              size={12}
+              fontFamily={font.regular}
+              color={colors.text.secondary}
+            >
+              ${parseInt(minBudget.replace(/,/g, "")) || 5200}
+            </Typo>
+            <Typo
+              size={12}
+              fontFamily={font.regular}
+              color={colors.text.secondary}
+            >
+              ${parseInt(maxBudget.replace(/,/g, "")) || 55200}
+            </Typo>
           </View>
         </View>
 
         <View style={styles.budgetInputs}>
           <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.budgetInput}
-              value={`USD $${minBudget}`}
-              onChangeText={(text) => setMinBudget(text.replace("USD $", ""))}
+            <Input
+              value={minBudget}
+              onChangeText={(text) => setMinBudget(text)}
+              placeholder="Minimum"
+              keyboardType="numeric"
             />
           </View>
-          <Text style={styles.inputSeparator}>→</Text>
+          <Typo
+            size={18}
+            fontFamily={font.regular}
+            color={colors.text.secondary}
+          >
+            →
+          </Typo>
           <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.budgetInput}
-              value={`USD $${maxBudget}`}
-              onChangeText={(text) => setMaxBudget(text.replace("USD $", ""))}
+            <Input
+              value={maxBudget}
+              onChangeText={(text) => setMaxBudget(text)}
+              placeholder="Maximum"
+              keyboardType="numeric"
             />
           </View>
         </View>
       </View>
 
       <View style={styles.spendingSection}>
-        <Text style={styles.sectionTitle}>
+        <Typo size={20} fontFamily={font.semiBold} color={colors.text.primary}>
           Choose spending habits for you trip
-        </Text>
+        </Typo>
 
         <View style={styles.optionsContainer}>
           {spendingOptions.map((option) => (
@@ -129,7 +191,7 @@ export default function BudgetScreen() {
 
       <Button
         style={styles.continueButton}
-        onPress={() => router.push("/interests")}
+        onPress={() => router.push("/create-trip/interests")}
       >
         <Typo size={16} fontFamily={font.semiBold} color={colors.text.inverse}>
           Continue
@@ -140,11 +202,9 @@ export default function BudgetScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 24,
-  },
   priceRangeSection: {
     marginBottom: 40,
+    paddingHorizontal: 24,
   },
   sectionTitle: {
     fontSize: 20,
@@ -206,13 +266,14 @@ const styles = StyleSheet.create({
   },
   spendingSection: {
     flex: 1,
+    paddingHorizontal: 24,
   },
   optionsContainer: {
     gap: 16,
     marginTop: 20,
   },
   option: {
-    backgroundColor: colors.background.secondary,
+    backgroundColor: colors.background.card,
     padding: 20,
   },
   selectedOption: {
@@ -236,5 +297,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.text.primary,
     paddingVertical: 16,
     marginBottom: 40,
+    marginHorizontal: 24,
   },
 });

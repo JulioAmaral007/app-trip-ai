@@ -5,6 +5,16 @@ import { ScreenWrapper } from "@/components/ScreenWrapper";
 import { Typo } from "@/components/Typo";
 import { colors, font } from "@/constants/theme";
 import { router } from "expo-router";
+import {
+  Buildings,
+  ForkKnife,
+  GraduationCap,
+  Mountains,
+  Smiley,
+  SwimmingPool,
+  Tent,
+  Umbrella,
+} from "phosphor-react-native";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
@@ -15,15 +25,14 @@ export default function InterestsScreen() {
   ]);
 
   const interests = [
-    { id: "food", title: "Food & Drinks", icon: "🍔" },
-    { id: "urban", title: "Urban Areas", icon: "🏢" },
-    { id: "adventure", title: "Adventure", icon: "🏔️" },
-    { id: "educational", title: "Educational", icon: "🎓" },
-    { id: "beach", title: "Beach", icon: "🏖️" },
-    { id: "wildlife", title: "Wildlife", icon: "🦁" },
-    { id: "pool", title: "Pool", icon: "🏊" },
-    { id: "relax", title: "Relax", icon: "😌" },
-    { id: "camp", title: "Camp", icon: "🏕️" },
+    { id: "food", title: "Food & Drinks", icon: ForkKnife },
+    { id: "urban", title: "Urban Areas", icon: Buildings },
+    { id: "adventure", title: "Adventure", icon: Mountains },
+    { id: "educational", title: "Educational", icon: GraduationCap },
+    { id: "beach", title: "Beach", icon: Umbrella },
+    { id: "pool", title: "Pool", icon: SwimmingPool },
+    { id: "relax", title: "Relax", icon: Smiley },
+    { id: "camp", title: "Camp", icon: Tent },
   ];
 
   const toggleInterest = (interestId: string) => {
@@ -47,7 +56,7 @@ export default function InterestsScreen() {
     selectedInterests.includes(interestId);
 
   return (
-    <ScreenWrapper style={styles.container}>
+    <ScreenWrapper>
       <Header title="Interest" leftIcon={<BackButton />} />
 
       <View style={styles.selectionInfo}>
@@ -61,6 +70,7 @@ export default function InterestsScreen() {
           const isCurrentlySelected = isSelected(interest.id);
           const isDisabled =
             !isCurrentlySelected && selectedInterests.length >= 3;
+          const IconComponent = interest.icon;
 
           return (
             <Button
@@ -74,9 +84,17 @@ export default function InterestsScreen() {
               }
               onPress={() => toggleInterest(interest.id)}
             >
-              <Typo size={20}>{interest.icon}</Typo>
+              <IconComponent
+                size={20}
+                color={
+                  isCurrentlySelected
+                    ? colors.text.inverse
+                    : colors.text.primary
+                }
+                weight="fill"
+              />
               <Typo
-                size={18}
+                size={16}
                 fontFamily={font.semiBold}
                 color={colors.text.primary}
               >
@@ -89,7 +107,7 @@ export default function InterestsScreen() {
 
       <Button
         style={styles.continueButton}
-        onPress={() => router.push("/review-trip")}
+        onPress={() => router.push("/create-trip/review-trip")}
       >
         <Typo size={16} fontFamily={font.semiBold} color={colors.text.inverse}>
           Continue
@@ -100,20 +118,18 @@ export default function InterestsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 24,
-  },
   selectionInfo: {
     alignItems: "center",
-    marginBottom: 20,
+    paddingHorizontal: 24,
   },
   interestsContainer: {
     flex: 1,
     justifyContent: "center",
-    gap: 16,
+    gap: 14,
+    paddingHorizontal: 24,
   },
   interestButton: {
-    backgroundColor: colors.background.secondary,
+    backgroundColor: colors.background.card,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -134,5 +150,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.text.primary,
     paddingVertical: 16,
     marginBottom: 40,
+    marginHorizontal: 24,
   },
 });

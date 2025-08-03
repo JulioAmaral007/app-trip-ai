@@ -223,7 +223,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-
   optionText: {
     flex: 1,
   },

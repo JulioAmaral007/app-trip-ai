@@ -17,13 +17,13 @@ export default function RootLayout() {
 
         <Stack.Protected guard={isLoggedIn}>
           <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="travelers" />
+          {/* <Stack.Screen name="travelers" />
           <Stack.Screen name="dates" />
           <Stack.Screen name="budget" />
           <Stack.Screen name="interests" />
           <Stack.Screen name="review" />
           <Stack.Screen name="generating" />
-          <Stack.Screen name="home" />
+          <Stack.Screen name="home" /> */}
         </Stack.Protected>
       </Stack>
     </>

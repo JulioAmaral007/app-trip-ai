@@ -1,6 +1,5 @@
-import { Dimensions, Platform, View, type ViewStyle } from "react-native";
-
 import { colors } from "@/constants/theme";
+import { Dimensions, Platform, View, type ViewStyle } from "react-native";
 
 const { height } = Dimensions.get("window");
 

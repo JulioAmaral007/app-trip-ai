@@ -38,7 +38,7 @@ export default function TravelersScreen() {
   ];
 
   return (
-    <ScreenWrapper style={styles.container}>
+    <ScreenWrapper>
       <Header leftIcon={<BackButton />} title="Who's going?" />
 
       <View style={styles.content}>
@@ -90,7 +90,7 @@ export default function TravelersScreen() {
 
       <Button
         style={styles.continueButton}
-        onPress={() => router.push("/travel-dates")}
+        onPress={() => router.push("/create-trip/travel-dates")}
       >
         <Typo size={16} fontFamily={font.semiBold} color={colors.text.inverse}>
           Continue
@@ -101,7 +101,6 @@ export default function TravelersScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {},
   content: {
     flex: 1,
     justifyContent: "center",
@@ -114,7 +113,7 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   option: {
-    backgroundColor: colors.background.secondary,
+    backgroundColor: colors.background.card,
     padding: 20,
   },
   selectedOption: {
@@ -138,5 +137,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.text.primary,
     paddingVertical: 16,
     marginBottom: 40,
+    marginHorizontal: 24,
   },
 });

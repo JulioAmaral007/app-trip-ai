@@ -23,7 +23,7 @@ export function BackButton({ style, iconSize = 26 }: BackButtonProps) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: colors.background.primary,
+    backgroundColor: colors.background.card,
     borderRadius: 12,
     borderCurve: "continuous",
     padding: 5,

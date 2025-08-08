@@ -4,10 +4,11 @@ import { Header } from '@/components/Header'
 import { ScreenWrapper } from '@/components/ScreenWrapper'
 import { Typo } from '@/components/Typo'
 import { colors, font } from '@/constants/theme'
+import { TripContext } from '@/contexts/TripContext'
 import { Feather } from '@expo/vector-icons'
 import { format } from 'date-fns'
-import { router } from 'expo-router'
-import { useState } from 'react'
+import { useRouter } from 'expo-router'
+import { use, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Calendar, DateData, LocaleConfig } from 'react-native-calendars'
 import { ptBR } from '../../utils/localeCalendarConfig'
@@ -16,24 +17,22 @@ LocaleConfig.locales['pt-br'] = ptBR
 LocaleConfig.defaultLocale = 'pt-br'
 
 export default function DatesScreen() {
-  const [selectedStartDate, setSelectedStartDate] = useState<DateData>()
-  const [selectedEndDate, setSelectedEndDate] = useState<DateData>()
+  const { tripData, setTravelDates } = use(TripContext)
   const [isSelectingEnd, setIsSelectingEnd] = useState(false)
-
+  const router = useRouter()
+  
   const handleDayPress = (day: DateData) => {
-    if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
+    if (!tripData.startDate || (tripData.startDate && tripData.endDate)) {
       // Primeira seleção ou reset
-      setSelectedStartDate(day)
-      setSelectedEndDate(undefined)
+      setTravelDates(day, undefined as any)
       setIsSelectingEnd(true)
     } else {
       // Segunda seleção
-      if (day.dateString < selectedStartDate.dateString) {
+      if (day.dateString < tripData.startDate.dateString) {
         // Se a data selecionada é anterior à data inicial, inverte
-        setSelectedEndDate(selectedStartDate)
-        setSelectedStartDate(day)
+        setTravelDates(day, tripData.startDate)
       } else {
-        setSelectedEndDate(day)
+        setTravelDates(tripData.startDate, day)
       }
       setIsSelectingEnd(false)
     }
@@ -42,31 +41,31 @@ export default function DatesScreen() {
   const getMarkedDates = () => {
     const marked: any = {}
 
-    if (selectedStartDate) {
-      marked[selectedStartDate.dateString] = {
+    if (tripData.startDate) {
+      marked[tripData.startDate.dateString] = {
         startingDay: true,
         color: '#F06543',
         textColor: '#E8E8E8',
       }
     }
 
-    if (selectedEndDate) {
-      marked[selectedEndDate.dateString] = {
+    if (tripData.endDate) {
+      marked[tripData.endDate.dateString] = {
         endingDay: true,
         color: '#F06543',
         textColor: '#E8E8E8',
       }
     }
 
-    if (selectedStartDate && selectedEndDate) {
-      const start = new Date(selectedStartDate.dateString)
-      const end = new Date(selectedEndDate.dateString)
+    if (tripData.startDate && tripData.endDate) {
+      const start = new Date(tripData.startDate.dateString)
+      const end = new Date(tripData.endDate.dateString)
       const current = new Date(start)
 
       while (current < end) {
         current.setDate(current.getDate() + 1)
         const dateString = current.toISOString().split('T')[0]
-        if (dateString !== selectedEndDate.dateString) {
+        if (dateString !== tripData.endDate.dateString) {
           marked[dateString] = {
             selected: true,
             color: '#F06543',
@@ -122,8 +121,8 @@ export default function DatesScreen() {
               <Text style={styles.dateIcon}>📅</Text>
               <View>
                 <Typo size={16}>
-                  {selectedStartDate
-                    ? format(new Date(selectedStartDate.dateString), 'dd MMM yyyy')
+                  {tripData.startDate
+                    ? format(new Date(tripData.startDate.dateString), 'dd MMM yyyy')
                     : 'Data inicial'}
                 </Typo>
                 <Typo size={12}>Início</Typo>
@@ -134,8 +133,8 @@ export default function DatesScreen() {
               <Text style={styles.dateIcon}>📅</Text>
               <View>
                 <Typo size={16}>
-                  {selectedEndDate
-                    ? format(new Date(selectedEndDate.dateString), 'dd MMM yyyy')
+                  {tripData.endDate
+                    ? format(new Date(tripData.endDate.dateString), 'dd MMM yyyy')
                     : 'Data final'}
                 </Typo>
                 <Typo size={12}>Fim</Typo>
@@ -148,11 +147,11 @@ export default function DatesScreen() {
       <Button
         style={styles.continueButton}
         onPress={() => {
-          if (selectedStartDate && selectedEndDate) {
+          if (tripData.startDate && tripData.endDate) {
             router.push('/create-trip/budget')
           }
         }}
-        disabled={!selectedStartDate || !selectedEndDate}>
+        disabled={!tripData.startDate || !tripData.endDate}>
         <Typo size={16} fontFamily={font.semiBold} color={colors.text.inverse}>
           Continue
         </Typo>

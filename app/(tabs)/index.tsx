@@ -8,104 +8,11 @@ import { Image, ScrollView, View } from 'react-native'
 
 export default function HomeScreen() {
   const router = useRouter()
-  const transportTabs = [
-    { id: 'flights', title: 'Flights', icon: '✈️', active: true },
-    { id: 'hotels', title: 'Hotels', icon: '🏨', active: false },
-    { id: 'trains', title: 'Trains', icon: '🚂', active: false },
-    { id: 'ferry', title: 'Ferry', icon: '⛴️', active: false },
-    { id: 'bus', title: 'Bus', icon: '🚌', active: false },
-  ]
-
-  const destinations = [
-    {
-      id: 1,
-      title: 'Mount Bromo',
-      subtitle: 'Volcano in East Java',
-      rating: 4.9,
-      price: '150',
-      image: '/placeholder.svg?height=120&width=160',
-    },
-    {
-      id: 2,
-      title: 'Labengki Sombori',
-      subtitle: 'Island in Sulawesi',
-      rating: 4.8,
-      price: '250',
-      image: '/placeholder.svg?height=120&width=160',
-    },
-  ]
-
-  const hotels = [
-    {
-      id: 1,
-      name: 'Swiss-Belhotel Rainforest Kuta',
-      address: 'Jl. Sunset Road No. 101, Kuta, Bali, Indonesia',
-      rating: 4,
-      price: 50,
-      image: '/placeholder.svg?height=60&width=80',
-    },
-    {
-      id: 2,
-      name: 'Swiss-Belhotel Rainforest Kuta',
-      address: 'Jl. Sunset Road No. 101, Kuta, Bali, Indonesia',
-      rating: 4,
-      price: 50,
-      image: '/placeholder.svg?height=60&width=80',
-    },
-    {
-      id: 3,
-      name: 'Swiss-Belhotel Rainforest Kuta',
-      address: 'Jl. Sunset Road No. 101, Kuta, Bali, Indonesia',
-      rating: 4,
-      price: 50,
-      image: '/placeholder.svg?height=60&width=80',
-    },
-  ]
 
   return (
     <ScreenWrapper>
       <Header title="My Trips" />
-      {/* <View style={{ paddingHorizontal: 16 }}>
-        <View style={styles.searchContainer}>
-          <Input
-            icon={
-              <MagnifyingGlassIcon
-                size={20}
-                weight="bold"
-                color={colors.neutral[100]}
-              />
-            }
-            placeholder="Search destination"
-            placeholderTextColor={"gray"}
-            style={styles.searchInput}
-          />
-          <Button
-            style={{
-              backgroundColor: colors.primary.orange,
-              borderRadius: 25,
-              width: 100,
-              padding: 10,
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 5,
-            }}
-            onPress={() => router.push("/travelers")}
-          >
-            <Airplane size={24} color={colors.neutral[100]} />
-            <Typo size={14} color={colors.neutral[100]}>
-              New Trip
-            </Typo>
-          </Button>
-        </View>
 
-        <View style={styles.categoriesContainer}>
-          <Categories />
-        </View>
-
-        <View style={styles.sortContainer}>
-          <SortCategories />
-        </View>
-      </View> */}
       <ScrollView
         style={{
           flex: 1,
@@ -144,7 +51,7 @@ export default function HomeScreen() {
           />
 
           <Button
-            onPress={() => router.push('/create-trip/travelers')}
+            onPress={() => router.push('/create-trip/destination')}
             style={{
               backgroundColor: colors.primary.orange,
               paddingHorizontal: 50,

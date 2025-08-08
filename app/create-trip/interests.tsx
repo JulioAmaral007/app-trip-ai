@@ -1,10 +1,11 @@
-import { BackButton } from '@/components/BackButton';
-import { Button } from '@/components/Button';
-import { Header } from '@/components/Header';
-import { ScreenWrapper } from '@/components/ScreenWrapper';
-import { Typo } from '@/components/Typo';
-import { colors, font } from '@/constants/theme';
-import { router } from 'expo-router';
+import { BackButton } from '@/components/BackButton'
+import { Button } from '@/components/Button'
+import { Header } from '@/components/Header'
+import { ScreenWrapper } from '@/components/ScreenWrapper'
+import { Typo } from '@/components/Typo'
+import { colors, font } from '@/constants/theme'
+import { TripContext } from '@/contexts/TripContext'
+import { useRouter } from 'expo-router'
 import {
   Buildings,
   ForkKnife,
@@ -14,12 +15,13 @@ import {
   SwimmingPool,
   Tent,
   Umbrella,
-} from 'phosphor-react-native';
-import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+} from 'phosphor-react-native'
+import { use } from 'react'
+import { StyleSheet, View } from 'react-native'
 
 export default function InterestsScreen() {
-  const [selectedInterests, setSelectedInterests] = useState<string[]>(['adventure', 'camp']);
+  const { tripData, addInterest, removeInterest } = use(TripContext)
+  const router = useRouter()
 
   const interests = [
     { id: 'food', title: 'Food & Drinks', icon: ForkKnife },
@@ -30,26 +32,17 @@ export default function InterestsScreen() {
     { id: 'pool', title: 'Pool', icon: SwimmingPool },
     { id: 'relax', title: 'Relax', icon: Smiley },
     { id: 'camp', title: 'Camp', icon: Tent },
-  ];
+  ]
 
   const toggleInterest = (interestId: string) => {
-    setSelectedInterests((prev) => {
-      // Se já está selecionado, remove
-      if (prev.includes(interestId)) {
-        return prev.filter((id) => id !== interestId);
-      }
+    if (tripData.selectedInterests.includes(interestId as any)) {
+      removeInterest(interestId as any)
+    } else {
+      addInterest(interestId as any)
+    }
+  }
 
-      // Se não está selecionado e já tem 3 itens, não adiciona
-      if (prev.length >= 3) {
-        return prev;
-      }
-
-      // Adiciona o novo item
-      return [...prev, interestId];
-    });
-  };
-
-  const isSelected = (interestId: string) => selectedInterests.includes(interestId);
+  const isSelected = (interestId: string) => tripData.selectedInterests.includes(interestId as any)
 
   return (
     <ScreenWrapper>
@@ -57,15 +50,15 @@ export default function InterestsScreen() {
 
       <View style={styles.selectionInfo}>
         <Typo size={14} color={colors.text.secondary}>
-          {selectedInterests.length}/3 interesses selecionados
+          {tripData.selectedInterests.length}/3 interesses selecionados
         </Typo>
       </View>
 
       <View style={styles.interestsContainer}>
         {interests.map((interest) => {
-          const isCurrentlySelected = isSelected(interest.id);
-          const isDisabled = !isCurrentlySelected && selectedInterests.length >= 3;
-          const IconComponent = interest.icon;
+          const isCurrentlySelected = isSelected(interest.id)
+          const isDisabled = !isCurrentlySelected && tripData.selectedInterests.length >= 3
+          const IconComponent = interest.icon
 
           return (
             <Button
@@ -87,7 +80,7 @@ export default function InterestsScreen() {
                 {interest.title}
               </Typo>
             </Button>
-          );
+          )
         })}
       </View>
 
@@ -97,7 +90,7 @@ export default function InterestsScreen() {
         </Typo>
       </Button>
     </ScreenWrapper>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -135,4 +128,4 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     marginHorizontal: 24,
   },
-});
+})

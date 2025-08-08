@@ -1,72 +1,69 @@
-import { BackButton } from '@/components/BackButton';
-import { Button } from '@/components/Button';
-import { Header } from '@/components/Header';
-import { Input } from '@/components/Input';
-import { Radio } from '@/components/Radio';
-import { ScreenWrapper } from '@/components/ScreenWrapper';
-import { Typo } from '@/components/Typo';
-import { colors, font } from '@/constants/theme';
-import { router } from 'expo-router';
-import { useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { BarChart } from 'react-native-gifted-charts';
-
-type SpendingHabit = 'cheap' | 'moderate' | 'luxury';
+import { BackButton } from '@/components/BackButton'
+import { Button } from '@/components/Button'
+import { Header } from '@/components/Header'
+import { Input } from '@/components/Input'
+import { Radio } from '@/components/Radio'
+import { ScreenWrapper } from '@/components/ScreenWrapper'
+import { Typo } from '@/components/Typo'
+import { colors, font } from '@/constants/theme'
+import { TripContext } from '@/contexts/TripContext'
+import { useRouter } from 'expo-router'
+import { use, useMemo } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { BarChart } from 'react-native-gifted-charts'
 
 export default function BudgetScreen() {
-  const [minBudget, setMinBudget] = useState('5200');
-  const [maxBudget, setMaxBudget] = useState('55200');
-  const [selectedHabit, setSelectedHabit] = useState<SpendingHabit>('cheap');
-
+  const { tripData, setBudget, setSpendingHabit } = use(TripContext)
+  const router = useRouter()
   // Gera dados do gráfico baseado nos valores de orçamento
   const chartData = useMemo(() => {
-    const min = parseInt(minBudget.replace(/,/g, '')) || 5200;
-    const max = parseInt(maxBudget.replace(/,/g, '')) || 55200;
+    const min = parseInt(tripData.minBudget.replace(/,/g, '')) || 5200
+    const max = parseInt(tripData.maxBudget.replace(/,/g, '')) || 55200
 
     // Gera 19 pontos de dados distribuídos entre min e max
-    const dataPoints = 19;
-    const step = (max - min) / (dataPoints - 1);
+    const dataPoints = 19
+    const step = (max - min) / (dataPoints - 1)
 
-    const data = [];
+    const data = []
     for (let i = 0; i < dataPoints; i++) {
-      const baseValue = min + i * step;
+      const baseValue = min + i * step
       // Adiciona variação aleatória para simular dados reais
-      const randomFactor = 0.7 + Math.random() * 0.6; // 70% a 130% de variação
-      const value = baseValue * randomFactor;
+      const randomFactor = 0.7 + Math.random() * 0.6 // 70% a 130% de variação
+      const value = baseValue * randomFactor
 
       data.push({
         value: Math.round(value),
         label: `${i + 1}`,
-      });
+      })
     }
 
-    return data;
-  }, [minBudget, maxBudget]);
+    return data
+  }, [tripData.minBudget, tripData.maxBudget])
 
   // Calcula o preço médio
   const averagePrice = useMemo(() => {
-    const min = parseInt(minBudget.replace(/,/g, '')) || 5200;
-    const max = parseInt(maxBudget.replace(/,/g, '')) || 55200;
-    return Math.round((min + max) / 2).toLocaleString();
-  }, [minBudget, maxBudget]);
+    const min = parseInt(tripData.minBudget.replace(/,/g, '')) || 5200
+    const max = parseInt(tripData.maxBudget.replace(/,/g, '')) || 55200
+    return Math.round((min + max) / 2).toLocaleString()
+  }, [tripData.minBudget, tripData.maxBudget])
 
   const spendingOptions = [
     {
-      id: 'cheap' as SpendingHabit,
+      id: 'cheap' as const,
       title: 'Cheap',
       description: 'Stay conscious of costs',
     },
     {
-      id: 'moderate' as SpendingHabit,
+      id: 'moderate' as const,
       title: 'Moderate',
       description: 'Keep costs on the average side',
     },
     {
-      id: 'luxury' as SpendingHabit,
+      id: 'luxury' as const,
       title: 'Luxury',
       description: "Don't worry about it- live a little!",
     },
-  ];
+  ]
 
   return (
     <ScreenWrapper>
@@ -99,10 +96,10 @@ export default function BudgetScreen() {
           </View>
           <View style={styles.chartLabels}>
             <Typo size={12} fontFamily={font.regular} color={colors.text.secondary}>
-              ${parseInt(minBudget.replace(/,/g, '')) || 5200}
+              ${parseInt(tripData.minBudget.replace(/,/g, '')) || 5200}
             </Typo>
             <Typo size={12} fontFamily={font.regular} color={colors.text.secondary}>
-              ${parseInt(maxBudget.replace(/,/g, '')) || 55200}
+              ${parseInt(tripData.maxBudget.replace(/,/g, '')) || 55200}
             </Typo>
           </View>
         </View>
@@ -110,8 +107,8 @@ export default function BudgetScreen() {
         <View style={styles.budgetInputs}>
           <View style={styles.inputContainer}>
             <Input
-              value={minBudget}
-              onChangeText={(text) => setMinBudget(text)}
+              value={tripData.minBudget}
+              onChangeText={(text) => setBudget(text, tripData.maxBudget)}
               placeholder="Minimum"
               keyboardType="numeric"
             />
@@ -121,8 +118,8 @@ export default function BudgetScreen() {
           </Typo>
           <View style={styles.inputContainer}>
             <Input
-              value={maxBudget}
-              onChangeText={(text) => setMaxBudget(text)}
+              value={tripData.maxBudget}
+              onChangeText={(text) => setBudget(tripData.minBudget, text)}
               placeholder="Maximum"
               keyboardType="numeric"
             />
@@ -139,11 +136,11 @@ export default function BudgetScreen() {
           {spendingOptions.map((option) => (
             <Button
               key={option.id}
-              style={[styles.option, selectedHabit === option.id && styles.selectedOption] as any}
-              onPress={() => setSelectedHabit(option.id)}>
+              style={[styles.option, tripData.spendingHabit === option.id && styles.selectedOption] as any}
+              onPress={() => setSpendingHabit(option.id)}>
               <View style={styles.radioContainer}>
                 <View style={{ marginRight: 16 }}>
-                  <Radio selected={selectedHabit === option.id} />
+                  <Radio selected={tripData.spendingHabit === option.id} />
                 </View>
                 <View style={styles.optionText}>
                   <Typo size={16} fontFamily={font.semiBold} color={colors.text.primary}>
@@ -153,7 +150,7 @@ export default function BudgetScreen() {
                     size={16}
                     fontFamily={font.regular}
                     color={
-                      selectedHabit === option.id ? colors.text.primary : colors.text.secondary
+                      tripData.spendingHabit === option.id ? colors.text.primary : colors.text.secondary
                     }>
                     {option.description}
                   </Typo>
@@ -170,7 +167,7 @@ export default function BudgetScreen() {
         </Typo>
       </Button>
     </ScreenWrapper>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -271,4 +268,4 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     marginHorizontal: 24,
   },
-});
+})

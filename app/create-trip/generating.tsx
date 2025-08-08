@@ -1,23 +1,24 @@
-import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useRouter } from 'expo-router'
+import { useEffect, useState } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 export default function GeneratingScreen() {
-  const [progress, setProgress] = useState(80);
-
+  const [progress, setProgress] = useState(80)
+  const router = useRouter()
+  
   useEffect(() => {
     // Simulate loading progress
     const timer = setTimeout(() => {
       if (progress < 100) {
-        setProgress((prev) => Math.min(prev + 5, 100));
+        setProgress((prev) => Math.min(prev + 5, 100))
       } else {
         // Navigate to home after completion
-        router.replace('/(tabs)');
+        router.replace('/(tabs)')
       }
-    }, 500);
+    }, 500)
 
-    return () => clearTimeout(timer);
-  }, [progress]);
+    return () => clearTimeout(timer)
+  }, [progress])
 
   return (
     <View style={styles.container}>
@@ -53,7 +54,7 @@ export default function GeneratingScreen() {
         </View>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -140,4 +141,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#999',
   },
-});
+})

@@ -1,16 +1,78 @@
-import { BackButton } from '@/components/BackButton';
-import { Button } from '@/components/Button';
-import { Header } from '@/components/Header';
-import { Input } from '@/components/Input';
-import { ScreenWrapper } from '@/components/ScreenWrapper';
-import { Typo } from '@/components/Typo';
-import { colors, font } from '@/constants/theme';
-import { router } from 'expo-router';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { BackButton } from '@/components/BackButton'
+import { Button } from '@/components/Button'
+import { Header } from '@/components/Header'
+import { Input } from '@/components/Input'
+import { ScreenWrapper } from '@/components/ScreenWrapper'
+import { Typo } from '@/components/Typo'
+import { colors, font } from '@/constants/theme'
+import { TripContext } from '@/contexts/TripContext'
+import { format } from 'date-fns'
+import { useRouter } from 'expo-router'
+import { use } from 'react'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 
 export default function ReviewScreen() {
+  const { tripData, setTripName } = use(TripContext)
+  const router = useRouter()
+  
+  const getTravelerTypeText = (type: string) => {
+    switch (type) {
+      case 'solo': return 'Just me'
+      case 'couple': return 'A couple'
+      case 'family': return 'Family'
+      case 'friends': return 'Friends'
+      default: return type
+    }
+  }
+
+  const getSpendingHabitText = (habit: string) => {
+    switch (habit) {
+      case 'cheap': return 'Cheap'
+      case 'moderate': return 'Moderate'
+      case 'luxury': return 'Luxury'
+      default: return habit
+    }
+  }
+
+  const getInterestIcon = (interest: string) => {
+    switch (interest) {
+      case 'food': return '🍽️'
+      case 'urban': return '🏙️'
+      case 'adventure': return '🏔️'
+      case 'educational': return '🎓'
+      case 'beach': return '🏖️'
+      case 'pool': return '🏊'
+      case 'relax': return '😌'
+      case 'camp': return '🏕️'
+      default: return '📍'
+    }
+  }
+
+  const getInterestText = (interest: string) => {
+    switch (interest) {
+      case 'food': return 'Food & Drinks'
+      case 'urban': return 'Urban Areas'
+      case 'adventure': return 'Adventure'
+      case 'educational': return 'Educational'
+      case 'beach': return 'Beach'
+      case 'pool': return 'Pool'
+      case 'relax': return 'Relax'
+      case 'camp': return 'Camp'
+      default: return interest
+    }
+  }
+
+  const getDateRangeText = () => {
+    if (tripData.startDate && tripData.endDate) {
+      const startDate = format(new Date(tripData.startDate.dateString), 'dd MMM yyyy')
+      const endDate = format(new Date(tripData.endDate.dateString), 'dd MMM yyyy')
+      return `${startDate} - ${endDate}`
+    }
+    return 'Select dates'
+  }
+
   return (
-    <ScreenWrapper style={styles.container}>
+    <ScreenWrapper>
       <Header title="Review your trip" leftIcon={<BackButton />} />
 
       <View style={styles.content}>
@@ -18,7 +80,11 @@ export default function ReviewScreen() {
           <Typo fontFamily={font.semiBold} style={styles.sectionLabel}>
             Trip Name
           </Typo>
-          <Input value="Goes to Bali" placeholder="Enter trip name" />
+          <Input 
+            value={tripData.tripName} 
+            placeholder="Enter trip name" 
+            onChangeText={setTripName}
+          />
         </View>
 
         <View style={styles.reviewSection}>
@@ -30,7 +96,7 @@ export default function ReviewScreen() {
                   Destination
                 </Typo>
                 <Typo size={16} fontFamily={font.semiBold}>
-                  Bali, Indonesia
+                  {tripData.destination || 'Bali, Indonesia'}
                 </Typo>
               </View>
             </View>
@@ -47,7 +113,7 @@ export default function ReviewScreen() {
                   Choose your travelers
                 </Typo>
                 <Typo size={16} fontFamily={font.semiBold}>
-                  Just me
+                  {getTravelerTypeText(tripData.travelerType)}
                 </Typo>
               </View>
             </View>
@@ -64,7 +130,7 @@ export default function ReviewScreen() {
                   Travel dates
                 </Typo>
                 <Typo size={16} fontFamily={font.semiBold}>
-                  15 Marc 2026 - 19 Marc 2026
+                  {getDateRangeText()}
                 </Typo>
               </View>
             </View>
@@ -81,7 +147,7 @@ export default function ReviewScreen() {
                   Budget
                 </Typo>
                 <Typo size={16} fontFamily={font.semiBold}>
-                  Cheap
+                  {getSpendingHabitText(tripData.spendingHabit)}
                 </Typo>
               </View>
             </View>
@@ -96,18 +162,14 @@ export default function ReviewScreen() {
             Interest
           </Typo>
           <View style={styles.interestTags}>
-            <View style={styles.interestTag}>
-              <Typo size={20}>🏔️</Typo>
-              <Typo size={16} fontFamily={font.semiBold}>
-                Adventure
-              </Typo>
-            </View>
-            <View style={styles.interestTag}>
-              <Typo size={20}>🏕️</Typo>
-              <Typo size={16} fontFamily={font.semiBold}>
-                Camp
-              </Typo>
-            </View>
+            {tripData.selectedInterests.map((interest) => (
+              <View key={interest} style={styles.interestTag}>
+                <Typo size={20}>{getInterestIcon(interest)}</Typo>
+                <Typo size={16} fontFamily={font.semiBold}>
+                  {getInterestText(interest)}
+                </Typo>
+              </View>
+            ))}
             <TouchableOpacity style={styles.addInterestButton}>
               <Typo size={16}>+</Typo>
             </TouchableOpacity>
@@ -115,22 +177,20 @@ export default function ReviewScreen() {
         </View>
       </View>
 
-      <Button style={styles.searchButton} onPress={() => router.push('/generating')}>
+      <Button style={styles.searchButton} onPress={() => router.push('/create-trip/generating')}>
         <Typo size={16} fontFamily={font.semiBold} color={colors.text.inverse}>
           Continue
         </Typo>
       </Button>
     </ScreenWrapper>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 24,
-  },
   content: {
     flex: 1,
     justifyContent: 'center',
+    paddingHorizontal: 24,
   },
   tripNameSection: {
     marginBottom: 30,
@@ -192,5 +252,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.text.primary,
     paddingVertical: 16,
     marginBottom: 40,
+    marginHorizontal: 24,
   },
-});
+})

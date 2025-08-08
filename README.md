@@ -171,13 +171,9 @@ npm run lint       # Executa o linter
 4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
 
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
 ## 👥 Autores
 
-- **Seu Nome** - *Desenvolvimento inicial* - [SeuGitHub](https://github.com/seu-usuario)
+- **Júlio Cezar** - *Desenvolvimento inicial* - [JulioAmaral007](https://github.com/Julioamaral007)
 
 ## 🙏 Agradecimentos
 

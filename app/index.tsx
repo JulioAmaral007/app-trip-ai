@@ -1,11 +1,22 @@
 import { Button } from '@/components/Button'
 import { Typo } from '@/components/Typo'
 import { colors, font } from '@/constants/theme'
-import { router } from 'expo-router'
+import { AuthContext } from '@/contexts/AuthContext'
+import { useRouter } from 'expo-router'
 import { AirplaneTiltIcon } from 'phosphor-react-native'
+import { use, useEffect } from 'react'
 import { Image, ImageBackground, StyleSheet, View } from 'react-native'
 
 export default function WelcomeScreen() {
+  const { isLoggedIn } = use(AuthContext)
+  const router = useRouter()
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push('/(tabs)')
+    }
+  }, [isLoggedIn])
+
   return (
     <ImageBackground
       source={require('../assets/images/beach.png')}
@@ -33,7 +44,7 @@ export default function WelcomeScreen() {
         </Typo>
 
         <Button
-          onPress={() => router.push('/(tabs)')}
+          onPress={() => router.push('/(auth)')}
           style={{
             backgroundColor: colors.background.tertiary,
           }}>

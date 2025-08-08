@@ -1,18 +1,23 @@
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
+import { AuthContext, AuthProvider } from '@/contexts/AuthContext'
+import { TripProvider } from '@/contexts/TripContext'
+import { Stack } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
+import { use } from 'react'
 
-const isLoggedIn = true;
+function RootLayoutContent() {
+  const { isLoggedIn } = use(AuthContext)
 
-export default function RootLayout() {
+  console.log(isLoggedIn)
+
   return (
     <>
-      <StatusBar style="inverted" />
+      <StatusBar style="light" />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="onboarding" />
         <Stack.Screen name="index" />
 
         <Stack.Protected guard={!isLoggedIn}>
-          <Stack.Screen name="(auth)" />
+          <Stack.Screen name="(auth)/index" />
         </Stack.Protected>
 
         <Stack.Protected guard={isLoggedIn}>
@@ -27,5 +32,15 @@ export default function RootLayout() {
         </Stack.Protected>
       </Stack>
     </>
-  );
+  )
+}
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <TripProvider>
+        <RootLayoutContent />
+      </TripProvider>
+    </AuthProvider>
+  )
 }

@@ -3,15 +3,17 @@ import { Header } from '@/components/Header'
 import { ScreenWrapper } from '@/components/ScreenWrapper'
 import { Typo } from '@/components/Typo'
 import { colors, font } from '@/constants/theme'
+import { AuthContext } from '@/contexts/AuthContext'
 import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import * as Icons from 'phosphor-react-native'
-import { useState } from 'react'
+import { use, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import Animated, { FadeInDown } from 'react-native-reanimated'
 
 export default function ProfileScreen() {
   const router = useRouter()
+  const { logout } = use(AuthContext)
   const [showLogoutModal, setShowLogoutModal] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -43,7 +45,11 @@ export default function ProfileScreen() {
   ]
 
   const handleLogout = async () => {
-    // await signOut(auth);
+    setLoading(true)
+    // Simular processo de logout
+    await logout() // Desloga o usuário
+    setLoading(false)
+    setShowLogoutModal(false)
   }
 
   const handlePress = async (option: any) => {

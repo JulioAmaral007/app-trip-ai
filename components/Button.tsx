@@ -4,16 +4,16 @@ import {
   type TouchableOpacityProps,
   View,
   type ViewStyle,
-} from 'react-native';
+} from 'react-native'
 
-import { colors } from '@/constants/theme';
-import { Loading } from './Loading';
+import { colors } from '@/constants/theme'
+import { Loading } from './Loading'
 
 export interface CustomButtonProps extends TouchableOpacityProps {
-  style?: ViewStyle;
-  onPress?: () => void;
-  loading?: boolean;
-  children: React.ReactNode;
+  style?: ViewStyle
+  onPress?: () => void
+  loading?: boolean
+  children: React.ReactNode
 }
 
 export function Button({ style, onPress, loading = false, children }: CustomButtonProps) {
@@ -22,13 +22,13 @@ export function Button({ style, onPress, loading = false, children }: CustomButt
       <View style={[styles.button, style, { backgroundColor: 'transparent' }]}>
         <Loading />
       </View>
-    );
+    )
   }
   return (
     <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
       {children}
     </TouchableOpacity>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -40,4 +40,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+})

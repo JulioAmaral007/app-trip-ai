@@ -1,14 +1,14 @@
-import { font } from '@/constants/theme';
-import { type ReactNode } from 'react';
-import { StyleSheet, View, type ViewStyle } from 'react-native';
-import { Typo } from './Typo';
+import { font } from '@/constants/theme'
+import { type ReactNode } from 'react'
+import { StyleSheet, View, type ViewStyle } from 'react-native'
+import { Typo } from './Typo'
 
 export type HeaderProps = {
-  title?: string;
-  style?: ViewStyle;
-  leftIcon?: ReactNode;
-  rightIcon?: ReactNode;
-};
+  title?: string
+  style?: ViewStyle
+  leftIcon?: ReactNode
+  rightIcon?: ReactNode
+}
 
 export function Header({ title = '', leftIcon, rightIcon, style }: HeaderProps) {
   return (
@@ -26,7 +26,7 @@ export function Header({ title = '', leftIcon, rightIcon, style }: HeaderProps) 
         {rightIcon && <View style={styles.rightIconContainer}>{rightIcon}</View>}
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
   rightIconContainer: {
     width: 40,
   },
-});
+})

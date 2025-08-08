@@ -1,8 +1,8 @@
-import { colors } from '@/constants/theme';
-import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import * as Icons from 'phosphor-react-native';
-import { type ReactNode } from 'react';
-import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { colors } from '@/constants/theme'
+import type { BottomTabBarProps } from '@react-navigation/bottom-tabs'
+import * as Icons from 'phosphor-react-native'
+import { type ReactNode } from 'react'
+import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 
 export function CustomTabs({ state, descriptors, navigation }: BottomTabBarProps) {
   const tabbarIcons: { [key: string]: (isFocused: boolean) => ReactNode } = {
@@ -20,32 +20,32 @@ export function CustomTabs({ state, descriptors, navigation }: BottomTabBarProps
         weight={isFocused ? 'fill' : 'regular'}
       />
     ),
-  };
+  }
 
   return (
     <View style={styles.tabbar}>
       {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const isFocused = state.index === index;
+        const { options } = descriptors[route.key]
+        const isFocused = state.index === index
 
         const onPress = () => {
           const event = navigation.emit({
             type: 'tabPress',
             target: route.key,
             canPreventDefault: true,
-          });
+          })
 
           if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name, route.params);
+            navigation.navigate(route.name, route.params)
           }
-        };
+        }
 
         const onLongPress = () => {
           navigation.emit({
             type: 'tabLongPress',
             target: route.key,
-          });
-        };
+          })
+        }
 
         return (
           <TouchableOpacity
@@ -58,10 +58,10 @@ export function CustomTabs({ state, descriptors, navigation }: BottomTabBarProps
             style={styles.tabbarItem}>
             {tabbarIcons[route.name] && tabbarIcons[route.name](isFocused)}
           </TouchableOpacity>
-        );
+        )
       })}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+})

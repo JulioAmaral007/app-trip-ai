@@ -1,5 +1,5 @@
-import { colors } from '@/constants/theme';
-import React from 'react';
+import { colors } from '@/constants/theme'
+import React from 'react'
 import {
   StyleSheet,
   TextInput,
@@ -7,13 +7,13 @@ import {
   type TextInputProps,
   type TextStyle,
   type ViewStyle,
-} from 'react-native';
+} from 'react-native'
 
 export interface InputProps extends TextInputProps {
-  icon?: React.ReactNode;
-  containerStyle?: ViewStyle;
-  inputStyle?: TextStyle;
-  inputRef?: React.RefObject<TextInput>;
+  icon?: React.ReactNode
+  containerStyle?: ViewStyle
+  inputStyle?: TextStyle
+  inputRef?: React.RefObject<TextInput>
   //   label?: string;
   //   error?: string;
 }
@@ -29,7 +29,7 @@ export function Input(props: InputProps) {
         {...props}
       />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
     fontSize: 14,
   },
-});
+})

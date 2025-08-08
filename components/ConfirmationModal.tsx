@@ -1,18 +1,18 @@
-import { colors } from '@/constants/theme';
-import { Modal, StyleSheet, View } from 'react-native';
-import { Button } from './Button';
-import { Typo } from './Typo';
+import { colors } from '@/constants/theme'
+import { Modal, StyleSheet, View } from 'react-native'
+import { Button } from './Button'
+import { Typo } from './Typo'
 
 export type ConfirmationModalProps = {
-  visible: boolean;
-  title: string;
-  message: string;
-  onConfirm: () => void;
-  onClose: () => void;
-  confirmText?: string;
-  cancelText?: string;
-  loading?: boolean;
-};
+  visible: boolean
+  title: string
+  message: string
+  onConfirm: () => void
+  onClose: () => void
+  confirmText?: string
+  cancelText?: string
+  loading?: boolean
+}
 
 export function ConfirmationModal({
   visible,
@@ -44,7 +44,7 @@ export function ConfirmationModal({
         </View>
       </View>
     </Modal>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -100,4 +100,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
-});
+})

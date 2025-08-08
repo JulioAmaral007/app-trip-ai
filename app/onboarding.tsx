@@ -2,7 +2,7 @@ import { colors } from '@/constants/theme'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useRouter } from 'expo-router'
 import { useEffect } from 'react'
-import { Image, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 import {
   Exo2_400Regular,
@@ -11,6 +11,7 @@ import {
   Exo2_700Bold,
   useFonts,
 } from '@expo-google-fonts/exo-2'
+import { Image } from 'expo-image'
 
 export default function Onboarding() {
   const router = useRouter()
@@ -32,12 +33,12 @@ export default function Onboarding() {
   }, [fontsLoaded, router])
 
   return (
-    <LinearGradient
-      colors={colors.gradients.secondary as [string, string]}
-      style={styles.container}>
+      <LinearGradient
+        colors={colors.gradients.secondary as [string, string]}
+        style={styles.container}>
       <Image
         style={styles.logo}
-        resizeMode="contain"
+        contentFit="contain"
         source={require('@/assets/images/splash-icon.png')}
       />
     </LinearGradient>

@@ -1,14 +1,14 @@
-import { colors } from '@/constants/theme';
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { colors } from '@/constants/theme'
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
 
 interface RadioProps {
-  selected: boolean;
-  size?: number;
-  innerSize?: number;
-  borderColor?: string;
-  selectedBorderColor?: string;
-  innerColor?: string;
+  selected: boolean
+  size?: number
+  innerSize?: number
+  borderColor?: string
+  selectedBorderColor?: string
+  innerColor?: string
 }
 
 export const Radio: React.FC<RadioProps> = ({
@@ -44,8 +44,8 @@ export const Radio: React.FC<RadioProps> = ({
         />
       )}
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   radio: {
@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
   radioInner: {
     // Estilos serão aplicados dinamicamente
   },
-});
+})

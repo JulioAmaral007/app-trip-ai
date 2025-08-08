@@ -1,20 +1,18 @@
-import { colors } from '@/constants/theme';
-import { Platform, StyleSheet, View, type ViewStyle } from 'react-native';
+import { colors } from '@/constants/theme'
+import { Platform, StyleSheet, View, type ViewStyle } from 'react-native'
 
 export type ModalWrapperProps = {
-  style?: ViewStyle;
-  children: React.ReactNode;
-  bg?: string;
-};
+  style?: ViewStyle
+  children: React.ReactNode
+  bg?: string
+}
 
 export function ModalWrapper({
   style,
   children,
   bg = colors.background.primary,
 }: ModalWrapperProps) {
-  return (
-    <View style={[styles.container, { backgroundColor: bg }, style && style]}>{children}</View>
-  );
+  return <View style={[styles.container, { backgroundColor: bg }, style && style]}>{children}</View>
 }
 
 const styles = StyleSheet.create({
@@ -23,4 +21,4 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === 'ios' ? 15 : 30,
     paddingBottom: Platform.OS === 'ios' ? 20 : 10,
   },
-});
+})

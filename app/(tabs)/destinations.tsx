@@ -1,13 +1,16 @@
-import { BackButton } from '@/components/BackButton'
+import { Categories } from '@/components/Categories'
 import { Header } from '@/components/Header'
 import { Input } from '@/components/Input'
 import { ScreenWrapper } from '@/components/ScreenWrapper'
-import { colors } from '@/constants/theme'
+import { SortCategories } from '@/components/SortCategories'
+import { Typo } from '@/components/Typo'
+import { colors, font } from '@/constants/theme'
 import { TripContext } from '@/contexts/TripContext'
+import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import { MagnifyingGlassIcon } from 'phosphor-react-native'
 import { use, useState } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
 
 interface Destination {
   id: string
@@ -326,7 +329,7 @@ export default function DestinationScreen() {
 
   return (
     <ScreenWrapper>
-      <Header title="Escolha seu destino" leftIcon={<BackButton />} />
+      <Header title="Destinos Prontos" />
 
       <ScrollView 
         style={styles.scrollView}
@@ -349,7 +352,62 @@ export default function DestinationScreen() {
             />
           </View>
 
- 
+          <View style={styles.categoriesContainer}>
+            <Categories 
+              selectedCategory={selectedCategory}
+              onCategoryPress={handleCategoryPress}
+            />
+          </View>
+
+          <View style={styles.sortContainer}>
+            <SortCategories 
+              selectedSort={selectedSort}
+              onSortChange={handleSortChange}
+            />
+          </View>
+
+          <View style={styles.destinationsContainer}>
+            <Typo size={16} fontFamily={font.semiBold} color={colors.text.primary} style={styles.sectionTitle}>
+              Destinos ({filteredDestinations.length})
+            </Typo>
+            
+            <View style={styles.destinationsGrid}>
+              {sortedDestinations.map((destination) => (
+                <TouchableOpacity
+                  key={destination.id}
+                  style={styles.destinationCard}
+                  onPress={() => handleDestinationSelect(destination)}
+                >
+                  <Image
+                    source={{ uri: destination.image }}
+                    style={styles.destinationImage}
+                    contentFit="cover"
+                  />
+                  <View style={styles.destinationInfo}>
+                    <View style={styles.destinationHeader}>
+                      <Typo size={16} fontFamily={font.bold} color={colors.text.primary}>
+                        {destination.name}
+                      </Typo>
+                      <View style={styles.ratingContainer}>
+                        <Typo size={12} color={colors.text.secondary}>⭐ {destination.rating}</Typo>
+                      </View>
+                    </View>
+                    <Typo size={14} fontFamily={font.regular} color={colors.text.secondary}>
+                      {destination.country}
+                    </Typo>
+                    <Typo size={12} fontFamily={font.regular} color={colors.text.tertiary}>
+                      {destination.description}
+                    </Typo>
+                    <View style={styles.priceContainer}>
+                      <Typo size={14} fontFamily={font.bold} color={colors.primary.orange}>
+                        {destination.price}
+                      </Typo>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
         </View>
       </ScrollView>
     </ScreenWrapper>

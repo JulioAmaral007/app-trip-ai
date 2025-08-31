@@ -13,13 +13,6 @@ export function CustomTabs({ state, descriptors, navigation }: BottomTabBarProps
         weight={isFocused ? 'fill' : 'regular'}
       />
     ),
-    destinations: (isFocused: boolean) => (
-      <Icons.Compass
-        size={28}
-        color={isFocused ? colors.primary.orange : colors.text.primary}
-        weight={isFocused ? 'fill' : 'regular'}
-      />
-    ),
     profile: (isFocused: boolean) => (
       <Icons.User
         size={28}

@@ -12,13 +12,6 @@ export default function AppLayout() {
       />
 
       <Tabs.Screen
-        name="destinations"
-        options={{
-          headerShown: false,
-        }}
-      />
-
-      <Tabs.Screen
         name="profile"
         options={{
           headerShown: false,

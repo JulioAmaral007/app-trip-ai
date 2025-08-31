@@ -4,27 +4,35 @@ import { DateData } from 'react-native-calendars'
 // Tipos para os dados da viagem
 export type TravelerType = 'solo' | 'couple' | 'family' | 'friends'
 export type SpendingHabit = 'cheap' | 'moderate' | 'luxury'
-export type InterestType = 'food' | 'urban' | 'adventure' | 'educational' | 'beach' | 'pool' | 'relax' | 'camp'
+export type InterestType =
+  | 'food'
+  | 'urban'
+  | 'adventure'
+  | 'educational'
+  | 'beach'
+  | 'pool'
+  | 'relax'
+  | 'camp'
 
-interface TripData {
+export interface TripData {
   // Dados dos viajantes
   travelerType: TravelerType
-  
+
   // Datas da viagem
   startDate?: DateData
   endDate?: DateData
-  
+
   // Orçamento
   minBudget: string
   maxBudget: string
   spendingHabit: SpendingHabit
-  
+
   // Interesses
   selectedInterests: InterestType[]
-  
+
   // Nome da viagem
   tripName: string
-  
+
   // Destino (pode ser expandido no futuro)
   destination?: string
 }
@@ -32,7 +40,10 @@ interface TripData {
 interface TripContextType {
   // Dados da viagem
   tripData: TripData
-  
+
+  // Resposta da IA
+  aiResponse: any
+
   // Ações para atualizar os dados
   setTravelerType: (type: TravelerType) => void
   setTravelDates: (startDate: DateData, endDate: DateData) => void
@@ -43,7 +54,8 @@ interface TripContextType {
   removeInterest: (interest: InterestType) => void
   setTripName: (name: string) => void
   setDestination: (destination: string) => void
-  
+  setAiResponse: (response: any) => void
+
   // Utilitários
   resetTripData: () => void
   isTripDataComplete: () => boolean
@@ -62,6 +74,7 @@ const initialTripData: TripData = {
 
 export const TripContext = createContext<TripContextType>({
   tripData: initialTripData,
+  aiResponse: null,
   setTravelerType: () => {},
   setTravelDates: () => {},
   setBudget: () => {},
@@ -71,35 +84,37 @@ export const TripContext = createContext<TripContextType>({
   removeInterest: () => {},
   setTripName: () => {},
   setDestination: () => {},
+  setAiResponse: () => {},
   resetTripData: () => {},
   isTripDataComplete: () => false,
 })
 
 export function TripProvider({ children }: { children: ReactNode }) {
   const [tripData, setTripData] = useState<TripData>(initialTripData)
+  const [aiResponse, setAiResponse] = useState<any>(null)
 
   const setTravelerType = (type: TravelerType) => {
-    setTripData(prev => ({ ...prev, travelerType: type }))
+    setTripData((prev) => ({ ...prev, travelerType: type }))
   }
 
   const setTravelDates = (startDate: DateData, endDate: DateData) => {
-    setTripData(prev => ({ ...prev, startDate, endDate }))
+    setTripData((prev) => ({ ...prev, startDate, endDate }))
   }
 
   const setBudget = (minBudget: string, maxBudget: string) => {
-    setTripData(prev => ({ ...prev, minBudget, maxBudget }))
+    setTripData((prev) => ({ ...prev, minBudget, maxBudget }))
   }
 
   const setSpendingHabit = (habit: SpendingHabit) => {
-    setTripData(prev => ({ ...prev, spendingHabit: habit }))
+    setTripData((prev) => ({ ...prev, spendingHabit: habit }))
   }
 
   const setInterests = (interests: InterestType[]) => {
-    setTripData(prev => ({ ...prev, selectedInterests: interests }))
+    setTripData((prev) => ({ ...prev, selectedInterests: interests }))
   }
 
   const addInterest = (interest: InterestType) => {
-    setTripData(prev => {
+    setTripData((prev) => {
       if (prev.selectedInterests.length >= 3) return prev
       if (prev.selectedInterests.includes(interest)) return prev
       return { ...prev, selectedInterests: [...prev.selectedInterests, interest] }
@@ -107,22 +122,27 @@ export function TripProvider({ children }: { children: ReactNode }) {
   }
 
   const removeInterest = (interest: InterestType) => {
-    setTripData(prev => ({
+    setTripData((prev) => ({
       ...prev,
-      selectedInterests: prev.selectedInterests.filter(i => i !== interest)
+      selectedInterests: prev.selectedInterests.filter((i) => i !== interest),
     }))
   }
 
   const setTripName = (name: string) => {
-    setTripData(prev => ({ ...prev, tripName: name }))
+    setTripData((prev) => ({ ...prev, tripName: name }))
   }
 
   const setDestination = (destination: string) => {
-    setTripData(prev => ({ ...prev, destination }))
+    setTripData((prev) => ({ ...prev, destination }))
+  }
+
+  const updateAiResponse = (response: any) => {
+    setAiResponse(response)
   }
 
   const resetTripData = () => {
     setTripData(initialTripData)
+    setAiResponse(null)
   }
 
   const isTripDataComplete = () => {
@@ -139,20 +159,23 @@ export function TripProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <TripContext.Provider value={{
-      tripData,
-      setTravelerType,
-      setTravelDates,
-      setBudget,
-      setSpendingHabit,
-      setInterests,
-      addInterest,
-      removeInterest,
-      setTripName,
-      setDestination,
-      resetTripData,
-      isTripDataComplete,
-    }}>
+    <TripContext.Provider
+      value={{
+        tripData,
+        aiResponse,
+        setTravelerType,
+        setTravelDates,
+        setBudget,
+        setSpendingHabit,
+        setInterests,
+        addInterest,
+        removeInterest,
+        setTripName,
+        setDestination,
+        setAiResponse: updateAiResponse,
+        resetTripData,
+        isTripDataComplete,
+      }}>
       {children}
     </TripContext.Provider>
   )

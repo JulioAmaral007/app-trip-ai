@@ -1,28 +1,61 @@
 import { useRouter } from 'expo-router'
-import { useEffect, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { useContext, useEffect, useState } from 'react'
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { TripContext } from '../../contexts/TripContext'
+import { generateTripWithAI } from '../../utils/aiService'
 
 export default function GeneratingScreen() {
-  const [progress, setProgress] = useState(80)
+  const [progress, setProgress] = useState(0)
+  const [status, setStatus] = useState('Iniciando...')
   const router = useRouter()
-  
-  useEffect(() => {
-    // Simulate loading progress
-    const timer = setTimeout(() => {
-      if (progress < 100) {
-        setProgress((prev) => Math.min(prev + 5, 100))
-      } else {
-        // Navigate to home after completion
-        router.replace('/(tabs)')
-      }
-    }, 500)
+  const { tripData, setAiResponse } = useContext(TripContext)
 
-    return () => clearTimeout(timer)
-  }, [progress])
+  useEffect(() => {
+    const generateTrip = async () => {
+      try {
+        // Verificar se os dados da viagem estão completos
+        if (!tripData.tripName || !tripData.destination) {
+          Alert.alert('Erro', 'Dados da viagem incompletos')
+          router.back()
+          return
+        }
+
+        setStatus('Conectando com IA...')
+        setProgress(20)
+
+        // Fazer a chamada para a IA
+        const result = await generateTripWithAI(tripData)
+
+        setProgress(80)
+        setStatus('Processando resposta...')
+
+        if (result.success) {
+          setAiResponse(result.data)
+          setStatus('Finalizando...')
+          setProgress(100)
+
+          // Aguardar um pouco para mostrar o progresso completo
+          setTimeout(() => {
+            // Navegar para a próxima tela com os dados da IA salvos
+            router.replace('/(tabs)')
+          }, 1000)
+        } else {
+          Alert.alert('Erro', result.error || 'Erro ao gerar roteiro')
+          router.back()
+        }
+      } catch (error) {
+        console.error('Erro na geração:', error)
+        Alert.alert('Erro', 'Erro inesperado ao gerar roteiro')
+        router.back()
+      }
+    }
+
+    generateTrip()
+  }, [tripData, router])
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton}>
+      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backIcon}>←</Text>
       </TouchableOpacity>
 
@@ -40,8 +73,8 @@ export default function GeneratingScreen() {
           </View>
         </View>
 
-        <Text style={styles.locationText}>Bali, Indonesia</Text>
-        <Text style={styles.statusText}>Generating...</Text>
+        <Text style={styles.locationText}>{tripData.destination}</Text>
+        <Text style={styles.statusText}>{status}</Text>
 
         <View style={styles.progressContainer}>
           <View style={styles.progressBar}>
@@ -51,6 +84,14 @@ export default function GeneratingScreen() {
             <Text style={styles.progressLabel}>{progress}%</Text>
             <Text style={styles.progressLabel}>100%</Text>
           </View>
+        </View>
+
+        {/* Mostrar informações da viagem sendo processada */}
+        <View style={styles.tripInfo}>
+          <Text style={styles.tripName}>{tripData.tripName}</Text>
+          <Text style={styles.tripDetails}>
+            {tripData.travelerType} • {tripData.selectedInterests.join(', ')}
+          </Text>
         </View>
       </View>
     </View>
@@ -138,6 +179,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   progressLabel: {
+    fontSize: 14,
+    color: '#999',
+  },
+  tripInfo: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  tripName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 4,
+  },
+  tripDetails: {
     fontSize: 14,
     color: '#999',
   },

@@ -7,14 +7,14 @@ import { colors, font } from '@/constants/theme'
 import { TripContext } from '@/contexts/TripContext'
 import { useRouter } from 'expo-router'
 import {
-  Buildings,
-  ForkKnife,
-  GraduationCap,
-  Mountains,
-  Smiley,
-  SwimmingPool,
-  Tent,
-  Umbrella,
+  BuildingsIcon,
+  ForkKnifeIcon,
+  GraduationCapIcon,
+  MountainsIcon,
+  SmileyIcon,
+  SwimmingPoolIcon,
+  TentIcon,
+  UmbrellaIcon,
 } from 'phosphor-react-native'
 import { use } from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -24,14 +24,14 @@ export default function InterestsScreen() {
   const router = useRouter()
 
   const interests = [
-    { id: 'food', title: 'Food & Drinks', icon: ForkKnife },
-    { id: 'urban', title: 'Urban Areas', icon: Buildings },
-    { id: 'adventure', title: 'Adventure', icon: Mountains },
-    { id: 'educational', title: 'Educational', icon: GraduationCap },
-    { id: 'beach', title: 'Beach', icon: Umbrella },
-    { id: 'pool', title: 'Pool', icon: SwimmingPool },
-    { id: 'relax', title: 'Relax', icon: Smiley },
-    { id: 'camp', title: 'Camp', icon: Tent },
+    { id: 'food', title: 'Food & Drinks', icon: ForkKnifeIcon },
+    { id: 'urban', title: 'Urban Areas', icon: BuildingsIcon },
+    { id: 'adventure', title: 'Adventure', icon: MountainsIcon },
+    { id: 'educational', title: 'Educational', icon: GraduationCapIcon },
+    { id: 'beach', title: 'Beach', icon: UmbrellaIcon },
+    { id: 'pool', title: 'Pool', icon: SwimmingPoolIcon },
+    { id: 'relax', title: 'Relax', icon: SmileyIcon },
+    { id: 'camp', title: 'Camp', icon: TentIcon },
   ]
 
   const toggleInterest = (interestId: string) => {

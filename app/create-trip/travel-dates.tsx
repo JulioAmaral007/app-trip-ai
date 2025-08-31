@@ -5,8 +5,8 @@ import { ScreenWrapper } from '@/components/ScreenWrapper'
 import { Typo } from '@/components/Typo'
 import { colors, font } from '@/constants/theme'
 import { TripContext } from '@/contexts/TripContext'
+import { dateUtils } from '@/utils/dateUtils'
 import { Feather } from '@expo/vector-icons'
-import { format } from 'date-fns'
 import { useRouter } from 'expo-router'
 import { use, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
@@ -20,7 +20,7 @@ export default function DatesScreen() {
   const { tripData, setTravelDates } = use(TripContext)
   const [isSelectingEnd, setIsSelectingEnd] = useState(false)
   const router = useRouter()
-  
+
   const handleDayPress = (day: DateData) => {
     if (!tripData.startDate || (tripData.startDate && tripData.endDate)) {
       // Primeira seleção ou reset
@@ -122,7 +122,7 @@ export default function DatesScreen() {
               <View>
                 <Typo size={16}>
                   {tripData.startDate
-                    ? format(new Date(tripData.startDate.dateString), 'dd MMM yyyy')
+                    ? dateUtils.formatDayMonthYear(tripData.startDate.dateString)
                     : 'Data inicial'}
                 </Typo>
                 <Typo size={12}>Início</Typo>
@@ -134,7 +134,7 @@ export default function DatesScreen() {
               <View>
                 <Typo size={16}>
                   {tripData.endDate
-                    ? format(new Date(tripData.endDate.dateString), 'dd MMM yyyy')
+                    ? dateUtils.formatDayMonthYear(tripData.endDate.dateString)
                     : 'Data final'}
                 </Typo>
                 <Typo size={12}>Fim</Typo>

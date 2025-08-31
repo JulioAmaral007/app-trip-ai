@@ -6,7 +6,7 @@ import { ScreenWrapper } from '@/components/ScreenWrapper'
 import { Typo } from '@/components/Typo'
 import { colors, font } from '@/constants/theme'
 import { TripContext } from '@/contexts/TripContext'
-import { format } from 'date-fns'
+import { dateUtils } from '@/utils/dateUtils'
 import { useRouter } from 'expo-router'
 import { use } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
@@ -14,58 +14,85 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native'
 export default function ReviewScreen() {
   const { tripData, setTripName } = use(TripContext)
   const router = useRouter()
-  
+
   const getTravelerTypeText = (type: string) => {
     switch (type) {
-      case 'solo': return 'Just me'
-      case 'couple': return 'A couple'
-      case 'family': return 'Family'
-      case 'friends': return 'Friends'
-      default: return type
+      case 'solo':
+        return 'Just me'
+      case 'couple':
+        return 'A couple'
+      case 'family':
+        return 'Family'
+      case 'friends':
+        return 'Friends'
+      default:
+        return type
     }
   }
 
   const getSpendingHabitText = (habit: string) => {
     switch (habit) {
-      case 'cheap': return 'Cheap'
-      case 'moderate': return 'Moderate'
-      case 'luxury': return 'Luxury'
-      default: return habit
+      case 'cheap':
+        return 'Cheap'
+      case 'moderate':
+        return 'Moderate'
+      case 'luxury':
+        return 'Luxury'
+      default:
+        return habit
     }
   }
 
   const getInterestIcon = (interest: string) => {
     switch (interest) {
-      case 'food': return '🍽️'
-      case 'urban': return '🏙️'
-      case 'adventure': return '🏔️'
-      case 'educational': return '🎓'
-      case 'beach': return '🏖️'
-      case 'pool': return '🏊'
-      case 'relax': return '😌'
-      case 'camp': return '🏕️'
-      default: return '📍'
+      case 'food':
+        return '🍽️'
+      case 'urban':
+        return '🏙️'
+      case 'adventure':
+        return '🏔️'
+      case 'educational':
+        return '🎓'
+      case 'beach':
+        return '🏖️'
+      case 'pool':
+        return '🏊'
+      case 'relax':
+        return '😌'
+      case 'camp':
+        return '🏕️'
+      default:
+        return '📍'
     }
   }
 
   const getInterestText = (interest: string) => {
     switch (interest) {
-      case 'food': return 'Food & Drinks'
-      case 'urban': return 'Urban Areas'
-      case 'adventure': return 'Adventure'
-      case 'educational': return 'Educational'
-      case 'beach': return 'Beach'
-      case 'pool': return 'Pool'
-      case 'relax': return 'Relax'
-      case 'camp': return 'Camp'
-      default: return interest
+      case 'food':
+        return 'Food & Drinks'
+      case 'urban':
+        return 'Urban Areas'
+      case 'adventure':
+        return 'Adventure'
+      case 'educational':
+        return 'Educational'
+      case 'beach':
+        return 'Beach'
+      case 'pool':
+        return 'Pool'
+      case 'relax':
+        return 'Relax'
+      case 'camp':
+        return 'Camp'
+      default:
+        return interest
     }
   }
 
   const getDateRangeText = () => {
     if (tripData.startDate && tripData.endDate) {
-      const startDate = format(new Date(tripData.startDate.dateString), 'dd MMM yyyy')
-      const endDate = format(new Date(tripData.endDate.dateString), 'dd MMM yyyy')
+      const startDate = dateUtils.formatDayMonthYear(tripData.startDate.dateString)
+      const endDate = dateUtils.formatDayMonthYear(tripData.endDate.dateString)
       return `${startDate} - ${endDate}`
     }
     return 'Select dates'
@@ -80,9 +107,9 @@ export default function ReviewScreen() {
           <Typo fontFamily={font.semiBold} style={styles.sectionLabel}>
             Trip Name
           </Typo>
-          <Input 
-            value={tripData.tripName} 
-            placeholder="Enter trip name" 
+          <Input
+            value={tripData.tripName}
+            placeholder="Enter trip name"
             onChangeText={setTripName}
           />
         </View>

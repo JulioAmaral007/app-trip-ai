@@ -1,6 +1,6 @@
 import { Typo } from '@/components/Typo'
 import { colors, font } from '@/constants/theme'
-import { IslandIcon } from 'phosphor-react-native'
+import { Island } from 'phosphor-react-native'
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 interface Destination {
@@ -77,10 +77,8 @@ export function DestinationsSection({
           ))}
         </ScrollView>
       ) : (
-        <View style={styles.emptyState}>
-          <Text style={styles.emptyIcon}>
-            <IslandIcon />
-          </Text>
+                  <View style={styles.emptyState}>
+            <Island size={48} color={colors.text.secondary} style={styles.emptyIcon} />
           <Typo style={styles.emptyTitle}>Nenhum destino encontrado</Typo>
           <Typo style={styles.emptySubtitle}>
             Ainda não temos destinos para a categoria "{categoryName}".
@@ -145,7 +143,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   emptyIcon: {
-    fontSize: 48,
     marginBottom: 16,
   },
   emptyTitle: {

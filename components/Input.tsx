@@ -1,5 +1,5 @@
 import { colors } from '@/constants/theme'
-import React from 'react'
+import React, { forwardRef } from 'react'
 import {
   StyleSheet,
   TextInput,
@@ -18,19 +18,19 @@ export interface InputProps extends TextInputProps {
   //   error?: string;
 }
 
-export function Input(props: InputProps) {
+export const Input = forwardRef<TextInput, InputProps>((props, ref) => {
   return (
     <View style={[styles.container, props.containerStyle && props.containerStyle]}>
       {props.icon && props.icon}
       <TextInput
         style={[styles.input, props.inputStyle]}
         placeholderTextColor={colors.text.secondary}
-        ref={props.inputRef}
+        ref={ref}
         {...props}
       />
     </View>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {

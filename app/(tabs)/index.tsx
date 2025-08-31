@@ -9,17 +9,17 @@ import { colors, font } from '@/constants/theme'
 import { TripContext } from '@/contexts/TripContext'
 import { useRouter } from 'expo-router'
 import {
-  BuildingsIcon,
-  ForkKnifeIcon,
-  GraduationCapIcon,
-  MagnifyingGlassIcon,
-  MountainsIcon,
-  SmileyIcon,
-  StarIcon,
-  SwimmingPoolIcon,
-  TentIcon,
-  UmbrellaIcon,
-  XIcon,
+  Buildings,
+  ForkKnife,
+  GraduationCap,
+  MagnifyingGlass,
+  Mountains,
+  Smiley,
+  Star,
+  SwimmingPool,
+  Tent,
+  Umbrella,
+  X,
 } from 'phosphor-react-native'
 import { use, useState } from 'react'
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
@@ -50,15 +50,15 @@ export default function HomeScreen() {
   ]
 
   const categories = [
-    { id: '1', name: 'Destaques', icon: StarIcon },
-    { id: '2', name: 'Food & Drinks', icon: ForkKnifeIcon },
-    { id: '3', name: 'Urban Areas', icon: BuildingsIcon },
-    { id: '4', name: 'Adventure', icon: MountainsIcon },
-    { id: '5', name: 'Educational', icon: GraduationCapIcon },
-    { id: '6', name: 'Beach', icon: UmbrellaIcon },
-    { id: '7', name: 'Pool', icon: SwimmingPoolIcon },
-    { id: '8', name: 'Relax', icon: SmileyIcon },
-    { id: '9', name: 'Camp', icon: TentIcon },
+    { id: '1', name: 'Destaques', icon: Star },
+    { id: '2', name: 'Food & Drinks', icon: ForkKnife },
+    { id: '3', name: 'Urban Areas', icon: Buildings },
+    { id: '4', name: 'Adventure', icon: Mountains },
+    { id: '5', name: 'Educational', icon: GraduationCap },
+    { id: '6', name: 'Beach', icon: Umbrella },
+    { id: '7', name: 'Pool', icon: SwimmingPool },
+    { id: '8', name: 'Relax', icon: Smiley },
+    { id: '9', name: 'Camp', icon: Tent },
   ]
 
   // Lista de destinos globais para pesquisa
@@ -323,7 +323,7 @@ export default function HomeScreen() {
           {/* Barra de pesquisa */}
           <View style={styles.searchContainer}>
             <Input
-              icon={<MagnifyingGlassIcon size={20} weight="bold" color={colors.text.primary} />}
+              icon={<MagnifyingGlass size={20} weight="bold" color={colors.text.primary} />}
               value={searchQuery}
               onChangeText={setSearchQuery}
               placeholder="Qual seu próximo destino?"
@@ -332,7 +332,7 @@ export default function HomeScreen() {
             />
             {isSearchFocused && searchQuery && (
               <TouchableOpacity style={styles.clearButton} onPress={handleClearSearch}>
-                <XIcon size={16} weight="bold" color={colors.text.primary} />
+                <X size={16} weight="bold" color={colors.text.primary} />
               </TouchableOpacity>
             )}
           </View>

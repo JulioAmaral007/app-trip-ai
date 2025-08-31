@@ -33,9 +33,9 @@ export default function Onboarding() {
   }, [fontsLoaded, router])
 
   return (
-      <LinearGradient
-        colors={colors.gradients.secondary as [string, string]}
-        style={styles.container}>
+    <LinearGradient
+      colors={colors.gradients.secondary as [string, string]}
+      style={styles.container}>
       <Image
         style={styles.logo}
         contentFit="contain"

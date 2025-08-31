@@ -17,11 +17,11 @@ interface CategoriesProps {
   showHeader?: boolean
 }
 
-export function Categories({ 
-  categories, 
-  onCategoryPress, 
-  selectedCategory, 
-  showHeader = true 
+export function Categories({
+  categories,
+  onCategoryPress,
+  selectedCategory,
+  showHeader = true,
 }: CategoriesProps) {
   const defaultCategories = [
     {
@@ -86,25 +86,17 @@ export function Categories({
         {categoriesData.map((cat, index) => {
           const isSelected = selectedCategory === cat.id
           return (
-            <TouchableOpacity 
-              key={index} 
-              style={[
-                styles.categoryItem,
-                isSelected && styles.selectedCategoryItem
-              ]}
-              onPress={() => onCategoryPress?.(cat)}
-            >
-              <View style={[
-                styles.categoryIcon,
-                isSelected && styles.selectedCategoryIcon
-              ]}>
+            <TouchableOpacity
+              key={index}
+              style={[styles.categoryItem, isSelected && styles.selectedCategoryItem]}
+              onPress={() => onCategoryPress?.(cat)}>
+              <View style={[styles.categoryIcon, isSelected && styles.selectedCategoryIcon]}>
                 <Typo size={24}>{cat.icon}</Typo>
               </View>
-              <Typo 
-                size={12} 
+              <Typo
+                size={12}
                 fontFamily={font.medium}
-                color={isSelected ? colors.text.primary : colors.text.secondary}
-              >
+                color={isSelected ? colors.text.primary : colors.text.secondary}>
                 {cat.title}
               </Typo>
             </TouchableOpacity>

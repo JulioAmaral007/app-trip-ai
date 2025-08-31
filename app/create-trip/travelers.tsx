@@ -13,7 +13,7 @@ import { StyleSheet, View } from 'react-native'
 export default function TravelersScreen() {
   const { tripData, setTravelerType } = use(TripContext)
   const router = useRouter()
-  
+
   const travelerOptions = [
     {
       id: 'solo' as const,
@@ -50,7 +50,9 @@ export default function TravelersScreen() {
           {travelerOptions.map((option) => (
             <Button
               key={option.id}
-              style={[styles.option, tripData.travelerType === option.id && styles.selectedOption] as any}
+              style={
+                [styles.option, tripData.travelerType === option.id && styles.selectedOption] as any
+              }
               onPress={() => setTravelerType(option.id)}>
               <View style={styles.radioContainer}>
                 <View style={{ marginRight: 16 }}>
@@ -64,7 +66,9 @@ export default function TravelersScreen() {
                     size={16}
                     fontFamily={font.regular}
                     color={
-                      tripData.travelerType === option.id ? colors.text.primary : colors.text.secondary
+                      tripData.travelerType === option.id
+                        ? colors.text.primary
+                        : colors.text.secondary
                     }>
                     {option.description}
                   </Typo>

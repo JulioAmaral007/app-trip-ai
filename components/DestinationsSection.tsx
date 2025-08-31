@@ -77,8 +77,8 @@ export function DestinationsSection({
           ))}
         </ScrollView>
       ) : (
-                  <View style={styles.emptyState}>
-            <Island size={48} color={colors.text.secondary} style={styles.emptyIcon} />
+        <View style={styles.emptyState}>
+          <Island size={48} color={colors.text.secondary} style={styles.emptyIcon} />
           <Typo style={styles.emptyTitle}>Nenhum destino encontrado</Typo>
           <Typo style={styles.emptySubtitle}>
             Ainda não temos destinos para a categoria "{categoryName}".

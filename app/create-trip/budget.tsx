@@ -136,7 +136,12 @@ export default function BudgetScreen() {
           {spendingOptions.map((option) => (
             <Button
               key={option.id}
-              style={[styles.option, tripData.spendingHabit === option.id && styles.selectedOption] as any}
+              style={
+                [
+                  styles.option,
+                  tripData.spendingHabit === option.id && styles.selectedOption,
+                ] as any
+              }
               onPress={() => setSpendingHabit(option.id)}>
               <View style={styles.radioContainer}>
                 <View style={{ marginRight: 16 }}>
@@ -150,7 +155,9 @@ export default function BudgetScreen() {
                     size={16}
                     fontFamily={font.regular}
                     color={
-                      tripData.spendingHabit === option.id ? colors.text.primary : colors.text.secondary
+                      tripData.spendingHabit === option.id
+                        ? colors.text.primary
+                        : colors.text.secondary
                     }>
                     {option.description}
                   </Typo>

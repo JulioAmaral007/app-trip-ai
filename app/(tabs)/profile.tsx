@@ -61,8 +61,9 @@ export default function ProfileScreen() {
 
   return (
     <ScreenWrapper>
+      <Header title="Perfil" />
+
       <View style={styles.container}>
-        <Header title="Perfil" style={{ marginVertical: 10 }} />
         <View style={styles.userInfo}>
           <View style={styles.avatarContainer}>
             <Image
@@ -124,8 +125,7 @@ export default function ProfileScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
   },
   userInfo: {
     marginTop: 30,

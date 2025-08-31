@@ -127,9 +127,6 @@ export default function ReviewScreen() {
                 </Typo>
               </View>
             </View>
-            <TouchableOpacity style={styles.editButton}>
-              <Typo size={16}>✏️</Typo>
-            </TouchableOpacity>
           </View>
 
           <View style={styles.reviewItem}>
@@ -144,9 +141,6 @@ export default function ReviewScreen() {
                 </Typo>
               </View>
             </View>
-            <TouchableOpacity style={styles.editButton}>
-              <Typo size={16}>✏️</Typo>
-            </TouchableOpacity>
           </View>
 
           <View style={styles.reviewItem}>
@@ -161,9 +155,6 @@ export default function ReviewScreen() {
                 </Typo>
               </View>
             </View>
-            <TouchableOpacity style={styles.editButton}>
-              <Typo size={16}>✏️</Typo>
-            </TouchableOpacity>
           </View>
 
           <View style={styles.reviewItem}>
@@ -178,9 +169,6 @@ export default function ReviewScreen() {
                 </Typo>
               </View>
             </View>
-            <TouchableOpacity style={styles.editButton}>
-              <Typo size={16}>✏️</Typo>
-            </TouchableOpacity>
           </View>
         </View>
 
@@ -245,9 +233,6 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 4,
     marginLeft: 16,
-  },
-  editButton: {
-    padding: 8,
   },
   interestsSection: {
     marginBottom: 40,

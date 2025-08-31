@@ -10,6 +10,14 @@ export default function AppLayout() {
           headerShown: false,
         }}
       />
+
+      <Tabs.Screen
+        name="destinations"
+        options={{
+          headerShown: false,
+        }}
+      />
+
       <Tabs.Screen
         name="profile"
         options={{

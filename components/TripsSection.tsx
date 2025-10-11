@@ -1,15 +1,14 @@
 import { TripCard } from '@/components/TripCard'
 import { Typo } from '@/components/Typo'
 import { colors, font } from '@/constants/theme'
+import type { GeneratedTripType } from '@/types'
 import { StyleSheet, View } from 'react-native'
 
-interface Trip {
-  id?: string
+interface Trip extends Partial<GeneratedTripType> {
+  // Campos para compatibilidade com viagens mock
   name?: string
   country?: string
-  destination?: string
   image?: string
-  mainImage?: string
   isFavorite?: boolean
 }
 

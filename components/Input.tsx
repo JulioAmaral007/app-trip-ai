@@ -32,6 +32,8 @@ export const Input = forwardRef<TextInput, InputProps>((props, ref) => {
   )
 })
 
+Input.displayName = 'Input'
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',

@@ -98,11 +98,11 @@ export const colors = {
     ferry: '#00CED1',
     bus: '#FFB800',
   },
-};
+}
 
 export const font = {
   bold: 'Exo2_700Bold',
   medium: 'Exo2_500Medium',
   regular: 'Exo2_400Regular',
   semiBold: 'Exo2_600SemiBold',
-};
+}

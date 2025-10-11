@@ -81,7 +81,7 @@ export function DestinationsSection({
           <Island size={48} color={colors.text.secondary} style={styles.emptyIcon} />
           <Typo style={styles.emptyTitle}>Nenhum destino encontrado</Typo>
           <Typo style={styles.emptySubtitle}>
-            Ainda não temos destinos para a categoria "{categoryName}".
+            Ainda não temos destinos para a categoria &quot;{categoryName}&quot;.
             {'\n'}Que tal explorar outras opções?
           </Typo>
         </View>

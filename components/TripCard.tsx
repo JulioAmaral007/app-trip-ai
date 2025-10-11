@@ -1,14 +1,13 @@
 import { colors, font } from '@/constants/theme'
+import type { GeneratedTripType } from '@/types'
 import { HeartIcon } from 'phosphor-react-native'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
-interface Trip {
-  id?: string
+interface Trip extends Partial<GeneratedTripType> {
+  // Campos para compatibilidade com viagens mock
   name?: string
   country?: string
-  destination?: string
   image?: string
-  mainImage?: string
   isFavorite?: boolean
 }
 
@@ -29,7 +28,8 @@ export function TripCard({ trip, index, onPress, onToggleFavorite }: TripCardPro
           uri:
             trip.image ||
             trip.mainImage ||
-            'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400',
+            // Usar uma imagem relacionada ao destino se possível
+            `https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&q=80`,
         }}
         style={styles.tripImage}
         resizeMode="cover"
@@ -37,8 +37,12 @@ export function TripCard({ trip, index, onPress, onToggleFavorite }: TripCardPro
 
       {/* Overlay com informações */}
       <View style={styles.tripOverlay}>
-        <Text style={styles.tripName}>{trip.name || trip.destination?.split(',')[0]}</Text>
-        <Text style={styles.tripCountry}>{trip.country || trip.destination?.split(',')[1]}</Text>
+        <Text style={styles.tripName}>
+          {trip.name || trip.tripName || trip.destination?.split(',')[0]}
+        </Text>
+        <Text style={styles.tripCountry}>
+          {trip.country || trip.destination?.split(',')[1] || trip.destination}
+        </Text>
       </View>
 
       {/* Botão de favorito */}

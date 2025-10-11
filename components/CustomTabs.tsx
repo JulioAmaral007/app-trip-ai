@@ -2,7 +2,7 @@ import { colors } from '@/constants/theme'
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import * as Icons from 'phosphor-react-native'
 import { type ReactNode } from 'react'
-import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 
 export function CustomTabs({ state, descriptors, navigation }: BottomTabBarProps) {
   const tabbarIcons: { [key: string]: (isFocused: boolean) => ReactNode } = {
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   tabbar: {
     flexDirection: 'row',
     width: '100%',
-    height: Platform.OS === 'ios' ? 73 : 55,
+    height: 60,
     backgroundColor: colors.background.primary,
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -76,8 +76,8 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
   },
   tabbarItem: {
-    marginBottom: Platform.OS === 'ios' ? 10 : 5,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 5,
   },
 })

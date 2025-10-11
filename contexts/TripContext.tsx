@@ -44,6 +44,9 @@ interface TripContextType {
   // Resposta da IA
   aiResponse: any
 
+  // Viagem selecionada para visualização
+  selectedTrip: any
+
   // Ações para atualizar os dados
   setTravelerType: (type: TravelerType) => void
   setTravelDates: (startDate: DateData, endDate: DateData) => void
@@ -55,6 +58,7 @@ interface TripContextType {
   setTripName: (name: string) => void
   setDestination: (destination: string) => void
   setAiResponse: (response: any) => void
+  setSelectedTrip: (trip: any) => void
 
   // Utilitários
   resetTripData: () => void
@@ -75,6 +79,7 @@ const initialTripData: TripData = {
 export const TripContext = createContext<TripContextType>({
   tripData: initialTripData,
   aiResponse: null,
+  selectedTrip: null,
   setTravelerType: () => {},
   setTravelDates: () => {},
   setBudget: () => {},
@@ -85,6 +90,7 @@ export const TripContext = createContext<TripContextType>({
   setTripName: () => {},
   setDestination: () => {},
   setAiResponse: () => {},
+  setSelectedTrip: () => {},
   resetTripData: () => {},
   isTripDataComplete: () => false,
 })
@@ -92,6 +98,7 @@ export const TripContext = createContext<TripContextType>({
 export function TripProvider({ children }: { children: ReactNode }) {
   const [tripData, setTripData] = useState<TripData>(initialTripData)
   const [aiResponse, setAiResponse] = useState<any>(null)
+  const [selectedTrip, setSelectedTrip] = useState<any>(null)
 
   const setTravelerType = (type: TravelerType) => {
     setTripData((prev) => ({ ...prev, travelerType: type }))
@@ -143,6 +150,7 @@ export function TripProvider({ children }: { children: ReactNode }) {
   const resetTripData = () => {
     setTripData(initialTripData)
     setAiResponse(null)
+    setSelectedTrip(null)
   }
 
   const isTripDataComplete = () => {
@@ -163,6 +171,7 @@ export function TripProvider({ children }: { children: ReactNode }) {
       value={{
         tripData,
         aiResponse,
+        selectedTrip,
         setTravelerType,
         setTravelDates,
         setBudget,
@@ -173,6 +182,7 @@ export function TripProvider({ children }: { children: ReactNode }) {
         setTripName,
         setDestination,
         setAiResponse: updateAiResponse,
+        setSelectedTrip,
         resetTripData,
         isTripDataComplete,
       }}>

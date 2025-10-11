@@ -1,7 +1,9 @@
 import { useRouter } from 'expo-router'
 import { useContext, useEffect, useState } from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { AuthContext } from '../../contexts/AuthContext'
 import { TripContext } from '../../contexts/TripContext'
+import { saveGeneratedTrip } from '../../services/tripService'
 import { generateTripWithAI } from '../../utils/aiService'
 
 export default function GeneratingScreen() {
@@ -9,6 +11,7 @@ export default function GeneratingScreen() {
   const [status, setStatus] = useState('Iniciando...')
   const router = useRouter()
   const { tripData, setAiResponse } = useContext(TripContext)
+  const { user } = useContext(AuthContext)
 
   useEffect(() => {
     const generateTrip = async () => {
@@ -31,14 +34,32 @@ export default function GeneratingScreen() {
 
         if (result.success) {
           setAiResponse(result.data)
-          setStatus('Finalizando...')
-          setProgress(100)
+          setStatus('Salvando viagem...')
+          setProgress(90)
 
-          // Aguardar um pouco para mostrar o progresso completo
-          setTimeout(() => {
-            // Navegar para a próxima tela com os dados da IA salvos
-            router.replace('/(tabs)')
-          }, 1000)
+          // Verificar se o usuário está logado
+          if (!user?.uid) {
+            Alert.alert('Erro', 'Usuário não está logado')
+            router.back()
+            return
+          }
+
+          // Salvar a viagem no banco de dados
+          const saveResult = await saveGeneratedTrip(result.data, tripData, user.uid)
+
+          if (saveResult.success) {
+            setStatus('Finalizando...')
+            setProgress(100)
+
+            // Aguardar um pouco para mostrar o progresso completo
+            setTimeout(() => {
+              // Navegar para a próxima tela com os dados da IA salvos
+              router.replace('/(tabs)')
+            }, 1000)
+          } else {
+            Alert.alert('Erro', saveResult.msg || 'Erro ao salvar viagem')
+            router.back()
+          }
         } else {
           Alert.alert('Erro', result.error || 'Erro ao gerar roteiro')
           router.back()

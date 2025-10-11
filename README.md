@@ -87,10 +87,10 @@
    ```bash
    # Para iOS
    npm run ios
-   
+
    # Para Android
    npm run android
-   
+
    # Para Web
    npm run web
    ```
@@ -173,7 +173,7 @@ npm run lint       # Executa o linter
 
 ## 👥 Autores
 
-- **Júlio Cezar** - *Desenvolvimento inicial* - [JulioAmaral007](https://github.com/Julioamaral007)
+- **Júlio Cezar** - _Desenvolvimento inicial_ - [JulioAmaral007](https://github.com/Julioamaral007)
 
 ## 🙏 Agradecimentos
 

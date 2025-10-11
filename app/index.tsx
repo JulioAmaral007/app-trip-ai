@@ -8,14 +8,14 @@ import { use, useEffect } from 'react'
 import { Image, ImageBackground, StyleSheet, View } from 'react-native'
 
 export default function WelcomeScreen() {
-  const { isLoggedIn } = use(AuthContext)
+  const { user } = use(AuthContext)
   const router = useRouter()
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (user) {
       router.push('/(tabs)')
     }
-  }, [isLoggedIn])
+  }, [user])
 
   return (
     <ImageBackground

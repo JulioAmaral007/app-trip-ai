@@ -2,18 +2,20 @@ import { ConfirmationModal } from '@/components/ConfirmationModal'
 import { Header } from '@/components/Header'
 import { ScreenWrapper } from '@/components/ScreenWrapper'
 import { Typo } from '@/components/Typo'
+import { auth } from '@/config/firebase'
 import { colors, font } from '@/constants/theme'
 import { AuthContext } from '@/contexts/AuthContext'
 import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
+import { signOut } from 'firebase/auth'
 import * as Icons from 'phosphor-react-native'
 import { use, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import Animated, { FadeInDown } from 'react-native-reanimated'
 
 export default function ProfileScreen() {
+  const { user } = use(AuthContext)
   const router = useRouter()
-  const { logout } = use(AuthContext)
   const [showLogoutModal, setShowLogoutModal] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -45,11 +47,7 @@ export default function ProfileScreen() {
   ]
 
   const handleLogout = async () => {
-    setLoading(true)
-    // Simular processo de logout
-    await logout() // Desloga o usuário
-    setLoading(false)
-    setShowLogoutModal(false)
+    await signOut(auth)
   }
 
   const handlePress = async (option: any) => {
@@ -75,11 +73,13 @@ export default function ProfileScreen() {
           </View>
           <View style={styles.nameContainer}>
             <Typo size={24} fontFamily={font.bold} color={colors.text.primary}>
-              John Doe
+              {user?.name}
             </Typo>
-            <Typo size={15} fontFamily={font.medium} color={colors.text.secondary}>
-              john.doe@example.com
-            </Typo>
+            {user?.email && (
+              <Typo size={15} fontFamily={font.medium} color={colors.text.secondary}>
+                {user?.email}
+              </Typo>
+            )}
           </View>
         </View>
         <View style={styles.accountOptions}>

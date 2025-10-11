@@ -1,26 +1,30 @@
+import { colors } from '@/constants/theme'
 import { AuthContext, AuthProvider } from '@/contexts/AuthContext'
 import { TripProvider } from '@/contexts/TripContext'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { use } from 'react'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 function RootLayoutContent() {
-  const { isLoggedIn } = use(AuthContext)
+  const authContext = use(AuthContext)
+  const user = authContext?.user
 
-  console.log(isLoggedIn)
+  console.log(user)
 
   return (
     <>
-      <StatusBar style="light" />
+      <StatusBar style="light" backgroundColor={colors.background.primary} translucent={false} />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="onboarding" />
         <Stack.Screen name="index" />
 
-        <Stack.Protected guard={!isLoggedIn}>
+        <Stack.Protected guard={!user}>
           <Stack.Screen name="(auth)/index" />
+          <Stack.Screen name="(auth)/login" />
         </Stack.Protected>
 
-        <Stack.Protected guard={isLoggedIn}>
+        <Stack.Protected guard={!!user}>
           <Stack.Screen name="(tabs)" />
           {/* <Stack.Screen name="travelers" />
           <Stack.Screen name="dates" />
@@ -37,10 +41,12 @@ function RootLayoutContent() {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <TripProvider>
-        <RootLayoutContent />
-      </TripProvider>
-    </AuthProvider>
+    <SafeAreaProvider>
+      <AuthProvider>
+        <TripProvider>
+          <RootLayoutContent />
+        </TripProvider>
+      </AuthProvider>
+    </SafeAreaProvider>
   )
 }

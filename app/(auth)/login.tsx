@@ -19,24 +19,24 @@ import {
   StyleSheet,
   View,
 } from 'react-native'
+
 const { height } = Dimensions.get('window')
 
-export default function RegisterScreen() {
+export default function LoginScreen() {
   const router = useRouter()
-  const nameRef = useRef('')
   const emailRef = useRef('')
   const passwordRef = useRef('')
-  const { register: registerUser } = useAuth()
+  const { login: loginUser } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async () => {
-    if (!nameRef.current || !emailRef.current || !passwordRef.current) {
+    if (!emailRef.current || !passwordRef.current) {
       Alert.alert('Preencha todos os campos')
       return
     }
 
     setIsLoading(true)
-    const res = await registerUser(nameRef.current, emailRef.current, passwordRef.current)
+    const res = await loginUser(emailRef.current, passwordRef.current)
     setIsLoading(false)
 
     if (!res.success) {
@@ -70,23 +70,18 @@ export default function RegisterScreen() {
 
             <View style={styles.welcomeContainer}>
               <Typo size={32} fontFamily={font.bold} color={colors.text.primary}>
-                Vamos começar!
+                Bem-vindo de volta!
               </Typo>
               <Typo
                 size={16}
                 fontFamily={font.regular}
                 color={colors.text.secondary}
                 style={styles.subtitle}>
-                Crie sua conta e comece a planejar suas viagens dos sonhos
+                Entre na sua conta para continuar explorando o mundo
               </Typo>
             </View>
 
             <View style={styles.form}>
-              <Input
-                placeholder="Digite seu nome completo"
-                onChangeText={(value: string) => (nameRef.current = value)}
-                icon={<Icons.User size={24} color={colors.text.secondary} weight="regular" />}
-              />
               <Input
                 placeholder="Digite seu email"
                 onChangeText={(value: string) => (emailRef.current = value)}
@@ -99,14 +94,24 @@ export default function RegisterScreen() {
                 icon={<Icons.Lock size={24} color={colors.text.secondary} weight="regular" />}
               />
 
-              <Button loading={isLoading} onPress={handleSubmit} style={styles.registerButton}>
+              <Pressable style={styles.forgotPasswordContainer}>
+                <Typo
+                  size={14}
+                  fontFamily={font.medium}
+                  color={colors.primary.orange}
+                  style={styles.forgotPassword}>
+                  Esqueceu sua senha?
+                </Typo>
+              </Pressable>
+
+              <Button loading={isLoading} onPress={handleSubmit} style={styles.loginButton}>
                 <LinearGradient
                   colors={colors.gradients.primary as [string, string]}
                   style={styles.buttonGradient}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 0 }}>
                   <Typo size={18} fontFamily={font.semiBold} color={colors.text.primary}>
-                    Criar conta
+                    Entrar
                   </Typo>
                 </LinearGradient>
               </Button>
@@ -114,11 +119,11 @@ export default function RegisterScreen() {
 
             <View style={styles.footer}>
               <Typo size={15} fontFamily={font.regular} color={colors.text.secondary}>
-                Já possui uma conta?
+                Ainda não possui uma conta?
               </Typo>
-              <Pressable onPress={() => router.navigate('/(auth)/login')}>
+              <Pressable onPress={() => router.push('/(auth)')}>
                 <Typo size={15} fontFamily={font.semiBold} color={colors.primary.orange}>
-                  Faça login
+                  Cadastre-se
                 </Typo>
               </Pressable>
             </View>
@@ -149,7 +154,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 24,
     paddingBottom: 30,
-    paddingTop: 20,
+    paddingTop: Platform.OS === 'ios' ? height * 0.08 : 50,
   },
   logoContainer: {
     alignItems: 'center',
@@ -173,8 +178,15 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 20,
   },
-  registerButton: {
-    marginTop: 20,
+  forgotPasswordContainer: {
+    alignSelf: 'flex-end',
+    marginTop: -10,
+  },
+  forgotPassword: {
+    textAlign: 'right',
+  },
+  loginButton: {
+    marginTop: 10,
   },
   buttonGradient: {
     flex: 1,

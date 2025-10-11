@@ -6,8 +6,12 @@ import { ScreenWrapper } from '@/components/ScreenWrapper'
 import { TripsSection } from '@/components/TripsSection'
 import { Typo } from '@/components/Typo'
 import { colors, font } from '@/constants/theme'
+import { AuthContext } from '@/contexts/AuthContext'
 import { TripContext } from '@/contexts/TripContext'
+import { useFetchData } from '@/hooks/useFetchData'
+import type { GeneratedTripType } from '@/types'
 import { useRouter } from 'expo-router'
+import { where } from 'firebase/firestore'
 import {
   Buildings,
   ForkKnife,
@@ -21,33 +25,23 @@ import {
   Umbrella,
   X,
 } from 'phosphor-react-native'
-import { use, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 export default function HomeScreen() {
   const router = useRouter()
-  const { aiResponse, tripData, setDestination } = use(TripContext)
+  const { aiResponse, tripData, setDestination, setSelectedTrip } = useContext(TripContext)
+  const authContext = useContext(AuthContext)
+  const user = authContext?.user
   const [searchQuery, setSearchQuery] = useState('')
   const [isSearchFocused, setIsSearchFocused] = useState(false)
   const [activeCategory, setActiveCategory] = useState('2') // Food & Drinks ativo por padrão
 
-  // Dados de exemplo para demonstração (quando não há viagens geradas)
-  const mockTrips = [
-    {
-      id: '1',
-      name: 'Barcelona',
-      country: 'Espanha',
-      image: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=400',
-      isFavorite: false,
-    },
-    {
-      id: '2',
-      name: 'Tóquio',
-      country: 'Japão',
-      image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400',
-      isFavorite: true,
-    },
-  ]
+  // Buscar viagens do usuário logado usando useFetchData
+  const { data: userTrips, loading: tripsLoading } = useFetchData<GeneratedTripType>(
+    'trips',
+    user?.uid ? [where('uid', '==', user.uid)] : []
+  )
 
   const categories = [
     { id: '1', name: 'Destaques', icon: Star },
@@ -264,7 +258,8 @@ export default function HomeScreen() {
     },
   ]
 
-  const tripsToShow = aiResponse ? [aiResponse] : mockTrips
+  // Usar as viagens do banco se existirem, senão usar aiResponse se disponível
+  const tripsToShow = userTrips.length > 0 ? userTrips : aiResponse ? [aiResponse] : []
 
   // Filtrar destinos baseado na pesquisa
   const filteredDestinations = globalDestinations.filter(
@@ -274,10 +269,18 @@ export default function HomeScreen() {
   )
 
   const handleTripPress = (trip: any) => {
-    if (aiResponse) {
-      router.push('/trip-details')
-    } else {
-      // Para viagens mock, você pode implementar navegação específica
+    // Se for uma viagem do banco (tem id), usar os dados completos da viagem
+    if (trip.id && userTrips.length > 0) {
+      // Encontrar a viagem completa nos dados do banco
+      const fullTrip = userTrips.find((t) => t.id === trip.id)
+      if (fullTrip) {
+        // Salvar a viagem completa no context para ser usado na tela de detalhes
+        setSelectedTrip(fullTrip)
+        router.push('/trip-details')
+      }
+    } else if (aiResponse) {
+      // Para viagens da IA, usar o aiResponse
+      setSelectedTrip(aiResponse)
       router.push('/trip-details')
     }
   }

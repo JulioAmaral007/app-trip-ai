@@ -6,11 +6,18 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 export default function AppLayout() {
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: colors.background.primary }}
+      style={{ flex: 1, backgroundColor: colors.black }}
       edges={['bottom']}>
       <Tabs tabBar={CustomTabs}>
         <Tabs.Screen
           name="index"
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Tabs.Screen
+          name="explore"
           options={{
             headerShown: false,
           }}

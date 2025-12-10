@@ -2,113 +2,165 @@ import { ConfirmationModal } from '@/components/ConfirmationModal'
 import { Header } from '@/components/Header'
 import { ScreenWrapper } from '@/components/ScreenWrapper'
 import { Typo } from '@/components/Typo'
-import { auth } from '@/config/firebase'
 import { colors, font } from '@/constants/theme'
-import { AuthContext } from '@/contexts/AuthContext'
+import { useAuth } from '@/contexts/AuthContext'
 import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
-import { signOut } from 'firebase/auth'
 import * as Icons from 'phosphor-react-native'
-import { use, useState } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import Animated, { FadeInDown } from 'react-native-reanimated'
+import { useMemo, useState } from 'react'
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
+
+interface FavoriteDestination {
+  id: string
+  name: string
+  country: string
+  image: string
+}
 
 export default function ProfileScreen() {
-  const { user } = use(AuthContext)
+  const { user, signOut, session } = useAuth()
   const router = useRouter()
   const [showLogoutModal, setShowLogoutModal] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const accountOptions = [
+  // Dados de favoritos mockados (baseados na imagem)
+  const favoriteDestinations: FavoriteDestination[] = [
     {
-      title: 'Edit profile',
-      icon: <Icons.User size={26} color={colors.text.primary} weight="fill" />,
-      bgColor: '#6366f1',
-      routeName: '/(modals)/profileModal',
+      id: '1',
+      name: 'Barcelona',
+      country: 'Espanha',
+      image: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=400',
     },
     {
-      title: 'Settings',
-      icon: <Icons.GearSix size={26} color={colors.text.primary} weight="fill" />,
-      bgColor: '#059669',
-      // routeName: '/(modals)/settings',
-    },
-    {
-      title: 'Privacy policy',
-      icon: <Icons.Lock size={26} color={colors.text.primary} weight="fill" />,
-      bgColor: colors.background.secondary,
-      // routeName: '/(modals)/profileModal',
-    },
-    {
-      title: 'Log Out',
-      icon: <Icons.Power size={26} color={colors.text.primary} weight="fill" />,
-      bgColor: '#e11d48',
-      // routeName: '/(modals)/profileModal',
+      id: '2',
+      name: 'Bali',
+      country: 'Indonésia',
+      image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=400',
     },
   ]
 
-  const handleLogout = async () => {
-    await signOut(auth)
-  }
-
-  const handlePress = async (option: any) => {
-    if (option.title === 'Log Out') {
-      setShowLogoutModal(true)
+  // Formatar data de criação do usuário
+  const memberSince = useMemo(() => {
+    if (session?.user?.created_at) {
+      const date = new Date(session.user.created_at)
+      const months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ]
+      return `${months[date.getMonth()]} ${date.getFullYear()}`
     }
-    if (option.routeName) router.push(option.routeName)
+    return 'May 2025'
+  }, [session])
+
+  const handleLogout = async () => {
+    setLoading(true)
+    await signOut()
+    setLoading(false)
+    setShowLogoutModal(false)
   }
 
   return (
     <ScreenWrapper>
       <Header title="Perfil" />
 
-      <View style={styles.container}>
-        <View style={styles.userInfo}>
-          <View style={styles.avatarContainer}>
-            <Image
-              source={require('@/assets/images/icon.png')}
-              style={styles.avatar}
-              contentFit="cover"
-              transition={100}
-            />
-          </View>
-          <View style={styles.nameContainer}>
-            <Typo size={24} fontFamily={font.bold} color={colors.text.primary}>
-              {user?.name}
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          {/* Seção Informações da Conta */}
+          <View style={styles.section}>
+            <Typo size={18} fontFamily={font.bold} color={colors.white} style={styles.sectionTitle}>
+              Informações da Conta.
             </Typo>
-            {user?.email && (
-              <Typo size={15} fontFamily={font.medium} color={colors.text.secondary}>
-                {user?.email}
+
+            <View style={styles.infoRow}>
+              <Typo size={15} fontFamily={font.medium} color={colors.gray2}>
+                Nome:
               </Typo>
-            )}
+              <Typo size={15} fontFamily={font.medium} color={colors.white}>
+                {user?.name || 'Felipe Oliveira'}
+              </Typo>
+            </View>
+
+            <View style={styles.infoRow}>
+              <Typo size={15} fontFamily={font.medium} color={colors.gray2}>
+                E-mail:
+              </Typo>
+              <Typo size={15} fontFamily={font.medium} color={colors.white}>
+                {user?.email || 'email@provider.com'}
+              </Typo>
+            </View>
+
+            <View style={styles.infoRow}>
+              <Typo size={15} fontFamily={font.medium} color={colors.gray2}>
+                Membro desde:
+              </Typo>
+              <Typo size={15} fontFamily={font.medium} color={colors.white}>
+                {memberSince}
+              </Typo>
+            </View>
           </View>
-        </View>
-        <View style={styles.accountOptions}>
-          {accountOptions.map((option, index) => {
-            return (
-              <Animated.View
-                key={index.toString()}
-                entering={FadeInDown.delay(index * 50)
-                  .springify()
-                  .damping(14)}
-                style={styles.listItem}>
-                <TouchableOpacity
-                  style={styles.flexRow}
-                  onPress={() => {
-                    handlePress(option)
-                  }}>
-                  <View style={[styles.listIcon, { backgroundColor: option?.bgColor }]}>
-                    {option.icon && option.icon}
-                  </View>
-                  <Typo size={16} style={{ flex: 1 }} fontFamily={font.medium}>
-                    {option.title}
+
+          {/* Botões de Ação */}
+          <View style={styles.actionButtons}>
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => router.push('/(modals)/profileModal')}>
+              <Typo size={15} fontFamily={font.medium} color={colors.white}>
+                Editar perfil
+              </Typo>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.actionButton}>
+              <Typo size={15} fontFamily={font.medium} color={colors.white}>
+                Alterar Senha
+              </Typo>
+            </TouchableOpacity>
+          </View>
+
+          {/* Seção Favoritos */}
+          <View style={styles.section}>
+            <Typo size={18} fontFamily={font.bold} color={colors.white} style={styles.sectionTitle}>
+              Favoritos
+            </Typo>
+
+            {favoriteDestinations.map((destination) => (
+              <TouchableOpacity key={destination.id} style={styles.favoriteCard}>
+                <Image
+                  source={{ uri: destination.image }}
+                  style={styles.favoriteImage}
+                  contentFit="cover"
+                />
+                <View style={styles.favoriteContent}>
+                  <Typo size={16} fontFamily={font.bold} color={colors.white}>
+                    {destination.name}
                   </Typo>
-                  <Icons.CaretRight size={20} color={colors.text.primary} weight="bold" />
-                </TouchableOpacity>
-              </Animated.View>
-            )
-          })}
+                  <Typo size={14} fontFamily={font.medium} color={colors.gray2}>
+                    {destination.country}
+                  </Typo>
+                </View>
+                <Icons.Heart size={24} color={colors.primary} weight="fill" />
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {/* Botão de Logout */}
+          <TouchableOpacity style={styles.logoutButton} onPress={() => setShowLogoutModal(true)}>
+            <Icons.ArrowRight size={20} color={colors.primary} weight="bold" />
+            <Typo size={16} fontFamily={font.medium} color={colors.primary}>
+              Logout
+            </Typo>
+          </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
 
       <ConfirmationModal
         visible={showLogoutModal}
@@ -124,60 +176,64 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+  },
   container: {
     paddingHorizontal: 24,
+    paddingBottom: 100,
   },
-  userInfo: {
+  section: {
     marginTop: 30,
+  },
+  sectionTitle: {
+    marginBottom: 20,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 15,
+    marginBottom: 16,
   },
-  avatarContainer: {
-    position: 'relative',
-    alignSelf: 'center',
+  actionButtons: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 24,
+    marginBottom: 30,
   },
-  avatar: {
-    height: 135,
-    width: 135,
-    borderRadius: 200,
-    backgroundColor: colors.background.secondary,
-    alignSelf: 'center',
-  },
-  editIcon: {
-    position: 'absolute',
-    bottom: 5,
-    right: 8,
-    borderRadius: 50,
-    backgroundColor: colors.background.secondary,
-    shadowColor: colors.text.primary,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.25,
-    shadowRadius: 10,
-    elevation: 4,
-    padding: 5,
-  },
-  nameContainer: {
-    gap: 4,
-    alignItems: 'center',
-  },
-  listIcon: {
-    height: 44,
-    width: 44,
-    backgroundColor: colors.background.secondary,
+  actionButton: {
+    flex: 1,
+    backgroundColor: colors.gray1,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 15,
-    borderCurve: 'continuous',
   },
-  listItem: {
-    marginBottom: 17,
-  },
-  accountOptions: {
-    marginTop: 35,
-  },
-  flexRow: {
+  favoriteCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    backgroundColor: colors.gray1,
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 12,
+    gap: 12,
+  },
+  favoriteImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 8,
+    backgroundColor: colors.gray2,
+  },
+  favoriteContent: {
+    flex: 1,
+    gap: 4,
+  },
+  logoutButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 30,
+    gap: 8,
   },
 })

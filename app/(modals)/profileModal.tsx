@@ -5,20 +5,18 @@ import { Input } from '@/components/Input'
 import { ModalWrapper } from '@/components/ModalWrapper'
 import { Typo } from '@/components/Typo'
 import { colors, font } from '@/constants/theme'
-import { AuthContext } from '@/contexts/AuthContext'
+import { useAuth } from '@/contexts/AuthContext'
 import { getProfileImage } from '@/services/imageService'
+import type { UserDataType } from '@/services/types'
 import { updateUser } from '@/services/userService'
-import type { UserDataType } from '@/types'
 import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import { PencilSimple } from 'phosphor-react-native'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
 
 export default function ProfileModal() {
-  const authContext = useContext(AuthContext)
-  const user = authContext?.user
-  const updateUserData = authContext?.updateUserData
+  const { user } = useAuth()
   const router = useRouter()
   const [userData, setUserData] = useState<UserDataType>({
     name: '',
@@ -53,17 +51,16 @@ export default function ProfileModal() {
       return
     }
 
-    if (!user?.uid || !updateUserData) {
+    if (!user?.id) {
       Alert.alert('Erro', 'Usuário não encontrado')
       return
     }
 
     setLoading(true)
-    const res = await updateUser(user.uid, userData)
+    const res = await updateUser(user.id, userData)
     setLoading(false)
 
     if (res.success) {
-      await updateUserData(user.uid)
       router.back()
     } else {
       Alert.alert('Erro', res.msg || 'Erro ao atualizar perfil')
@@ -85,7 +82,7 @@ export default function ProfileModal() {
             />
 
             <TouchableOpacity onPress={onPickImage} style={styles.editIcon}>
-              <PencilSimple size={20} color={colors.text.inverse} weight="bold" />
+              <PencilSimple size={20} color={colors.white} weight="bold" />
             </TouchableOpacity>
           </View>
 
@@ -93,7 +90,7 @@ export default function ProfileModal() {
             <Typo
               size={16}
               fontFamily={font.semiBold}
-              color={colors.text.primary}
+              color={colors.white}
               style={{ marginBottom: 8 }}>
               Nome
             </Typo>
@@ -109,7 +106,7 @@ export default function ProfileModal() {
 
       <View style={styles.footer}>
         <Button onPress={onSubmit} loading={loading} style={styles.updateButton}>
-          <Typo color={colors.text.inverse} fontFamily={font.bold} size={16}>
+          <Typo color={colors.white} fontFamily={font.bold} size={16}>
             Atualizar Perfil
           </Typo>
         </Button>
@@ -130,7 +127,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 20,
     paddingTop: 20,
-    borderTopColor: colors.border.primary,
+    borderTopColor: colors.gray1,
     marginBottom: 10,
     borderTopWidth: 1,
   },
@@ -145,20 +142,20 @@ const styles = StyleSheet.create({
   },
   avatar: {
     alignSelf: 'center',
-    backgroundColor: colors.background.card,
+    backgroundColor: colors.gray1,
     height: 120,
     width: 120,
     borderRadius: 60,
     borderWidth: 2,
-    borderColor: colors.border.secondary,
+    borderColor: colors.gray1,
   },
   editIcon: {
     position: 'absolute',
     bottom: 0,
     right: 0,
     borderRadius: 20,
-    backgroundColor: colors.primary.orange,
-    shadowColor: colors.primary.orange,
+    backgroundColor: colors.primary,
+    shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -173,17 +170,17 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   input: {
-    backgroundColor: colors.background.input,
-    borderColor: colors.border.primary,
+    backgroundColor: colors.gray1,
+    borderColor: colors.gray1,
     borderWidth: 1,
     borderRadius: 12,
   },
   updateButton: {
     flex: 1,
-    backgroundColor: colors.primary.orange,
+    backgroundColor: colors.primary,
     borderRadius: 12,
     paddingVertical: 16,
-    shadowColor: colors.primary.orange,
+    shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,

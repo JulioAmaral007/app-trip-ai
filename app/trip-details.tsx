@@ -389,13 +389,13 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     paddingBottom: 20,
     borderBottomWidth: 1,
-    borderBottomColor: colors.neutral[300],
+    borderBottomColor: colors.gray1,
   },
 
   headerTitle: {
     fontSize: 20,
     fontFamily: 'outfit-medium',
-    color: colors.neutral[700],
+    color: colors.white,
   },
   content: {
     flex: 1,

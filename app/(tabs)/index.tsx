@@ -1,323 +1,119 @@
-import { CategoriesFilter } from '@/components/CategoriesFilter'
-import { DestinationsSection } from '@/components/DestinationsSection'
-import { Header } from '@/components/Header'
-import { Input } from '@/components/Input'
 import { ScreenWrapper } from '@/components/ScreenWrapper'
-import { TripsSection } from '@/components/TripsSection'
 import { Typo } from '@/components/Typo'
 import { colors, font } from '@/constants/theme'
-import { AuthContext } from '@/contexts/AuthContext'
 import { TripContext } from '@/contexts/TripContext'
-import { useFetchData } from '@/hooks/useFetchData'
-import type { GeneratedTripType } from '@/types'
+import { categories as dataCategories } from '@/data/categories'
+import { cities } from '@/data/cities'
+import { Image } from 'expo-image'
+import { LinearGradient } from 'expo-linear-gradient'
 import { useRouter } from 'expo-router'
-import { where } from 'firebase/firestore'
 import {
   Buildings,
+  Diamond,
   ForkKnife,
-  GraduationCap,
+  Heart,
   MagnifyingGlass,
   Mountains,
-  Smiley,
+  Scroll,
+  ShoppingCart,
   Star,
-  SwimmingPool,
-  Tent,
+  Target,
   Umbrella,
   X,
 } from 'phosphor-react-native'
-import { useContext, useState } from 'react'
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { useContext, useMemo, useState } from 'react'
+import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
 
 export default function HomeScreen() {
   const router = useRouter()
-  const { aiResponse, tripData, setDestination, setSelectedTrip } = useContext(TripContext)
-  const authContext = useContext(AuthContext)
-  const user = authContext?.user
+  const { setDestination } = useContext(TripContext)
   const [searchQuery, setSearchQuery] = useState('')
-  const [isSearchFocused, setIsSearchFocused] = useState(false)
-  const [activeCategory, setActiveCategory] = useState('2') // Food & Drinks ativo por padrão
+  const [favorites, setFavorites] = useState<Set<string>>(new Set())
+  const [activeCategory, setActiveCategory] = useState('star') // Destaques ativo por padrão
 
-  // Buscar viagens do usuário logado usando useFetchData
-  const { data: userTrips, loading: tripsLoading } = useFetchData<GeneratedTripType>(
-    'trips',
-    user?.uid ? [where('uid', '==', user.uid)] : []
-  )
+  // Mapeamento de ícones por código de categoria
+  const categoryIconMap: Record<string, any> = {
+    FAVORITE: Star,
+    URBAN: Buildings,
+    BEACH: Umbrella,
+    NATURE: Mountains,
+    CULTURE: Target,
+    SHOPPING: ShoppingCart,
+    HISTORY: Scroll,
+    ADVENTURE: Mountains,
+    LUXURY: Diamond,
+    GASTRONOMY: ForkKnife,
+  }
 
-  const categories = [
-    { id: '1', name: 'Destaques', icon: Star },
-    { id: '2', name: 'Food & Drinks', icon: ForkKnife },
-    { id: '3', name: 'Urban Areas', icon: Buildings },
-    { id: '4', name: 'Adventure', icon: Mountains },
-    { id: '5', name: 'Educational', icon: GraduationCap },
-    { id: '6', name: 'Beach', icon: Umbrella },
-    { id: '7', name: 'Pool', icon: SwimmingPool },
-    { id: '8', name: 'Relax', icon: Smiley },
-    { id: '9', name: 'Camp', icon: Tent },
-  ]
+  // Preparar todas as categorias para os filtros
+  const mainCategories = useMemo(() => {
+    return dataCategories.map((category) => ({
+      id: category.id,
+      name: category.name,
+      code: category.code,
+      icon: categoryIconMap[category.code] || Star,
+    }))
+  }, [])
 
-  // Lista de destinos globais para pesquisa
-  const globalDestinations = [
-    // Food & Drinks (categoria 2)
-    {
-      id: '1',
-      name: 'Lyon',
-      country: 'França',
-      image: 'https://images.unsplash.com/photo-1549144511-f099e773c147?w=400',
-      category: '2', // Food & Drinks
-      isFeatured: true,
-    },
-    {
-      id: '2',
-      name: 'Tóquio',
-      country: 'Japão',
-      image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400',
-      category: '2', // Food & Drinks
-      isFeatured: true,
-    },
-    {
-      id: '3',
-      name: 'Lima',
-      country: 'Peru',
-      image: 'https://images.unsplash.com/photo-1531968455001-5c5272a41129?w=400',
-      category: '2', // Food & Drinks
-      isFeatured: false,
-    },
+  // Converter cidades para destinos e filtrar por categoria
+  const getFilteredDestinations = () => {
+    let filtered = cities.map((city) => ({
+      id: city.id,
+      name: city.name,
+      country: city.country,
+      image: city.coverImage,
+      categories: city.categories.map((cat) => cat.code),
+    }))
 
-    // Urban Areas (categoria 3)
-    {
-      id: '4',
-      name: 'Barcelona',
-      country: 'Espanha',
-      image: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=400',
-      category: '3', // Urban Areas
-      isFeatured: true,
-    },
-    {
-      id: '5',
-      name: 'Nova York',
-      country: 'EUA',
-      image: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=400',
-      category: '3', // Urban Areas
-      isFeatured: true,
-    },
-    {
-      id: '6',
-      name: 'Londres',
-      country: 'Reino Unido',
-      image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400',
-      category: '3', // Urban Areas
-      isFeatured: false,
-    },
-    {
-      id: '7',
-      name: 'Paris',
-      country: 'França',
-      image: 'https://images.unsplash.com/photo-1502602898534-861c8d0bdcf4?w=400',
-      category: '3', // Urban Areas
-      isFeatured: true,
-    },
-
-    // Adventure (categoria 4)
-    {
-      id: '8',
-      name: 'Banff',
-      country: 'Canadá',
-      image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400',
-      category: '4', // Adventure
-      isFeatured: true,
-    },
-    {
-      id: '9',
-      name: 'Patagônia',
-      country: 'Argentina',
-      image: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=400',
-      category: '4', // Adventure
-      isFeatured: true,
-    },
-    {
-      id: '10',
-      name: 'Queenstown',
-      country: 'Nova Zelândia',
-      image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400',
-      category: '4', // Adventure
-      isFeatured: false,
-    },
-
-    // Educational (categoria 5)
-    {
-      id: '11',
-      name: 'Roma',
-      country: 'Itália',
-      image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400',
-      category: '5', // Educational
-      isFeatured: true,
-    },
-    {
-      id: '12',
-      name: 'Atenas',
-      country: 'Grécia',
-      image: 'https://images.unsplash.com/photo-1555993539-1732b0258235?w=400',
-      category: '5', // Educational
-      isFeatured: false,
-    },
-    {
-      id: '13',
-      name: 'Cairo',
-      country: 'Egito',
-      image: 'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400',
-      category: '5', // Educational
-      isFeatured: false,
-    },
-
-    // Beach (categoria 6)
-    {
-      id: '14',
-      name: 'Maldivas',
-      country: 'Maldivas',
-      image: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=400',
-      category: '6', // Beach
-      isFeatured: true,
-    },
-    {
-      id: '15',
-      name: 'Bali',
-      country: 'Indonésia',
-      image: 'https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?w=400',
-      category: '6', // Beach
-      isFeatured: true,
-    },
-    {
-      id: '16',
-      name: 'Cancún',
-      country: 'México',
-      image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400',
-      category: '6', // Beach
-      isFeatured: false,
-    },
-    {
-      id: '17',
-      name: 'Santorini',
-      country: 'Grécia',
-      image: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=400',
-      category: '6', // Beach
-      isFeatured: true,
-    },
-
-    // Pool (categoria 7)
-    {
-      id: '18',
-      name: 'Las Vegas',
-      country: 'EUA',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
-      category: '7', // Pool
-      isFeatured: false,
-    },
-    {
-      id: '19',
-      name: 'Dubai',
-      country: 'Emirados Árabes',
-      image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400',
-      category: '7', // Pool
-      isFeatured: true,
-    },
-
-    // Relax (categoria 8)
-    {
-      id: '20',
-      name: 'Tulum',
-      country: 'México',
-      image: 'https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=400',
-      category: '8', // Relax
-      isFeatured: true,
-    },
-    {
-      id: '21',
-      name: 'Ubud',
-      country: 'Indonésia',
-      image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=400',
-      category: '8', // Relax
-      isFeatured: false,
-    },
-
-    // Camp (categoria 9)
-    {
-      id: '22',
-      name: 'Yosemite',
-      country: 'EUA',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
-      category: '9', // Camp
-      isFeatured: true,
-    },
-    {
-      id: '23',
-      name: 'Torres del Paine',
-      country: 'Chile',
-      image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400',
-      category: '9', // Camp
-      isFeatured: false,
-    },
-  ]
-
-  // Usar as viagens do banco se existirem, senão usar aiResponse se disponível
-  const tripsToShow = userTrips.length > 0 ? userTrips : aiResponse ? [aiResponse] : []
-
-  // Filtrar destinos baseado na pesquisa
-  const filteredDestinations = globalDestinations.filter(
-    (destination) =>
-      destination.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      destination.country.toLowerCase().includes(searchQuery.toLowerCase())
-  )
-
-  const handleTripPress = (trip: any) => {
-    // Se for uma viagem do banco (tem id), usar os dados completos da viagem
-    if (trip.id && userTrips.length > 0) {
-      // Encontrar a viagem completa nos dados do banco
-      const fullTrip = userTrips.find((t) => t.id === trip.id)
-      if (fullTrip) {
-        // Salvar a viagem completa no context para ser usado na tela de detalhes
-        setSelectedTrip(fullTrip)
-        router.push('/trip-details')
+    // Filtrar por categoria ativa
+    if (activeCategory === 'star') {
+      // Destaques - mostrar todas as cidades (ou você pode filtrar por favoritos)
+      // Por enquanto, mostra todas
+    } else {
+      const categoryCode = dataCategories.find((cat) => cat.id === activeCategory)?.code
+      if (categoryCode) {
+        filtered = filtered.filter((dest) => dest.categories.includes(categoryCode))
       }
-    } else if (aiResponse) {
-      // Para viagens da IA, usar o aiResponse
-      setSelectedTrip(aiResponse)
-      router.push('/trip-details')
     }
+
+    // Filtrar por pesquisa
+    if (searchQuery) {
+      filtered = filtered.filter(
+        (dest) =>
+          dest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          dest.country.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    }
+
+    return filtered
   }
 
-  const toggleFavorite = (tripId: string) => {
-    // Implementar lógica de favorito
-    console.log('Toggle favorite:', tripId)
-  }
+  const filteredDestinations = getFilteredDestinations()
 
-  const handleSearchFocus = () => {
-    setIsSearchFocused(true)
-  }
-
-  const handleSearchBlur = () => {
-    // Não fazer nada aqui, deixar o handleDestinationSelect controlar
+  const toggleFavorite = (destinationId: string) => {
+    setFavorites((prev) => {
+      const newSet = new Set(prev)
+      if (newSet.has(destinationId)) {
+        newSet.delete(destinationId)
+      } else {
+        newSet.add(destinationId)
+      }
+      return newSet
+    })
   }
 
   const handleDestinationSelect = (destination: any) => {
     setDestination(`${destination.name}, ${destination.country}`)
     setSearchQuery('')
-    setIsSearchFocused(false)
     router.push('/create-trip/travelers')
   }
 
   const handleClearSearch = () => {
     setSearchQuery('')
-    setIsSearchFocused(false)
-  }
-
-  const handleCategoryPress = (categoryId: string) => {
-    setActiveCategory(categoryId)
   }
 
   return (
     <ScreenWrapper>
-      <Header title="My Trips" />
-
       <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
@@ -325,95 +121,107 @@ export default function HomeScreen() {
         <View style={styles.container}>
           {/* Barra de pesquisa */}
           <View style={styles.searchContainer}>
-            <Input
-              icon={<MagnifyingGlass size={20} weight="bold" color={colors.text.primary} />}
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              placeholder="Qual seu próximo destino?"
-              onFocus={handleSearchFocus}
-              onBlur={handleSearchBlur}
-            />
-            {isSearchFocused && searchQuery && (
-              <TouchableOpacity style={styles.clearButton} onPress={handleClearSearch}>
-                <X size={16} weight="bold" color={colors.text.primary} />
-              </TouchableOpacity>
-            )}
+            <View style={styles.searchInputContainer}>
+              <TextInput
+                style={styles.searchInput}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                placeholder="Qual seu próximo destino?"
+                placeholderTextColor={colors.gray2}
+                autoCapitalize="none"
+              />
+              {searchQuery ? (
+                <TouchableOpacity style={styles.clearButton} onPress={handleClearSearch}>
+                  <X size={16} weight="bold" color={colors.white} />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity style={styles.searchButton}>
+                  <MagnifyingGlass size={20} weight="bold" color={colors.white} />
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
 
-          {/* Resultados de pesquisa quando o input está focado */}
-          {isSearchFocused && (
-            <View style={styles.searchResultsContainer}>
-              <Typo style={styles.searchResultsTitle}>
-                {searchQuery ? `Resultados para "${searchQuery}"` : 'Destinos populares'}
-              </Typo>
-              <ScrollView
-                style={styles.searchResultsList}
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps="always">
-                {(searchQuery ? filteredDestinations : globalDestinations.slice(0, 10)).map(
-                  (destination) => (
-                    <TouchableOpacity
-                      key={destination.id}
-                      style={styles.searchResultItem}
-                      onPress={() => handleDestinationSelect(destination)}
-                      activeOpacity={0.7}>
-                      <Image
-                        source={{ uri: destination.image }}
-                        style={styles.searchResultImage}
-                        resizeMode="cover"
-                      />
-                      <View style={styles.searchResultInfo}>
-                        <Text style={styles.searchResultName}>{destination.name}</Text>
-                        <Text style={styles.searchResultCountry}>{destination.country}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  )
-                )}
-                {searchQuery && filteredDestinations.length === 0 && (
-                  <View style={styles.noResultsContainer}>
-                    <Text style={styles.noResultsText}>Nenhum destino encontrado</Text>
-                    <Text style={styles.noResultsSubtext}>Tente buscar por outro termo</Text>
-                  </View>
-                )}
-              </ScrollView>
-            </View>
+          {/* Filtros de categoria */}
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.categoriesContainer}
+            contentContainerStyle={styles.categoriesContent}>
+            {mainCategories.map((category) => (
+              <TouchableOpacity
+                key={category.id}
+                style={[
+                  styles.categoryButton,
+                  activeCategory === category.id && styles.categoryButtonActive,
+                ]}
+                onPress={() => setActiveCategory(category.id)}>
+                <category.icon
+                  size={16}
+                  color={activeCategory === category.id ? colors.primary : colors.white}
+                  weight={activeCategory === category.id ? 'fill' : 'regular'}
+                />
+                <Typo style={styles.categoryText}>
+                  {category.name}
+                </Typo>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+
+          {/* Mensagem de resultados quando há pesquisa */}
+          {searchQuery && (
+            <Typo style={styles.resultsText}>
+              Exibindo {filteredDestinations.length} de {filteredDestinations.length} resultados
+              para &apos;{searchQuery}&apos;
+            </Typo>
           )}
 
-          {/* Conteúdo normal quando não está pesquisando */}
-          {!isSearchFocused && (
-            <>
-              {/* Filtros de categoria */}
-              <CategoriesFilter
-                categories={categories}
-                activeCategory={activeCategory}
-                onCategoryPress={handleCategoryPress}
-              />
-
-              {/* Destinos filtrados por categoria */}
-              <DestinationsSection
-                destinations={globalDestinations}
-                categories={categories}
-                activeCategory={activeCategory}
-                onDestinationSelect={handleDestinationSelect}
-              />
-
-              {/* Lista de viagens */}
-              <TripsSection
-                trips={tripsToShow}
-                onTripPress={handleTripPress}
-                onToggleFavorite={toggleFavorite}
-              />
-
-              {/* Botão para criar nova viagem quando há viagens existentes */}
-              {/* {tripsToShow.length > 0 && (
+          {/* Lista de destinos */}
+          <View style={styles.destinationsList}>
+            {filteredDestinations.map((destination) => (
+              <TouchableOpacity
+                key={destination.id}
+                style={styles.destinationCard}
+                onPress={() => handleDestinationSelect(destination)}
+                activeOpacity={0.9}>
+                <Image
+                  source={
+                    typeof destination.image === 'number'
+                      ? destination.image
+                      : { uri: destination.image }
+                  }
+                  style={styles.destinationImage}
+                  contentFit="cover"
+                />
+                <LinearGradient
+                  colors={['transparent', 'rgba(0, 0, 0, 0.8)']}
+                  style={styles.destinationGradient}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 0, y: 1 }}
+                />
+                <View style={styles.destinationOverlay}>
+                  <Typo size={24} fontFamily={font.bold} color={colors.white}>
+                    {destination.name}
+                  </Typo>
+                  <Typo size={16} fontFamily={font.regular} color={colors.white}>
+                    {destination.country}
+                  </Typo>
+                </View>
                 <TouchableOpacity
-                  style={styles.newTripButton}
-                  onPress={() => router.push('/create-trip/travelers')}>
-                  <Text style={styles.newTripButtonText}>+ Criar Nova Viagem</Text>
+                  style={styles.favoriteButton}
+                  onPress={(e) => {
+                    e.stopPropagation()
+                    toggleFavorite(destination.id)
+                  }}>
+                  <Heart
+                    size={20}
+                    color={favorites.has(destination.id) ? colors.primary : colors.white}
+                    weight={favorites.has(destination.id) ? 'fill' : 'regular'}
+                  />
                 </TouchableOpacity>
-              )} */}
-            </>
-          )}
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
       </ScrollView>
     </ScreenWrapper>
@@ -430,127 +238,118 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingTop: 20,
   },
   searchContainer: {
     marginBottom: 20,
-    position: 'relative',
   },
-  clearButton: {
-    position: 'absolute',
-    right: 15,
-    top: 17,
-    width: 20,
-    height: 20,
+  searchInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.gray1,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    paddingHorizontal: 16,
+    height: 54,
+  },
+  searchInput: {
+    flex: 1,
+    color: colors.white,
+    fontSize: 14,
+    fontFamily: font.regular,
+  },
+  searchButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.neutral[200],
-    borderRadius: 10,
+    marginLeft: 8,
   },
-  searchResultsContainer: {
-    flex: 1,
+  clearButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 8,
+  },
+  categoriesContainer: {
     marginBottom: 20,
   },
-  searchResultsTitle: {
-    fontSize: 18,
-    fontFamily: font.bold,
-    color: colors.text.primary,
+  categoriesContent: {
+    paddingRight: 20,
+  },
+  categoryButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.gray1,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 20,
+    marginRight: 12,
+    gap: 6,
+  },
+  categoryButtonActive: {
+    backgroundColor: colors.gray1,
+  },
+  categoryText: {
+    fontSize: 14,
+    fontFamily: font.medium,
+    color: colors.white,
+  },
+  categoryTextActive: {
+    color: colors.white,
+  },
+  resultsText: {
+    fontSize: 14,
+    fontFamily: font.regular,
+    color: colors.white,
     marginBottom: 16,
   },
-  searchResultsList: {
-    flex: 1,
+  destinationsList: {
+    gap: 20,
   },
-  searchResultItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.background.card,
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 8,
+  destinationCard: {
+    width: '100%',
+    height: 300,
+    borderRadius: 16,
+    overflow: 'hidden',
+    position: 'relative',
+    marginBottom: 0,
   },
-  searchResultImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 8,
-    marginRight: 12,
+  destinationImage: {
+    width: '100%',
+    height: '100%',
   },
-  searchResultInfo: {
-    flex: 1,
-  },
-  searchResultName: {
-    fontSize: 16,
-    fontFamily: font.bold,
-    color: colors.text.primary,
-    marginBottom: 2,
-  },
-  searchResultCountry: {
-    fontSize: 14,
-    fontFamily: font.regular,
-    color: colors.text.secondary,
-  },
-  noResultsContainer: {
-    alignItems: 'center',
-    paddingVertical: 40,
-  },
-  noResultsText: {
-    fontSize: 16,
-    fontFamily: font.bold,
-    color: colors.text.primary,
-    marginBottom: 8,
-  },
-  noResultsSubtext: {
-    fontSize: 14,
-    fontFamily: font.regular,
-    color: colors.text.secondary,
-  },
-  createTripButton: {
-    backgroundColor: colors.primary.orange,
-    paddingHorizontal: 32,
-    paddingVertical: 16,
-    borderRadius: 12,
-  },
-  createTripButtonText: {
-    color: colors.text.primary,
-    fontFamily: font.medium,
-    fontSize: 16,
-  },
-  newTripButton: {
-    backgroundColor: colors.background.card,
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginTop: 20,
-    borderWidth: 1,
-    borderColor: colors.primary.orange,
-  },
-  newTripButtonText: {
-    color: colors.primary.orange,
-    fontFamily: font.medium,
-    fontSize: 16,
-  },
-  bottomNav: {
-    flexDirection: 'row',
-    backgroundColor: colors.background.card,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderTopWidth: 1,
-    borderTopColor: colors.border.primary,
+  destinationGradient: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
+    height: '50%',
   },
-  navItem: {
-    flex: 1,
+  destinationOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 20,
+    gap: 4,
+  },
+  favoriteButton: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    justifyContent: 'center',
     alignItems: 'center',
-  },
-  navText: {
-    fontSize: 12,
-    fontFamily: font.regular,
-    color: colors.text.secondary,
-    marginTop: 4,
-  },
-  navTextActive: {
-    color: colors.primary.orange,
+    backdropFilter: 'blur(10px)',
   },
 })

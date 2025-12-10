@@ -1,23 +1,26 @@
-import { colors } from '@/constants/theme'
-import { type ViewStyle } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { colors } from '@/constants/theme';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { ScreenWrapperProps } from './types';
 
-export type ScreenWrapperProps = {
-  style?: ViewStyle
-  children: React.ReactNode
-}
 
-export function ScreenWrapper({ style, children }: ScreenWrapperProps) {
+export function ScreenWrapper({ children, scrollable}: ScreenWrapperProps) {
+  const Container = scrollable ? ScrollView : View;
+
   return (
-    <SafeAreaView
-      style={[
-        {
-          flex: 1,
-          backgroundColor: colors.black,
-        },
-        style,
-      ]}> 
-      {children}
-    </SafeAreaView>
-  )
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <View
+        style={{ flex: 1, backgroundColor: colors.black, paddingHorizontal: 24 }}
+      >
+        <Container 
+          style={scrollable ? undefined : { flex: 1 }}
+          showsVerticalScrollIndicator={false}
+        >
+          {children}
+        </Container>
+      </View>
+    </KeyboardAvoidingView>
+  );
 }

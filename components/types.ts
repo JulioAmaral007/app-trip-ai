@@ -1,16 +1,16 @@
 import type { ReactNode } from 'react'
 import type {
-    TextInput,
-    TextInputProps,
-    TextProps,
-    TextStyle,
-    TouchableOpacityProps,
-    ViewStyle,
+  TextInput,
+  TextInputProps,
+  TextProps,
+  TextStyle,
+  TouchableOpacityProps,
+  ViewStyle,
 } from 'react-native'
 
 export type ScreenWrapperProps = {
-  style?: ViewStyle
   children: React.ReactNode
+  scrollable?: boolean
 }
 
 export type ModalWrapperProps = {

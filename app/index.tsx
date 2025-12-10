@@ -37,7 +37,7 @@ export default function WelcomeScreen() {
           </Typo>
         </View>
 
-        <Button onPress={() => router.push('/(auth)')} style={styles.button}>
+        <Button onPress={() => router.push('/(auth)/sign-in')} style={styles.button}>
           <View style={styles.buttonContent}>
             <Typo size={16} fontFamily={font.bold} color={colors.white}>
               Começar
@@ -55,8 +55,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 32,
-    paddingBottom: 60,
   },
   logo: {
     width: 120,

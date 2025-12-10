@@ -16,8 +16,8 @@ function RootLayoutContent() {
         <Stack.Screen name="index" />
 
         <Stack.Protected guard={!user}>
-          <Stack.Screen name="(auth)/index" />
-          <Stack.Screen name="(auth)/register" />
+          <Stack.Screen name="(auth)/sign-in" />
+          <Stack.Screen name="(auth)/sign-up" />
         </Stack.Protected>
 
         <Stack.Protected guard={!!user}>

@@ -1,71 +1,22 @@
+
 export const colors = {
   // Primary Colors
-  primary: {
-    orange: '#FF6B35',
-    orangeLight: '#FF8A5C',
-    orangeDark: '#E55A2B',
-    orangeAlpha: 'rgba(255, 107, 53, 0.1)',
-  },
+  primary: '#FF4B4B',
+  black: '#1B1B1B',
+  gray1: '#302E2D',
+  gray2: '#5C5C5C',
+  white: '#FFFFFF',
+  sand: '#FDF5E2',
 
-  // Background Colors
-  background: {
-    primary: '#1a1a1a',
-    secondary: '#FFFFFF',
-    tertiary: '#FF6B35',
-    card: '#2a2a2a',
-    overlay: 'rgba(0, 0, 0, 0.3)',
-    input: '#2a2a2a',
-  },
-
-  // Text Colors
-  text: {
-    primary: '#FFFFFF',
-    secondary: '#999999',
-    tertiary: '#666666',
-    placeholder: '#666666',
-    inverse: '#1a1a1a',
-    link: '#4A9EFF',
-    error: '#FF4444',
-    success: '#00CC66',
-  },
-
-  // Border Colors
-  border: {
-    primary: '#333333',
-    secondary: '#444444',
-    light: '#555555',
-    transparent: 'transparent',
-  },
-
-  // Status Colors
-  status: {
-    success: '#00CC66',
-    warning: '#FFB800',
-    error: '#FF4444',
-    info: '#4A9EFF',
-  },
-
-  // Neutral Colors
-  neutral: {
-    white: '#FFFFFF',
-    black: '#000000',
-    100: '#F5F5F5',
-    200: '#E5E5E5',
-    300: '#D4D4D4',
-    400: '#A3A3A3',
-    500: '#737373',
-    600: '#525252',
-    700: '#404040',
-    800: '#262626',
-    900: '#171717',
-  },
-
-  // Gradient Colors
-  gradients: {
-    primary: ['#FF6B35', '#FF8A5C'],
-    secondary: ['rgb(9, 18, 63)', 'rgba(20, 20, 22, 1)', 'rgb(8, 36, 16)'],
-    overlay: ['rgba(0, 0, 0, 0.0)', 'rgba(0, 0, 0, 0.6)'],
-    mesh: ['#FF6B35', '#FF4081', '#9C27B0'],
+  feedback: {
+    error_bg: '#3A1B1B',
+    error_surface: '#D32F2F',
+    success_bg: '#1E3320',
+    success_surface: '#4CAF50',
+    warning_bg: '#332B1A',
+    warning_surface: '#FFC107',
+    info_bg: '#1A2B3A',
+    info_surface: '#42A5F5',
   },
 
   // Semantic Colors

@@ -1,99 +1,211 @@
-import { auth, firestore } from '@/config/firebase'
-import type { AuthContextType, UserType } from '@/types'
-import { useRouter } from 'expo-router'
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-} from 'firebase/auth'
-import { doc, getDoc, setDoc } from 'firebase/firestore'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { supabase } from '@/config/supabase'
+import { Session } from '@supabase/supabase-js'
+import React, { useEffect, useState } from 'react'
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined)
+export interface AuthUser {
+  id: string
+  email?: string
+  name?: string
+}
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<UserType>(null)
-  const router = useRouter()
+interface AuthContextType {
+  user: AuthUser | null
+  session: Session | null
+  signIn: (email: string, password: string) => Promise<{ success: boolean; msg?: string }>
+  register: (name: string, email: string, password: string) => Promise<{ success: boolean; msg?: string }>
+  signOut: () => Promise<void>
+  isLoading: boolean
+}
+
+export const AuthContext = React.createContext<AuthContextType>({
+  user: null,
+  session: null,
+  signIn: async () => ({ success: false }),
+  register: async () => ({ success: false }),
+  signOut: async () => {},
+  isLoading: false,
+})
+
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUser] = useState<AuthUser | null>(null)
+  const [session, setSession] = useState<Session | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (firebaseUser) => {
-      if (firebaseUser) {
+    // Verificar sessão inicial
+    supabase.auth
+      .getSession()
+      .then(({ data: { session }, error }) => {
+        if (error) {
+          console.error('Erro ao obter sessão:', error)
+          // Se houver erro, limpar sessão e tentar fazer logout
+          setSession(null)
+          setUser(null)
+          setIsLoading(false)
+          return
+        }
+        setSession(session)
+        if (session?.user) {
+          setUser({
+            id: session.user.id,
+            email: session.user.email,
+            name: session.user.user_metadata?.name || session.user.user_metadata?.full_name,
+          })
+        } else {
+          setUser(null)
+        }
+        setIsLoading(false)
+      })
+      .catch((error) => {
+        console.error('Erro ao obter sessão:', error)
+        setSession(null)
+        setUser(null)
+        setIsLoading(false)
+      })
+
+    // Escutar mudanças de autenticação
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+      if (session?.user) {
         setUser({
-          uid: firebaseUser?.uid,
-          email: firebaseUser?.email,
-          name: firebaseUser?.displayName,
+          id: session.user.id,
+          email: session.user.email,
+          name: session.user.user_metadata?.name || session.user.user_metadata?.full_name,
         })
-        updateUserData(firebaseUser?.uid)
-        router.replace('/(tabs)')
       } else {
         setUser(null)
-        router.replace('/onboarding')
       }
+      setIsLoading(false)
     })
 
-    return () => unsub()
+    return () => {
+      subscription.unsubscribe()
+    }
   }, [])
 
-  const login = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password)
+      setIsLoading(true)
+      
+      // Validação básica
+      if (!email.trim()) {
+        return { success: false, msg: 'Por favor, informe seu email' }
+      }
+      
+      if (!password.trim()) {
+        return { success: false, msg: 'Por favor, informe sua senha' }
+      }
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim().toLowerCase(),
+        password,
+      })
+
+      if (error) {
+        // Mensagens de erro mais amigáveis
+        let errorMessage = error.message
+        if (error.message.includes('Invalid login credentials')) {
+          errorMessage = 'Email ou senha incorretos. Verifique suas credenciais.'
+        } else if (error.message.includes('Email not confirmed')) {
+          errorMessage = 'Por favor, confirme seu email antes de fazer login.'
+        } else if (error.message.includes('Too many requests')) {
+          errorMessage = 'Muitas tentativas. Aguarde alguns minutos e tente novamente.'
+        }
+        return { success: false, msg: errorMessage }
+      }
+
+      if (data.user) {
+        setUser({
+          id: data.user.id,
+          email: data.user.email,
+          name: data.user.user_metadata?.name || data.user.user_metadata?.full_name,
+        })
+      }
+
       return { success: true }
-    } catch (error) {
-      const msg = (error as Error).message
-      return { success: false, msg }
+    } catch (error: any) {
+      console.error('Erro ao fazer login:', error)
+      return { success: false, msg: error.message || 'Erro ao fazer login. Tente novamente.' }
+    } finally {
+      setIsLoading(false)
     }
   }
 
   const register = async (name: string, email: string, password: string) => {
     try {
-      const response = await createUserWithEmailAndPassword(auth, email, password)
-      await setDoc(doc(firestore, 'users', response?.user?.uid), {
-        name,
+      setIsLoading(true)
+      const { data, error } = await supabase.auth.signUp({
         email,
-        uid: response?.user?.uid,
+        password,
+        options: {
+          data: {
+            name: name,
+            full_name: name,
+          },
+        },
       })
-      return { success: true }
-    } catch (error) {
-      const msg = (error as Error).message
-      return { success: false, msg }
-    }
-  }
 
-  const updateUserData = async (uid: string) => {
-    try {
-      const docRef = doc(firestore, 'users', uid)
-      const docSnap = await getDoc(docRef)
-
-      if (docSnap.exists()) {
-        const data = docSnap.data()
-        const userData = {
-          name: data?.name || null,
-          email: data?.email || null,
-          uid: data?.uid || null,
-          image: data?.image || null,
-        }
-        setUser({ ...userData })
+      if (error) {
+        return { success: false, msg: error.message }
       }
-    } catch (error) {
-      console.log(error)
+
+      if (data.user) {
+        setUser({
+          id: data.user.id,
+          email: data.user.email,
+          name: data.user.user_metadata?.name || data.user.user_metadata?.full_name,
+        })
+      }
+
+      return { success: true }
+    } catch (error: any) {
+      return { success: false, msg: error.message || 'Erro ao criar conta' }
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  const contextValue: AuthContextType = {
-    user,
-    setUser,
-    login,
-    register,
-    updateUserData,
+  const signOut = async () => {
+    try {
+      setIsLoading(true)
+      const { error } = await supabase.auth.signOut()
+      if (error) {
+        console.error('Erro ao fazer logout:', error)
+      }
+      // Sempre limpar o estado local, mesmo se houver erro
+      setUser(null)
+      setSession(null)
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error)
+      // Sempre limpar o estado local em caso de erro
+      setUser(null)
+      setSession(null)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        session,
+        signIn,
+        register,
+        signOut,
+        isLoading,
+      }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
-export function useAuth() {
-  const context = useContext(AuthContext)
-  if (context === undefined) {
-    throw new Error('useListCreation must be used within a AuthProvider')
+export const useAuth = () => {
+  const context = React.useContext(AuthContext)
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider')
   }
   return context
 }

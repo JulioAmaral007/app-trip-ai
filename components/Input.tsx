@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     height: 54,
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: colors.primary,
+    borderColor: colors.gray1,
     borderRadius: 17,
     borderCurve: 'continuous',
     paddingHorizontal: 15,

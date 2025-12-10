@@ -13,7 +13,7 @@ export function BackButton({ style, iconSize = 26 }: BackButtonProps) {
 
   return (
     <TouchableOpacity onPress={() => router.back()} style={[styles.button, style]}>
-      <CaretLeftIcon size={iconSize} color="#fff" weight="bold" />
+      <CaretLeftIcon size={iconSize} color={colors.white} weight="bold" />
     </TouchableOpacity>
   )
 }

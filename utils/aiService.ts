@@ -6,7 +6,7 @@ const ai = new GoogleGenAI({
   apiKey: process.env.EXPO_PUBLIC_GOOGLE_GEMINI_API_KEY,
 })
 
-const model = 'gemini-2.5-pro'
+const model = 'gemini-2.5-flash'
 
 export const generateTripPrompt = (tripData: TripData): string => {
   const startDate = tripData.startDate

@@ -70,10 +70,10 @@ export default function BudgetScreen() {
       <Header title="Budget" leftIcon={<BackButton />} />
 
       <View style={styles.priceRangeSection}>
-        <Typo size={20} fontFamily={font.semiBold} color={colors.text.primary}>
+        <Typo size={20} fontFamily={font.semiBold} color={colors.white}>
           Price range
         </Typo>
-        <Typo size={14} fontFamily={font.regular} color={colors.text.secondary}>
+        <Typo size={14} fontFamily={font.regular} color={colors.gray2}>
           The average nightly price is ${averagePrice}
         </Typo>
 
@@ -88,17 +88,17 @@ export default function BudgetScreen() {
               xAxisLabelsVerticalShift={0}
               noOfSections={0}
               barBorderRadius={1}
-              frontColor={colors.text.primary}
+              frontColor={colors.white}
               backgroundColor="transparent"
               width={300}
               height={100}
             />
           </View>
           <View style={styles.chartLabels}>
-            <Typo size={12} fontFamily={font.regular} color={colors.text.secondary}>
+            <Typo size={12} fontFamily={font.regular} color={colors.gray2}>
               ${parseInt(tripData.minBudget.replace(/,/g, '')) || 5200}
             </Typo>
-            <Typo size={12} fontFamily={font.regular} color={colors.text.secondary}>
+            <Typo size={12} fontFamily={font.regular} color={colors.gray2}>
               ${parseInt(tripData.maxBudget.replace(/,/g, '')) || 55200}
             </Typo>
           </View>
@@ -113,7 +113,7 @@ export default function BudgetScreen() {
               keyboardType="numeric"
             />
           </View>
-          <Typo size={18} fontFamily={font.regular} color={colors.text.secondary}>
+          <Typo size={18} fontFamily={font.regular} color={colors.gray2}>
             →
           </Typo>
           <View style={styles.inputContainer}>
@@ -128,7 +128,7 @@ export default function BudgetScreen() {
       </View>
 
       <View style={styles.spendingSection}>
-        <Typo size={20} fontFamily={font.semiBold} color={colors.text.primary}>
+        <Typo size={20} fontFamily={font.semiBold} color={colors.white}>
           Choose spending habits for you trip
         </Typo>
 
@@ -148,7 +148,7 @@ export default function BudgetScreen() {
                   <Radio selected={tripData.spendingHabit === option.id} />
                 </View>
                 <View style={styles.optionText}>
-                  <Typo size={16} fontFamily={font.semiBold} color={colors.text.primary}>
+                  <Typo size={16} fontFamily={font.semiBold} color={colors.white}>
                     {option.title}
                   </Typo>
                   <Typo
@@ -156,8 +156,8 @@ export default function BudgetScreen() {
                     fontFamily={font.regular}
                     color={
                       tripData.spendingHabit === option.id
-                        ? colors.text.primary
-                        : colors.text.secondary
+                        ? colors.white
+                        : colors.gray2
                     }>
                     {option.description}
                   </Typo>
@@ -169,7 +169,7 @@ export default function BudgetScreen() {
       </View>
 
       <Button style={styles.continueButton} onPress={() => router.push('/create-trip/interests')}>
-        <Typo size={16} fontFamily={font.semiBold} color={colors.text.inverse}>
+        <Typo size={16} fontFamily={font.semiBold} color={colors.white}>
           Continue
         </Typo>
       </Button>
@@ -182,17 +182,6 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     paddingHorizontal: 24,
   },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 8,
-  },
-  averagePrice: {
-    fontSize: 14,
-    color: '#999',
-    marginBottom: 20,
-  },
   chartContainer: {
     marginBottom: 20,
   },
@@ -203,20 +192,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
   },
-  chartBar: {
-    flex: 1,
-    backgroundColor: '#fff',
-    marginHorizontal: 1,
-    borderRadius: 1,
-  },
   chartLabels: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-  },
-  chartLabel: {
-    color: '#666',
-    fontSize: 12,
   },
   budgetInputs: {
     flexDirection: 'row',
@@ -249,12 +228,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   option: {
-    backgroundColor: colors.background.card,
+    backgroundColor: colors.gray1,
     padding: 20,
   },
   selectedOption: {
-    backgroundColor: colors.primary.orange,
-    borderColor: colors.primary.orange,
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
   },
   radioContainer: {
     flexDirection: 'row',
@@ -263,14 +242,8 @@ const styles = StyleSheet.create({
   optionText: {
     flex: 1,
   },
-  optionTitle: {
-    marginBottom: 4,
-  },
-  selectedText: {
-    color: colors.text.primary,
-  },
   continueButton: {
-    backgroundColor: colors.text.primary,
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     marginBottom: 40,
     marginHorizontal: 24,

@@ -119,7 +119,7 @@ export default function ReviewScreen() {
             <View style={styles.reviewItemHeader}>
               <Typo size={20}>📍</Typo>
               <View style={styles.reviewItemContent}>
-                <Typo size={14} color={colors.text.secondary}>
+                <Typo size={14} color={colors.gray2}>
                   Destination
                 </Typo>
                 <Typo size={16} fontFamily={font.semiBold}>
@@ -133,7 +133,7 @@ export default function ReviewScreen() {
             <View style={styles.reviewItemHeader}>
               <Typo size={20}>👥</Typo>
               <View style={styles.reviewItemContent}>
-                <Typo size={14} color={colors.text.secondary}>
+                <Typo size={14} color={colors.gray2}>
                   Choose your travelers
                 </Typo>
                 <Typo size={16} fontFamily={font.semiBold}>
@@ -147,7 +147,7 @@ export default function ReviewScreen() {
             <View style={styles.reviewItemHeader}>
               <Typo size={20}>📅</Typo>
               <View style={styles.reviewItemContent}>
-                <Typo size={14} color={colors.text.secondary}>
+                <Typo size={14} color={colors.gray2}>
                   Travel dates
                 </Typo>
                 <Typo size={16} fontFamily={font.semiBold}>
@@ -161,7 +161,7 @@ export default function ReviewScreen() {
             <View style={styles.reviewItemHeader}>
               <Typo size={20}>💰</Typo>
               <View style={styles.reviewItemContent}>
-                <Typo size={14} color={colors.text.secondary}>
+                <Typo size={14} color={colors.gray2}>
                   Budget
                 </Typo>
                 <Typo size={16} fontFamily={font.semiBold}>
@@ -193,7 +193,7 @@ export default function ReviewScreen() {
       </View>
 
       <Button style={styles.searchButton} onPress={() => router.push('/create-trip/generating')}>
-        <Typo size={16} fontFamily={font.semiBold} color={colors.text.inverse}>
+        <Typo size={16} fontFamily={font.semiBold} color={colors.white}>
           Continue
         </Typo>
       </Button>
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    borderBottomColor: colors.gray1,
   },
   reviewItemHeader: {
     flexDirection: 'row',
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   interestTag: {
-    backgroundColor: '#FF6B35',
+    backgroundColor: colors.primary,
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -254,14 +254,14 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#2a2a2a',
+    backgroundColor: colors.gray1,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#444',
+    borderColor: colors.gray2,
   },
   searchButton: {
-    backgroundColor: colors.text.primary,
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     marginBottom: 40,
     marginHorizontal: 24,

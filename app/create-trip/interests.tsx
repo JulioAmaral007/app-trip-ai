@@ -49,7 +49,7 @@ export default function InterestsScreen() {
       <Header title="Interest" leftIcon={<BackButton />} />
 
       <View style={styles.selectionInfo}>
-        <Typo size={14} color={colors.text.secondary}>
+        <Typo size={14} color={colors.gray2}>
           {tripData.selectedInterests.length}/3 interesses selecionados
         </Typo>
       </View>
@@ -73,10 +73,10 @@ export default function InterestsScreen() {
               onPress={() => toggleInterest(interest.id)}>
               <IconComponent
                 size={20}
-                color={isCurrentlySelected ? colors.text.inverse : colors.text.primary}
+                color={isCurrentlySelected ? colors.white : colors.white}
                 weight="fill"
               />
-              <Typo size={16} fontFamily={font.semiBold} color={colors.text.primary}>
+              <Typo size={16} fontFamily={font.semiBold} color={colors.white}>
                 {interest.title}
               </Typo>
             </Button>
@@ -85,7 +85,7 @@ export default function InterestsScreen() {
       </View>
 
       <Button style={styles.continueButton} onPress={() => router.push('/create-trip/review-trip')}>
-        <Typo size={16} fontFamily={font.semiBold} color={colors.text.inverse}>
+        <Typo size={16} fontFamily={font.semiBold} color={colors.white}>
           Continue
         </Typo>
       </Button>
@@ -105,15 +105,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   interestButton: {
-    backgroundColor: colors.background.card,
+    backgroundColor: colors.gray1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 8,
   },
   selectedInterest: {
-    backgroundColor: colors.primary.orange,
-    borderColor: colors.primary.orange,
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
   },
   disabledInterest: {
     opacity: 0.5,
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   continueButton: {
-    backgroundColor: colors.text.primary,
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     marginBottom: 40,
     marginHorizontal: 24,

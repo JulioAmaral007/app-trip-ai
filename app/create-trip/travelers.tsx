@@ -59,7 +59,7 @@ export default function TravelersScreen() {
                   <Radio selected={tripData.travelerType === option.id} />
                 </View>
                 <View style={styles.optionText}>
-                  <Typo size={18} fontFamily={font.semiBold} color={colors.text.primary}>
+                  <Typo size={18} fontFamily={font.semiBold} color={colors.white}>
                     {option.title}
                   </Typo>
                   <Typo
@@ -67,8 +67,8 @@ export default function TravelersScreen() {
                     fontFamily={font.regular}
                     color={
                       tripData.travelerType === option.id
-                        ? colors.text.primary
-                        : colors.text.secondary
+                        ? colors.white
+                        : colors.gray2
                     }>
                     {option.description}
                   </Typo>
@@ -82,7 +82,7 @@ export default function TravelersScreen() {
       <Button
         style={styles.continueButton}
         onPress={() => router.push('/create-trip/travel-dates')}>
-        <Typo size={16} fontFamily={font.semiBold} color={colors.text.inverse}>
+        <Typo size={16} fontFamily={font.semiBold} color={colors.white}>
           Continue
         </Typo>
       </Button>
@@ -103,12 +103,12 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   option: {
-    backgroundColor: colors.background.card,
+    backgroundColor: colors.gray1,
     padding: 20,
   },
   selectedOption: {
-    backgroundColor: colors.primary.orange,
-    borderColor: colors.primary.orange,
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
   },
   radioContainer: {
     flexDirection: 'row',
@@ -121,10 +121,10 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   selectedText: {
-    color: colors.text.primary,
+    color: colors.white,
   },
   continueButton: {
-    backgroundColor: colors.text.primary,
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     marginBottom: 40,
     marginHorizontal: 24,

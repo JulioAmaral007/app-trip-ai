@@ -23,7 +23,7 @@ export default function DatesScreen() {
 
   const handleDayPress = (day: DateData) => {
     if (!tripData.startDate || (tripData.startDate && tripData.endDate)) {
-      // Primeira seleção ou reset
+        // Primeira seleção ou reset
       setTravelDates(day, undefined as any)
       setIsSelectingEnd(true)
     } else {
@@ -44,16 +44,16 @@ export default function DatesScreen() {
     if (tripData.startDate) {
       marked[tripData.startDate.dateString] = {
         startingDay: true,
-        color: '#F06543',
-        textColor: '#E8E8E8',
+        color: colors.primary,
+        textColor: colors.white,
       }
     }
 
     if (tripData.endDate) {
       marked[tripData.endDate.dateString] = {
         endingDay: true,
-        color: '#F06543',
-        textColor: '#E8E8E8',
+        color: colors.primary,
+        textColor: colors.white,
       }
     }
 
@@ -68,8 +68,8 @@ export default function DatesScreen() {
         if (dateString !== tripData.endDate.dateString) {
           marked[dateString] = {
             selected: true,
-            color: '#F06543',
-            textColor: '#fff',
+            color: colors.primary,
+            textColor: colors.white,
           }
         }
       }
@@ -85,24 +85,24 @@ export default function DatesScreen() {
       <View style={styles.calendarContainer}>
         <Calendar
           renderArrow={(direction: 'right' | 'left') => (
-            <Feather size={24} color="#E8E8E8" name={`chevron-${direction}`} />
+            <Feather size={24} color={colors.white} name={`chevron-${direction}`} />
           )}
           headerStyle={{
             borderBottomWidth: 0.5,
-            borderBottomColor: '#E8E8E8',
+            borderBottomColor: colors.white,
             paddingBottom: 10,
             marginBottom: 10,
           }}
           theme={{
             textMonthFontSize: 18,
-            monthTextColor: '#E8E8E8',
-            todayTextColor: '#F06543',
-            selectedDayBackgroundColor: '#F06543',
-            selectedDayTextColor: '#E8E8E8',
-            arrowColor: '#E8E8E8',
+            monthTextColor: colors.white,
+            todayTextColor: colors.primary,
+            selectedDayBackgroundColor: colors.primary,
+            selectedDayTextColor: colors.white,
+            arrowColor: colors.white,
             calendarBackground: 'transparent',
-            textDayStyle: { color: '#E8E8E8' },
-            textDisabledColor: '#717171',
+            textDayStyle: { color: colors.white },
+            textDisabledColor: colors.gray2,
             arrowStyle: {
               margin: 0,
               padding: 0,
@@ -152,7 +152,7 @@ export default function DatesScreen() {
           }
         }}
         disabled={!tripData.startDate || !tripData.endDate}>
-        <Typo size={16} fontFamily={font.semiBold} color={colors.text.inverse}>
+        <Typo size={16} fontFamily={font.semiBold} color={colors.white}>
           Continue
         </Typo>
       </Button>
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#2a2a2a',
+    backgroundColor: colors.gray1,
     borderRadius: 12,
     padding: 16,
   },
@@ -187,12 +187,12 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   arrow: {
-    color: '#999',
+    color: colors.gray2,
     fontSize: 18,
     marginHorizontal: 16,
   },
   continueButton: {
-    backgroundColor: colors.text.primary,
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     marginBottom: 40,
     marginHorizontal: 24,

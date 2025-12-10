@@ -1,7 +1,7 @@
 import { TripCard } from '@/components/TripCard'
 import { Typo } from '@/components/Typo'
 import { colors, font } from '@/constants/theme'
-import type { GeneratedTripType } from '@/types'
+import type { GeneratedTripType } from '@/services/types'
 import { StyleSheet, View } from 'react-native'
 
 interface Trip extends Partial<GeneratedTripType> {
@@ -59,14 +59,14 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 24,
     fontFamily: font.bold,
-    color: colors.text.primary,
+    color: colors.white,
     textAlign: 'center',
     marginBottom: 12,
   },
   emptySubtitle: {
     fontSize: 16,
     fontFamily: font.regular,
-    color: colors.text.secondary,
+    color: colors.gray2,
     textAlign: 'center',
     marginBottom: 30,
     lineHeight: 24,

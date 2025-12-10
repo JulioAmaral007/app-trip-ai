@@ -15,9 +15,9 @@ export const Radio: React.FC<RadioProps> = ({
   selected,
   size = 20,
   innerSize = 8,
-  borderColor = colors.border.primary,
-  selectedBorderColor = colors.text.primary,
-  innerColor = colors.text.primary,
+  borderColor = colors.primary,
+  selectedBorderColor = colors.primary,
+  innerColor = colors.primary,
 }) => {
   return (
     <View
@@ -54,6 +54,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   radioInner: {
-    // Estilos serão aplicados dinamicamente
   },
 })

@@ -24,7 +24,7 @@ export const Input = forwardRef<TextInput, InputProps>((props, ref) => {
       {props.icon && props.icon}
       <TextInput
         style={[styles.input, props.inputStyle]}
-        placeholderTextColor={colors.text.secondary}
+        placeholderTextColor={colors.gray2}
         ref={ref}
         {...props}
       />
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     height: 54,
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: colors.border.primary,
+    borderColor: colors.primary,
     borderRadius: 17,
     borderCurve: 'continuous',
     paddingHorizontal: 15,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    color: colors.text.primary,
+    color: colors.white,
     fontSize: 14,
   },
 })

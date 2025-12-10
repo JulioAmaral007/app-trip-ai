@@ -33,7 +33,7 @@ export function Button({ style, onPress, loading = false, children }: CustomButt
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: colors.background.primary,
+    backgroundColor: colors.primary,
     borderRadius: 17,
     borderCurve: 'continuous',
     height: 52,

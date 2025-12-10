@@ -78,7 +78,7 @@ export function DestinationsSection({
         </ScrollView>
       ) : (
         <View style={styles.emptyState}>
-          <Island size={48} color={colors.text.secondary} style={styles.emptyIcon} />
+            <Island size={48} color={colors.gray2} style={styles.emptyIcon} />
           <Typo style={styles.emptyTitle}>Nenhum destino encontrado</Typo>
           <Typo style={styles.emptySubtitle}>
             Ainda não temos destinos para a categoria &quot;{categoryName}&quot;.
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontFamily: font.bold,
-    color: colors.text.primary,
+    color: colors.white,
     marginBottom: 16,
   },
   destinationsContainer: {
@@ -124,18 +124,18 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     padding: 12,
-    backgroundColor: colors.background.overlay,
+    backgroundColor: colors.gray1,
   },
   destinationName: {
     fontSize: 16,
     fontFamily: font.bold,
-    color: colors.text.primary,
+    color: colors.white,
     marginBottom: 2,
   },
   destinationCountry: {
     fontSize: 14,
     fontFamily: font.regular,
-    color: colors.text.secondary,
+    color: colors.gray2,
   },
   emptyState: {
     alignItems: 'center',
@@ -148,14 +148,14 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontFamily: font.bold,
-    color: colors.text.primary,
+    color: colors.white,
     textAlign: 'center',
     marginBottom: 8,
   },
   emptySubtitle: {
     fontSize: 14,
     fontFamily: font.regular,
-    color: colors.text.secondary,
+    color: colors.gray2,
     textAlign: 'center',
     lineHeight: 20,
   },

@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   activeCard: {
-    backgroundColor: colors.background.tertiary,
+    backgroundColor: colors.primary,
   },
   cardImage: {
     borderRadius: 35,
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   activeFavoriteButton: {
-    backgroundColor: colors.background.tertiary,
+    backgroundColor: colors.primary,
   },
   cardContent: {
     gap: 4,

@@ -13,7 +13,7 @@ export type TypoProps = {
 
 export function Typo({
   size,
-  color = colors.text.primary,
+  color = colors.white,
   fontFamily = font.regular,
   children,
   style,

@@ -11,7 +11,7 @@ export type ModalWrapperProps = {
 export function ModalWrapper({
   style,
   children,
-  bg = colors.background.primary,
+  bg = colors.gray1,
 }: ModalWrapperProps) {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: bg }, style && style]}>

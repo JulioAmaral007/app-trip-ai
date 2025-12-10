@@ -1,10 +1,9 @@
 import { colors, font } from '@/constants/theme'
-import type { GeneratedTripType } from '@/types'
+import type { GeneratedTripType } from '@/services/types'
 import { HeartIcon } from 'phosphor-react-native'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 interface Trip extends Partial<GeneratedTripType> {
-  // Campos para compatibilidade com viagens mock
   name?: string
   country?: string
   image?: string
@@ -27,15 +26,12 @@ export function TripCard({ trip, index, onPress, onToggleFavorite }: TripCardPro
         source={{
           uri:
             trip.image ||
-            trip.mainImage ||
-            // Usar uma imagem relacionada ao destino se possível
             `https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&q=80`,
         }}
         style={styles.tripImage}
         resizeMode="cover"
       />
 
-      {/* Overlay com informações */}
       <View style={styles.tripOverlay}>
         <Text style={styles.tripName}>
           {trip.name || trip.tripName || trip.destination?.split(',')[0]}
@@ -45,11 +41,10 @@ export function TripCard({ trip, index, onPress, onToggleFavorite }: TripCardPro
         </Text>
       </View>
 
-      {/* Botão de favorito */}
       <TouchableOpacity style={styles.favoriteButton} onPress={() => onToggleFavorite(tripId)}>
         <HeartIcon
           size={20}
-          color={colors.text.primary}
+          color={colors.primary}
           weight={trip.isFavorite ? 'fill' : 'regular'}
         />
       </TouchableOpacity>
@@ -75,18 +70,18 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     padding: 20,
-    backgroundColor: colors.background.overlay,
+    backgroundColor: colors.gray1,
   },
   tripName: {
     fontSize: 24,
     fontFamily: font.bold,
-    color: colors.text.primary,
+    color: colors.white,
     marginBottom: 4,
   },
   tripCountry: {
     fontSize: 16,
     fontFamily: font.medium,
-    color: colors.text.secondary,
+    color: colors.gray2,
   },
   favoriteButton: {
     position: 'absolute',
@@ -95,7 +90,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: colors.background.overlay,
+    backgroundColor: colors.gray1,
     justifyContent: 'center',
     alignItems: 'center',
   },

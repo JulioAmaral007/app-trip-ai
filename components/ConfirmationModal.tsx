@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    backgroundColor: colors.background.card,
+    backgroundColor: colors.gray1,
     borderRadius: 20,
     padding: 20,
     width: '80%',
@@ -65,11 +65,11 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: colors.primary.orange,
+    color: colors.primary,
   },
   message: {
     fontSize: 14,
-    color: colors.text.secondary,
+    color: colors.gray2,
     textAlign: 'center',
   },
   buttonContainer: {
@@ -78,24 +78,24 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     flex: 1,
-    backgroundColor: colors.border.primary,
+    backgroundColor: colors.gray1,
     paddingVertical: 12,
     borderRadius: 12,
   },
   cancelButtonText: {
-    color: colors.text.primary,
+    color: colors.white,
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
   },
   confirmButton: {
     flex: 1,
-    backgroundColor: colors.primary.orange,
+    backgroundColor: colors.primary,
     paddingVertical: 12,
     borderRadius: 12,
   },
   confirmButtonText: {
-    color: colors.text.primary,
+    color: colors.white,
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',

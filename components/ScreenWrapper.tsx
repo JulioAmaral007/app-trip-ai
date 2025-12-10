@@ -13,10 +13,10 @@ export function ScreenWrapper({ style, children }: ScreenWrapperProps) {
       style={[
         {
           flex: 1,
-          backgroundColor: colors.background.primary,
+          backgroundColor: colors.black,
         },
         style,
-      ]}>
+      ]}> 
       {children}
     </SafeAreaView>
   )

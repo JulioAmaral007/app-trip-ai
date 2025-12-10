@@ -34,7 +34,7 @@ export function CategoriesFilter({
           onPress={() => onCategoryPress(category.id)}>
           <category.icon
             size={16}
-            color={colors.text.primary}
+            color={colors.white}
             weight={activeCategory === category.id ? 'fill' : 'regular'}
           />
           <Text
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   categoryButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.background.card,
+    backgroundColor: colors.gray1,
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 20,
@@ -69,15 +69,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   categoryButtonActive: {
-    backgroundColor: colors.primary.orange,
+    backgroundColor: colors.primary,
   },
   categoryText: {
     fontSize: 14,
     fontFamily: 'outfit-medium',
-    color: colors.text.primary,
+    color: colors.white,
     marginLeft: 6,
   },
   categoryTextActive: {
-    color: colors.text.primary,
+    color: colors.white,
   },
 })

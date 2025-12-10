@@ -4,7 +4,7 @@ import { colors } from '@/constants/theme'
 
 export type LoadingProps = ActivityIndicatorProps
 
-export function Loading({ size = 'large', color = colors.primary.orange }: ActivityIndicatorProps) {
+export function Loading({ size = 'large', color = colors.white }: ActivityIndicatorProps) {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size={size} color={color} />

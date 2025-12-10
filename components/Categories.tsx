@@ -68,11 +68,11 @@ export function Categories({
     <View style={styles.container}>
       {showHeader && (
         <View style={styles.header}>
-          <Typo size={16} fontFamily={font.semiBold} color={colors.text.primary}>
+          <Typo size={16} fontFamily={font.semiBold} color={colors.white}>
             Categorias
           </Typo>
           <Button onPress={() => {}}>
-            <Typo size={14} color={colors.text.link}>
+            <Typo size={14} color={colors.primary}>
               Ver todas
             </Typo>
           </Button>
@@ -96,7 +96,7 @@ export function Categories({
               <Typo
                 size={12}
                 fontFamily={font.medium}
-                color={isSelected ? colors.text.primary : colors.text.secondary}>
+                color={isSelected ? colors.white : colors.gray2}>
                 {cat.title}
               </Typo>
             </TouchableOpacity>
@@ -128,22 +128,22 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   selectedCategoryItem: {
-    backgroundColor: colors.primary.orangeAlpha,
+    backgroundColor: colors.primary,
   },
   categoryIcon: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: colors.background.card,
+    backgroundColor: colors.gray1,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 8,
     borderWidth: 1,
-    borderColor: colors.border.primary,
+    borderColor: colors.primary,
   },
   selectedCategoryIcon: {
-    backgroundColor: colors.primary.orange,
-    borderColor: colors.primary.orange,
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
   },
   categoryImage: {
     width: 80,

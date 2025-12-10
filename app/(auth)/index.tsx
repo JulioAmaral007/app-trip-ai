@@ -1,13 +1,11 @@
-import { BackButton } from '@/components/BackButton'
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { Typo } from '@/components/Typo'
 import { colors, font } from '@/constants/theme'
 import { useAuth } from '@/contexts/AuthContext'
-import { LinearGradient } from 'expo-linear-gradient'
 import { useRouter } from 'expo-router'
 import * as Icons from 'phosphor-react-native'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import {
   Alert,
   Dimensions,
@@ -21,40 +19,37 @@ import {
 } from 'react-native'
 const { height } = Dimensions.get('window')
 
-export default function RegisterScreen() {
+export default function LoginScreen() {
   const router = useRouter()
-  const nameRef = useRef('')
-  const emailRef = useRef('')
-  const passwordRef = useRef('')
-  const { register: registerUser } = useAuth()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const { signIn } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async () => {
-    if (!nameRef.current || !emailRef.current || !passwordRef.current) {
-      Alert.alert('Preencha todos os campos')
+    if (!email.trim() || !password.trim()) {
+      Alert.alert('Erro', 'Preencha todos os campos')
       return
     }
 
     setIsLoading(true)
-    const res = await registerUser(nameRef.current, emailRef.current, passwordRef.current)
+    const res = await signIn(email.trim(), password)
     setIsLoading(false)
 
-    if (!res.success) {
-      Alert.alert('Erro', res.msg)
+    if (res.success) {
+      // Redireciona para a tela principal após login bem-sucedido
+      router.replace('/(tabs)')
+    } else {
+      Alert.alert('Erro', res.msg || 'Não foi possível fazer login')
     }
   }
 
   return (
-    <LinearGradient
-      colors={colors.gradients.secondary as [string, string]}
-      style={styles.gradientContainer}>
+    <View style={{ flex: 1, backgroundColor: colors.black }}>
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}>
-        <View style={styles.backButtonContainer}>
-          <BackButton iconSize={28} />
-        </View>
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
@@ -69,78 +64,62 @@ export default function RegisterScreen() {
             </View>
 
             <View style={styles.welcomeContainer}>
-              <Typo size={32} fontFamily={font.bold} color={colors.text.primary}>
-                Vamos começar!
+              <Typo size={32} fontFamily={font.bold} color={colors.white}>
+                Bem-vindo de volta!
               </Typo>
               <Typo
                 size={16}
                 fontFamily={font.regular}
-                color={colors.text.secondary}
+                color={colors.gray2}
                 style={styles.subtitle}>
-                Crie sua conta e comece a planejar suas viagens dos sonhos
+                Faça login para continuar planejando suas viagens
               </Typo>
             </View>
 
             <View style={styles.form}>
               <Input
-                placeholder="Digite seu nome completo"
-                onChangeText={(value: string) => (nameRef.current = value)}
-                icon={<Icons.User size={24} color={colors.text.secondary} weight="regular" />}
-              />
-              <Input
                 placeholder="Digite seu email"
-                onChangeText={(value: string) => (emailRef.current = value)}
-                icon={<Icons.At size={24} color={colors.text.secondary} weight="regular" />}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                value={email}
+                onChangeText={setEmail}
+                icon={<Icons.At size={24} color={colors.gray2} weight="regular" />}
               />
               <Input
                 placeholder="Digite sua senha"
                 secureTextEntry
-                onChangeText={(value: string) => (passwordRef.current = value)}
-                icon={<Icons.Lock size={24} color={colors.text.secondary} weight="regular" />}
+                value={password}
+                onChangeText={setPassword}
+                icon={<Icons.Lock size={24} color={colors.gray2} weight="regular" />}
               />
 
-              <Button loading={isLoading} onPress={handleSubmit} style={styles.registerButton}>
-                <LinearGradient
-                  colors={colors.gradients.primary as [string, string]}
-                  style={styles.buttonGradient}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}>
-                  <Typo size={18} fontFamily={font.semiBold} color={colors.text.primary}>
-                    Criar conta
+              <Button loading={isLoading} onPress={handleSubmit} style={styles.loginButton}>
+                  <Typo size={18} fontFamily={font.semiBold} color={colors.white}>
+                    Entrar
                   </Typo>
-                </LinearGradient>
               </Button>
             </View>
 
             <View style={styles.footer}>
-              <Typo size={15} fontFamily={font.regular} color={colors.text.secondary}>
-                Já possui uma conta?
+              <Typo size={15} fontFamily={font.regular} color={colors.gray2}>
+                Não possui uma conta?
               </Typo>
-              <Pressable onPress={() => router.navigate('/(auth)/login')}>
-                <Typo size={15} fontFamily={font.semiBold} color={colors.primary.orange}>
-                  Faça login
+              <Pressable onPress={() => router.push('/(auth)/register' as any)}>
+                <Typo size={15} fontFamily={font.semiBold} color={colors.primary}>
+                  Criar conta
                 </Typo>
               </Pressable>
             </View>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </LinearGradient>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  gradientContainer: {
-    flex: 1,
-  },
   keyboardAvoidingView: {
     flex: 1,
-  },
-  backButtonContainer: {
-    position: 'absolute',
-    top: Platform.OS === 'ios' ? height * 0.08 : 50,
-    left: 24,
-    zIndex: 1,
   },
   scrollContent: {
     flexGrow: 1,
@@ -173,22 +152,14 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 20,
   },
-  registerButton: {
+  loginButton: {
     marginTop: 20,
-  },
-  buttonGradient: {
-    flex: 1,
-    height: 52,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 17,
+    backgroundColor: colors.primary,
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 5,
-    paddingTop: 20,
   },
 })

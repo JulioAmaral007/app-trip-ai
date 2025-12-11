@@ -4,7 +4,7 @@ import { Input } from '@/components/Input'
 import { Logo } from '@/components/Logo'
 import { ScreenWrapper } from '@/components/ScreenWrapper'
 import { Typo } from '@/components/Typo'
-import { colors, font } from '@/constants/theme'
+import { theme } from '@/constants/theme'
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'expo-router'
 import * as Icons from 'phosphor-react-native'
@@ -48,65 +48,57 @@ export default function RegisterScreen() {
   return (
     <ScreenWrapper scrollable>
       <SafeAreaView style={styles.container}>
-        <View style={styles.backButtonContainer}>
+        <View style={styles.header}>
           <BackButton iconSize={28} />
+          <Typo variant={theme.textVariants.title28} color={theme.colors.text}>
+            Criar Conta
+          </Typo>
         </View>
-        <View style={styles.content}>
-          <Logo />
 
-          <View style={styles.welcomeContainer}>
-            <Typo size={32} fontFamily={font.bold} color={colors.white}>
-              Vamos começar!
-            </Typo>
-            <Typo
-              size={16}
-              fontFamily={font.regular}
-              color={colors.gray2}
-              style={styles.subtitle}>
-              Crie sua conta e comece a planejar suas viagens dos sonhos
-            </Typo>
-          </View>
+        <View style={styles.form}>
+          <Input
+            placeholder="Digite seu nome completo"
+            value={name}
+            onChangeText={setName}
+            icon={<Icons.User size={24} color={theme.colors.gray2} weight="bold" />}
+          />
+          <Input
+            placeholder="Digite seu email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={email}
+            onChangeText={setEmail}
+            icon={<Icons.At size={24} color={theme.colors.gray2} weight="bold" />}
+          />
+          <Input
+            placeholder="Digite sua senha"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+            icon={<Icons.Lock size={24} color={theme.colors.gray2} weight="bold" />}
+          />
 
-          <View style={styles.form}>
-            <Input
-              placeholder="Digite seu nome completo"
-              value={name}
-              onChangeText={setName}
-              icon={<Icons.User size={24} color={colors.gray2} weight="regular" />}
-            />
-            <Input
-              placeholder="Digite seu email"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              value={email}
-              onChangeText={setEmail}
-              icon={<Icons.At size={24} color={colors.gray2} weight="regular" />}
-            />
-            <Input
-              placeholder="Digite sua senha"
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
-              icon={<Icons.Lock size={24} color={colors.gray2} weight="regular" />}
-            />
-
+          <View>
             <Button loading={isLoading} onPress={handleSubmit} style={styles.registerButton}>
-                <Typo size={18} fontFamily={font.semiBold} color={colors.white}>
-                  Criar conta
-                </Typo>
-            </Button>
-          </View>
-
-          <View style={styles.footer}>
-            <Typo size={15} fontFamily={font.regular} color={colors.gray2}>
-              Já possui uma conta?
-            </Typo>
-            <Pressable onPress={() => router.navigate('/(auth)/sign-in')}>
-              <Typo size={15} fontFamily={font.semiBold} color={colors.primary}>
-                Faça login
+              <Typo variant={theme.textVariants.text16} color={theme.colors.text}>
+                Criar conta
               </Typo>
-            </Pressable>
+            </Button>
+            <View style={styles.footer}>
+              <Typo variant={theme.textVariants.text14} color={theme.colors.text}>
+                Já possui uma conta?
+              </Typo>
+              <Pressable onPress={() => router.push('/(auth)/sign-in')}>
+                <Typo variant={theme.textVariants.text14} color={theme.colors.primary}>
+                  Entrar
+                </Typo>
+              </Pressable>
+            </View>
           </View>
+        </View>
+
+        <View style={styles.logoContainer}>
+          <Logo />
         </View>
       </SafeAreaView>
     </ScreenWrapper>
@@ -115,42 +107,30 @@ export default function RegisterScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  backButtonContainer: {
-    position: 'absolute',
-    top: 20,
-    left: 0,
-    zIndex: 1,
-  },
-  content: {
-    flexGrow: 1,
     justifyContent: 'center',
-    paddingTop: 80,
+    paddingTop: 20,
     paddingBottom: 40,
   },
-  welcomeContainer: {
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 40,
-  },
-  subtitle: {
-    textAlign: 'center',
-    marginTop: 10,
-    lineHeight: 22,
   },
   form: {
     gap: 20,
     marginBottom: 30,
+    marginTop: 80,
   },
   registerButton: {
-    marginTop: 10,
-    backgroundColor: colors.primary,
+    backgroundColor: theme.colors.primary,
   },
   footer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
     gap: 5,
-    marginTop: 20,
+    marginTop: 8,
+  },
+  logoContainer: {
+    alignItems: 'center',
   },
 })

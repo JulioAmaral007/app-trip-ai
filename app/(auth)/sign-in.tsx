@@ -3,7 +3,7 @@ import { Input } from '@/components/Input'
 import { Logo } from '@/components/Logo'
 import { ScreenWrapper } from '@/components/ScreenWrapper'
 import { Typo } from '@/components/Typo'
-import { colors, font } from '@/constants/theme'
+import { theme } from '@/constants/theme'
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'expo-router'
 import * as Icons from 'phosphor-react-native'
@@ -46,55 +46,53 @@ export default function LoginScreen() {
   return (
     <ScreenWrapper scrollable>
       <SafeAreaView style={styles.container}>
-        <View style={styles.content}>
-          <Logo />
+        <Logo />
 
-          <View style={styles.welcomeContainer}>
-            <Typo size={32} fontFamily={font.bold} color={colors.white}>
-              Bem-vindo de volta!
-            </Typo>
-            <Typo
-              size={16}
-              fontFamily={font.regular}
-              color={colors.gray2}
-              style={styles.subtitle}>
-              Faça login para continuar planejando suas viagens
-            </Typo>
-          </View>
+        <View style={styles.welcomeContainer}>
+          <Typo variant={theme.textVariants.title28} color={theme.colors.text}>
+            Bem-vindo de volta!
+          </Typo>
+          <Typo
+            variant={theme.textVariants.text14}
+            color={theme.colors.sandBeige}
+            style={styles.subtitle}>
+            Faça login para continuar planejando suas viagens
+          </Typo>
+        </View>
 
-          <View style={styles.form}>
-            <Input
-              placeholder="Digite seu email"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              value={email}
-              onChangeText={setEmail}
-              icon={<Icons.At size={24} color={colors.gray2} weight="regular" />}
-            />
-            <Input
-              placeholder="Digite sua senha"
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
-              icon={<Icons.Lock size={24} color={colors.gray2} weight="regular" />}
-            />
-
+        <View style={styles.form}>
+          <Input
+            placeholder="Digite seu email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={email}
+            onChangeText={setEmail}
+            icon={<Icons.At size={24} color={theme.colors.gray2} weight="bold" />}
+          />
+          <Input
+            placeholder="Digite sua senha"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+            icon={<Icons.Lock size={24} color={theme.colors.gray2} weight="bold" />}
+          />
+          
+          <View>
             <Button loading={isLoading} onPress={handleSubmit} style={styles.loginButton}>
-              <Typo size={18} fontFamily={font.semiBold} color={colors.white}>
+              <Typo variant={theme.textVariants.text16} color={theme.colors.text}>
                 Entrar
               </Typo>
             </Button>
-          </View>
-
-          <View style={styles.footer}>
-            <Typo size={15} fontFamily={font.regular} color={colors.gray2}>
-              Não possui uma conta?
-            </Typo>
-            <Pressable onPress={() => router.push('/(auth)/sign-up' as any)}>
-              <Typo size={15} fontFamily={font.semiBold} color={colors.primary}>
-                Criar conta
+            <View style={styles.footer}>
+              <Typo variant={theme.textVariants.text14} color={theme.colors.text}>
+                Não possui uma conta?
               </Typo>
-            </Pressable>
+              <Pressable onPress={() => router.push('/(auth)/sign-up' as any)}>
+                <Typo variant={theme.textVariants.text14} color={theme.colors.primary}>
+                  Criar conta
+                </Typo>
+              </Pressable>
+            </View>
           </View>
         </View>
       </SafeAreaView>
@@ -104,10 +102,6 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  content: {
-    flexGrow: 1,
     justifyContent: 'center',
     paddingTop: 80,
     paddingBottom: 40,
@@ -119,7 +113,6 @@ const styles = StyleSheet.create({
   subtitle: {
     textAlign: 'center',
     marginTop: 10,
-    lineHeight: 22,
   },
   form: {
     gap: 20,
@@ -127,13 +120,12 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     marginTop: 10,
-    backgroundColor: colors.primary,
+    backgroundColor: theme.colors.primary,
   },
   footer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
     gap: 5,
-    marginTop: 20,
+    marginTop: 8,
   },
 })

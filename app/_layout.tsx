@@ -1,4 +1,4 @@
-import { colors } from '@/constants/theme'
+import { theme } from '@/constants/theme'
 import { AuthProvider, useAuth } from '@/contexts/AuthContext'
 import { TripProvider } from '@/contexts/TripContext'
 import { Stack } from 'expo-router'
@@ -10,7 +10,7 @@ function RootLayoutContent() {
 
   return (
     <>
-      <StatusBar style="light" backgroundColor={colors.black} translucent={false} />
+      <StatusBar style="light" backgroundColor={theme.colors.background} translucent={false} />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="onboarding" />
         <Stack.Screen name="index" />

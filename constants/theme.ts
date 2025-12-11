@@ -1,59 +1,131 @@
+const palette = {
+  fieryRed: "#FF4B4B",
+  midnightBlack: "#1B1B1B",
+  charcoalGrey: "#302E2D",
+  stoneGrey: "#5C5C5C",
+  pureWhite: "#FFFFFF",
+  sandBeige: "#FDF5E2",
+  transparent: "transparent",
 
-export const colors = {
-  // Primary Colors
-  primary: '#FF4B4B',
-  black: '#1B1B1B',
-  gray1: '#302E2D',
-  gray2: '#5C5C5C',
-  white: '#FFFFFF',
-  sand: '#FDF5E2',
 
-  feedback: {
-    error_bg: '#3A1B1B',
-    error_surface: '#D32F2F',
-    success_bg: '#1E3320',
-    success_surface: '#4CAF50',
-    warning_bg: '#332B1A',
-    warning_surface: '#FFC107',
-    info_bg: '#1A2B3A',
-    info_surface: '#42A5F5',
+  fbErrorBg: "#3A1B1B",
+  fbErrorSurface: "#D32F2F",
+
+  fbSuccessBg: "#1E3320",
+  fbSuccessSurface: "#4CAF50",
+
+  fbWarningBg: "#1A2B3A",
+  fbWarningSurface: "#FFC107",
+
+  fbInfoBg: "#332B1A",
+  fbInfoSurface: "#42A5F5",
+};
+
+export const theme = {
+  // // Semantic Colors
+  // semantic: {
+  //   cheap: '#00CC66',
+  //   moderate: '#FFB800',
+  //   luxury: {theme.colors.primary},
+  //   selected: {theme.colors.primary},
+  //   unselected: '#2a2a2a',
+  // },
+
+  // // Interest Category Colors
+  // interests: {
+  //   food: {theme.colors.primary},
+  //   urban: '#4A9EFF',
+  //   adventure: {theme.colors.primary},
+  //   educational: '#FFB800',
+  //   beach: '#00BFFF',
+  //   wildlife: '#32CD32',
+  //   pool: '#00CED1',
+  //   relax: '#DDA0DD',
+  //   camp: {theme.colors.primary},
+  // },
+
+  // // Transport Colors
+  // transport: {
+  //   flights: {theme.colors.primary},
+  //   hotels: '#4A9EFF',
+  //   trains: '#32CD32',
+  //   ferry: '#00CED1',
+  //   bus: '#FFB800',
+  // },
+
+  colors: {
+    background: palette.midnightBlack,
+    primary: palette.fieryRed,
+    text: palette.pureWhite,
+    gray1: palette.charcoalGrey,
+    gray2: palette.stoneGrey,
+    ...palette,
   },
-
-  // Semantic Colors
-  semantic: {
-    cheap: '#00CC66',
-    moderate: '#FFB800',
-    luxury: '#FF6B35',
-    selected: '#FF6B35',
-    unselected: '#2a2a2a',
+  textVariants: {
+    defaults: {
+      color: "text",
+      fontFamily: "PoppinsRegular",
+      fontSize: 16,
+      lineHeight: 24,
+    },
+    title28: {
+      fontSize: 28,
+      fontFamily: "PoppinsSemiBold",
+      lineHeight: 36,
+    },
+    title22: {
+      fontSize: 22,
+      fontFamily: "PoppinsSemiBold",
+      lineHeight: 30,
+    },
+    title16: {
+      fontSize: 16,
+      fontFamily: "PoppinsSemiBold",
+      lineHeight: 24,
+    },
+    title14: {
+      fontSize: 14,
+      fontFamily: "PoppinsSemiBold",
+      lineHeight: 22,
+    },
+    text18: {
+      fontSize: 18,
+      lineHeight: 26,
+    },
+    text16: {
+      fontSize: 16,
+      lineHeight: 24,
+    },
+    text14: {
+      fontSize: 14,
+      lineHeight: 22,
+    },
+    text12: {
+      fontSize: 12,
+      lineHeight: 20,
+    },
   },
-
-  // Interest Category Colors
-  interests: {
-    food: '#FF6B35',
-    urban: '#4A9EFF',
-    adventure: '#FF6B35',
-    educational: '#FFB800',
-    beach: '#00BFFF',
-    wildlife: '#32CD32',
-    pool: '#00CED1',
-    relax: '#DDA0DD',
-    camp: '#FF6B35',
+  borderRadius: {
+    default: 16,
+    rounded: 500,
   },
-
-  // Transport Colors
-  transport: {
-    flights: '#FF6B35',
-    hotels: '#4A9EFF',
-    trains: '#32CD32',
-    ferry: '#00CED1',
-    bus: '#FFB800',
+  boxShadows: {
+    primary: "3px 3px 10px 3px rgba(255, 75, 75, 0.4)",
   },
 }
 
-export const font = {
-  bold: 'Exo2_700Bold',
-  medium: 'Exo2_500Medium',
-  regular: 'Exo2_400Regular',
-  semiBold: 'Exo2_600SemiBold',
-}
+// export const font = {
+//   bold: 'Exo2_700Bold',
+//   medium: 'Exo2_500Medium',
+//   regular: 'Exo2_400Regular',
+//   semiBold: 'Exo2_600SemiBold',
+// }
+
+// export const boxShadows = {
+//   primary: "3px 3px 10px 3px rgba(255, 75, 75, 0.4)",
+// }
+
+// export const borderRadius = {
+//   default: 16,
+//   rounded: 500,
+// }

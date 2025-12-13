@@ -11,6 +11,7 @@ import type {
 export type ScreenWrapperProps = {
   children: React.ReactNode
   scrollable?: boolean
+  style?: ViewStyle
 }
 
 export type ModalWrapperProps = {
@@ -78,3 +79,50 @@ export type ImageUploadProps = {
   imageStyle?: ViewStyle
   placeholder?: string
 }
+
+export type CategoryCode =
+  | "ADVENTURE"
+  | "BEACH"
+  | "CULTURE"
+  | "GASTRONOMY"
+  | "HISTORY"
+  | "LUXURY"
+  | "NATURE"
+  | "SHOPPING"
+  | "URBAN"
+  | "FAVORITE";
+
+export type Category = {
+  id: string;
+  name: string;
+  description: string | null;
+  code: CategoryCode;
+};
+
+
+export type TouristAttraction = {
+  id: string;
+  name: string;
+  description: string;
+  cityId: string;
+};
+
+export type City = {
+  id: string;
+  name: string;
+  country: string;
+  coverImage: number | string;
+  description: string;
+  touristAttractions: TouristAttraction[];
+  location: {
+    latitude: number;
+    longitude: number;
+  };
+  categories: Category[];
+  isFavorite: boolean;
+};
+
+export type CityPreview = Pick<
+  City,
+  "id" | "name" | "country" | "coverImage" | "isFavorite"
+>;

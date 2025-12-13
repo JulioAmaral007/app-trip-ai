@@ -1,10 +1,10 @@
-import { BackButton } from '@/components/BackButton'
-import { Button } from '@/components/Button'
-import { Header } from '@/components/Header'
-import { Input } from '@/components/Input'
-import { ModalWrapper } from '@/components/ModalWrapper'
-import { Typo } from '@/components/Typo'
-import { colors, font } from '@/constants/theme'
+import { BackButton } from '@/components/navigation/BackButton'
+import { Button } from '@/components/ui/Button'
+import { Header } from '@/components/layout/Header'
+import { Input } from '@/components/ui/Input'
+import { ModalWrapper } from '@/components/layout/ModalWrapper'
+import { Typo } from '@/components/ui/Typo'
+import { theme } from '@/constants/theme'
 import { useAuth } from '@/contexts/AuthContext'
 import { getProfileImage } from '@/services/imageService'
 import type { UserDataType } from '@/services/types'
@@ -82,15 +82,13 @@ export default function ProfileModal() {
             />
 
             <TouchableOpacity onPress={onPickImage} style={styles.editIcon}>
-              <PencilSimple size={20} color={colors.white} weight="bold" />
+              <PencilSimple size={20} color={theme.colors.pureWhite} weight="bold" />
             </TouchableOpacity>
           </View>
 
           <View style={styles.inputContainer}>
             <Typo
-              size={16}
-              fontFamily={font.semiBold}
-              color={colors.white}
+              variant={theme.textVariants.text16}
               style={{ marginBottom: 8 }}>
               Nome
             </Typo>
@@ -106,7 +104,7 @@ export default function ProfileModal() {
 
       <View style={styles.footer}>
         <Button onPress={onSubmit} loading={loading} style={styles.updateButton}>
-          <Typo color={colors.white} fontFamily={font.bold} size={16}>
+          <Typo variant={theme.textVariants.text16}>
             Atualizar Perfil
           </Typo>
         </Button>
@@ -127,7 +125,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 20,
     paddingTop: 20,
-    borderTopColor: colors.gray1,
+    borderTopColor: theme.colors.gray1,
     marginBottom: 10,
     borderTopWidth: 1,
   },
@@ -142,20 +140,20 @@ const styles = StyleSheet.create({
   },
   avatar: {
     alignSelf: 'center',
-    backgroundColor: colors.gray1,
+    backgroundColor: theme.colors.gray1,
     height: 120,
     width: 120,
     borderRadius: 60,
     borderWidth: 2,
-    borderColor: colors.gray1,
+    borderColor: theme.colors.gray1,
   },
   editIcon: {
     position: 'absolute',
     bottom: 0,
     right: 0,
     borderRadius: 20,
-    backgroundColor: colors.primary,
-    shadowColor: colors.primary,
+    backgroundColor: theme.colors.primary,
+    shadowColor: theme.colors.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -170,17 +168,17 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   input: {
-    backgroundColor: colors.gray1,
-    borderColor: colors.gray1,
+    backgroundColor: theme.colors.gray1,
+    borderColor: theme.colors.gray1,
     borderWidth: 1,
     borderRadius: 12,
   },
   updateButton: {
     flex: 1,
-    backgroundColor: colors.primary,
+    backgroundColor: theme.colors.primary,
     borderRadius: 12,
     paddingVertical: 16,
-    shadowColor: colors.primary,
+    shadowColor: theme.colors.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,

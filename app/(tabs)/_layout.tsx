@@ -1,12 +1,12 @@
-import { CustomTabs } from '@/components/CustomTabs'
-import { colors } from '@/constants/theme'
+import { CustomTabs } from '@/components/navigation/CustomTabs'
+import { theme } from '@/constants/theme'
 import { Tabs } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function AppLayout() {
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: colors.black }}
+      style={{ flex: 1, backgroundColor: theme.colors.background }}
       edges={['bottom']}>
       <Tabs tabBar={CustomTabs}>
         <Tabs.Screen

@@ -13,6 +13,12 @@ export type InterestType =
   | 'pool'
   | 'relax'
   | 'camp'
+  | 'nature'
+  | 'culture'
+  | 'shopping'
+  | 'history'
+  | 'luxury'
+  | 'gastronomy'
 
 export interface TripData {
   // Dados dos viajantes
@@ -71,7 +77,7 @@ const initialTripData: TripData = {
   minBudget: '5200',
   maxBudget: '55200',
   spendingHabit: 'cheap',
-  selectedInterests: ['adventure', 'camp'],
+  selectedInterests: [],
   tripName: '',
   destination: 'Bali, Indonesia',
 }

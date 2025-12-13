@@ -15,77 +15,97 @@ export const generateTripPrompt = (tripData: TripData): string => {
   const endDate = tripData.endDate
     ? dateUtils.formatDayMonthYearSlash(tripData.endDate.dateString)
     : 'Not specified'
+  
+  const daysCount = tripData.startDate && tripData.endDate
+    ? Math.ceil((tripData.endDate.timestamp - tripData.startDate.timestamp) / (1000 * 60 * 60 * 24)) + 1
+    : null
 
-  return `Create a detailed travel itinerary for ${tripData.tripName} in ${tripData.destination}.
+  return `Você é um especialista em planejamento de viagens. Crie um roteiro detalhado e personalizado para uma viagem.
 
-Trip data:
-- Traveler type: ${tripData.travelerType}
-- Dates: ${startDate} to ${endDate}
-- Budget: R$ ${tripData.minBudget} to R$ ${tripData.maxBudget}
-- Spending profile: ${tripData.spendingHabit}
-- Interests: ${tripData.selectedInterests.join(', ')}
+## CONTEXTO DA VIAGEM
+- Nome da viagem: ${tripData.tripName}
+- Destino: ${tripData.destination}
+- Tipo de viajante: ${tripData.travelerType}
+- Período: ${startDate} até ${endDate}${daysCount ? ` (${daysCount} ${daysCount === 1 ? 'dia' : 'dias'})` : ''}
+- Orçamento: R$ ${tripData.minBudget} a R$ ${tripData.maxBudget}
+- Perfil de gastos: ${tripData.spendingHabit}
+- Interesses: ${tripData.selectedInterests.join(', ')}
 
-Please return a structured JSON with the following format:
+## INSTRUÇÕES IMPORTANTES
+1. Crie atividades realistas e adequadas ao destino, período e clima
+2. Respeite rigorosamente o orçamento especificado
+3. Alinhe todas as atividades aos interesses selecionados
+4. Considere o tipo de viajante e perfil de gastos ao sugerir opções
+5. Distribua as atividades ao longo dos dias de forma equilibrada
+6. Inclua tempo adequado para deslocamento entre locais
+7. Forneça informações práticas e úteis
+
+## FORMATO DE RESPOSTA
+Retorne APENAS um JSON válido, sem texto adicional antes ou depois. O JSON deve seguir EXATAMENTE esta estrutura:
 
 {
-  "tripName": "Trip name",
-  "destination": "Destination",
-  "summary": "Trip summary in 2-3 sentences",
+  "tripName": "Nome da viagem (use o nome fornecido)",
+  "destination": "Destino completo (cidade, país)",
+  "destinationImageUrl": "URL de uma imagem de alta qualidade do destino (use Unsplash, Pexels, ou sites oficiais de turismo)",
+  "summary": "Resumo da viagem em 2-3 frases, destacando os principais atrativos e experiências",
   "itinerary": [
     {
       "day": 1,
-      "date": "MM/DD/YYYY",
-      "title": "Day title",
-      "description": "Description of the day's activities",
+      "date": "DD/MM/YYYY",
+      "title": "Título do dia (ex: 'Explorando o Centro Histórico')",
+      "description": "Descrição geral das atividades do dia em 2-3 frases",
       "activities": [
         {
-          "time": "09:00",
-          "activity": "Activity name",
-          "description": "Detailed description",
-          "location": "Location",
-          "estimatedCost": "R$ 0.00",
-          "tips": "Important tips",
-          "imageUrl": "URL of the location image (if available)"
+          "time": "HH:MM",
+          "activity": "Nome da atividade",
+          "description": "Descrição detalhada da atividade, incluindo o que fazer, ver ou experimentar",
+          "location": "Endereço ou localização específica",
+          "estimatedCost": "R$ XX.XX",
+          "tips": "Dicas práticas e importantes sobre esta atividade",
+          "imageUrl": "URL da imagem do local (opcional, mas recomendado)"
         }
       ],
-      "estimatedDailyCost": "R$ 0.00"
+      "estimatedDailyCost": "R$ XX.XX"
     }
   ],
-  "totalEstimatedCost": "R$ 0.00",
+  "totalEstimatedCost": "R$ XX.XX (soma de todos os custos estimados)",
   "recommendations": {
     "accommodation": {
-      "description": "Accommodation recommendations",
+      "description": "Recomendações gerais sobre hospedagem no destino, incluindo melhores áreas e tipos de acomodação",
       "hotels": [
         {
-          "name": "Hotel name",
-          "description": "Hotel description",
-          "priceRange": "Price range (e.g., R$ 200-400/night)",
-          "bookingUrl": "Booking.com URL or similar",
-          "imageUrl": "Hotel image URL"
+          "name": "Nome do hotel",
+          "description": "Descrição do hotel, localização, comodidades e por que é recomendado",
+          "priceRange": "Faixa de preço por noite (ex: R$ 200-400/noite)",
+          "bookingUrl": "URL do Booking.com, Airbnb ou site oficial (quando disponível)",
+          "imageUrl": "URL da imagem do hotel"
         }
       ]
     },
-    "transportation": "Transportation recommendations",
-    "food": "Gastronomic recommendations",
-    "packing": "What to pack"
+    "transportation": "Recomendações detalhadas sobre transporte: como chegar ao destino, transporte local, melhores opções de mobilidade",
+    "food": "Recomendações gastronômicas: pratos típicos, melhores restaurantes, áreas com boa comida, dicas de onde comer",
+    "packing": "Lista detalhada do que levar: roupas adequadas ao clima, itens essenciais, documentos necessários, dicas específicas"
   },
   "tips": [
-    "Tip 1",
-    "Tip 2",
-    "Tip 3"
+    "Dica prática e útil sobre o destino",
+    "Outra dica importante",
+    "Mais uma dica relevante"
   ]
 }
 
-Make sure that:
-1. The JSON is valid and well-structured
-2. Activities are realistic for the destination and period
-3. Costs are within the specified budget
-4. Activities meet the selected interests
-5. Consider the traveler type and spending profile
-6. Include practical and useful tips
-7. For hotels, include Booking.com links or similar sites when possible
-8. For images, use URLs from reliable sites like Booking.com, TripAdvisor, or official tourism websites
-9. Include at least 2-3 hotel options with different price ranges`
+## REGRAS OBRIGATÓRIAS
+- O JSON deve ser válido e bem formatado
+- Todos os campos são obrigatórios, exceto "imageUrl" nas atividades (opcional)
+- As datas devem estar no formato DD/MM/YYYY
+- Os horários devem estar no formato 24h (HH:MM)
+- Os custos devem estar no formato "R$ XX.XX" e somar corretamente
+- Inclua pelo menos 2-3 opções de hotéis com diferentes faixas de preço
+- Para imagens, use URLs de sites confiáveis: Unsplash (unsplash.com), Pexels (pexels.com), sites oficiais de turismo, ou Booking.com
+- O destinationImageUrl deve ser uma imagem representativa e de alta qualidade do destino
+- As atividades devem ser cronologicamente ordenadas e realistas
+- O totalEstimatedCost deve ser a soma de todos os estimatedDailyCost
+- Inclua pelo menos 3-5 dicas práticas e úteis no array "tips"
+- Adapte o número de atividades por dia conforme a duração da viagem e tipo de viajante`
 }
 
 export const generateTripWithAI = async (tripData: TripData) => {

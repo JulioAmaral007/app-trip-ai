@@ -1,11 +1,11 @@
-import { BackButton } from '@/components/BackButton'
-import { Button } from '@/components/Button'
-import { Header } from '@/components/Header'
-import { Input } from '@/components/Input'
-import { Radio } from '@/components/Radio'
-import { ScreenWrapper } from '@/components/ScreenWrapper'
-import { Typo } from '@/components/Typo'
-import { colors, font } from '@/constants/theme'
+import { Header } from '@/components/layout/Header'
+import { ScreenWrapper } from '@/components/layout/ScreenWrapper'
+import { BackButton } from '@/components/navigation/BackButton'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
+import { Radio } from '@/components/ui/Radio'
+import { Typo } from '@/components/ui/Typo'
+import { theme } from '@/constants/theme'
 import { TripContext } from '@/contexts/TripContext'
 import { useRouter } from 'expo-router'
 import { use, useMemo } from 'react'
@@ -50,31 +50,31 @@ export default function BudgetScreen() {
   const spendingOptions = [
     {
       id: 'cheap' as const,
-      title: 'Cheap',
-      description: 'Stay conscious of costs',
+      title: 'Econômico',
+      description: 'Mantenha-se consciente dos custos',
     },
     {
       id: 'moderate' as const,
-      title: 'Moderate',
-      description: 'Keep costs on the average side',
+      title: 'Moderado',
+      description: 'Mantenha os custos na média',
     },
     {
       id: 'luxury' as const,
-      title: 'Luxury',
-      description: "Don't worry about it- live a little!",
+      title: 'Luxo',
+      description: 'Não se preocupe - viva um pouco!',
     },
   ]
 
   return (
     <ScreenWrapper>
-      <Header title="Budget" leftIcon={<BackButton />} />
+      <Header leftIcon={<BackButton />} title="Orçamento" />
 
       <View style={styles.priceRangeSection}>
-        <Typo size={20} fontFamily={font.semiBold} color={colors.white}>
-          Price range
+        <Typo variant={theme.textVariants.title22}>
+          Faixa de preço
         </Typo>
-        <Typo size={14} fontFamily={font.regular} color={colors.gray2}>
-          The average nightly price is ${averagePrice}
+        <Typo variant={theme.textVariants.text14}>
+          O preço médio por noite é ${averagePrice}
         </Typo>
 
         {/* Price Chart Visualization */}
@@ -88,17 +88,17 @@ export default function BudgetScreen() {
               xAxisLabelsVerticalShift={0}
               noOfSections={0}
               barBorderRadius={1}
-              frontColor={colors.white}
+              frontColor={theme.colors.pureWhite}
               backgroundColor="transparent"
               width={300}
               height={100}
             />
           </View>
           <View style={styles.chartLabels}>
-            <Typo size={12} fontFamily={font.regular} color={colors.gray2}>
+            <Typo variant={theme.textVariants.text12}>
               ${parseInt(tripData.minBudget.replace(/,/g, '')) || 5200}
             </Typo>
-            <Typo size={12} fontFamily={font.regular} color={colors.gray2}>
+            <Typo variant={theme.textVariants.text12}>
               ${parseInt(tripData.maxBudget.replace(/,/g, '')) || 55200}
             </Typo>
           </View>
@@ -109,18 +109,18 @@ export default function BudgetScreen() {
             <Input
               value={tripData.minBudget}
               onChangeText={(text) => setBudget(text, tripData.maxBudget)}
-              placeholder="Minimum"
+              placeholder="Mínimo"
               keyboardType="numeric"
             />
           </View>
-          <Typo size={18} fontFamily={font.regular} color={colors.gray2}>
+          <Typo variant={theme.textVariants.text18}>
             →
           </Typo>
           <View style={styles.inputContainer}>
             <Input
               value={tripData.maxBudget}
               onChangeText={(text) => setBudget(tripData.minBudget, text)}
-              placeholder="Maximum"
+              placeholder="Máximo"
               keyboardType="numeric"
             />
           </View>
@@ -128,8 +128,8 @@ export default function BudgetScreen() {
       </View>
 
       <View style={styles.spendingSection}>
-        <Typo size={20} fontFamily={font.semiBold} color={colors.white}>
-          Choose spending habits for you trip
+        <Typo variant={theme.textVariants.title22}>
+          Escolha os hábitos de gastos para sua viagem
         </Typo>
 
         <View style={styles.optionsContainer}>
@@ -148,16 +148,15 @@ export default function BudgetScreen() {
                   <Radio selected={tripData.spendingHabit === option.id} />
                 </View>
                 <View style={styles.optionText}>
-                  <Typo size={16} fontFamily={font.semiBold} color={colors.white}>
+                  <Typo variant={theme.textVariants.text16}>
                     {option.title}
                   </Typo>
                   <Typo
-                    size={16}
-                    fontFamily={font.regular}
+                    variant={theme.textVariants.text16}
                     color={
                       tripData.spendingHabit === option.id
-                        ? colors.white
-                        : colors.gray2
+                        ? theme.colors.pureWhite
+                        : theme.colors.gray2
                     }>
                     {option.description}
                   </Typo>
@@ -169,8 +168,8 @@ export default function BudgetScreen() {
       </View>
 
       <Button style={styles.continueButton} onPress={() => router.push('/create-trip/interests')}>
-        <Typo size={16} fontFamily={font.semiBold} color={colors.white}>
-          Continue
+        <Typo variant={theme.textVariants.text16} color={theme.colors.pureWhite}>
+          Continuar
         </Typo>
       </Button>
     </ScreenWrapper>
@@ -180,7 +179,6 @@ export default function BudgetScreen() {
 const styles = StyleSheet.create({
   priceRangeSection: {
     marginBottom: 40,
-    paddingHorizontal: 24,
   },
   chartContainer: {
     marginBottom: 20,
@@ -221,19 +219,18 @@ const styles = StyleSheet.create({
   },
   spendingSection: {
     flex: 1,
-    paddingHorizontal: 24,
   },
   optionsContainer: {
     gap: 16,
     marginTop: 20,
   },
   option: {
-    backgroundColor: colors.gray1,
+    backgroundColor: theme.colors.gray1,
     padding: 20,
   },
   selectedOption: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
+    backgroundColor: theme.colors.primary,
+    borderColor: theme.colors.primary,
   },
   radioContainer: {
     flexDirection: 'row',
@@ -243,9 +240,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   continueButton: {
-    backgroundColor: colors.primary,
-    paddingVertical: 16,
     marginBottom: 40,
-    marginHorizontal: 24,
   },
 })

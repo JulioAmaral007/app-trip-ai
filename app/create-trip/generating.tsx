@@ -1,8 +1,8 @@
-import { BackButton } from '@/components/BackButton'
-import { Header } from '@/components/Header'
-import { ScreenWrapper } from '@/components/ScreenWrapper'
-import { Typo } from '@/components/Typo'
-import { colors, font } from '@/constants/theme'
+import { Header } from '@/components/layout/Header'
+import { ScreenWrapper } from '@/components/layout/ScreenWrapper'
+import { BackButton } from '@/components/navigation/BackButton'
+import { Typo } from '@/components/ui/Typo'
+import { theme } from '@/constants/theme'
 import { useAuth } from '@/contexts/AuthContext'
 import { TripContext } from '@/contexts/TripContext'
 import { saveGeneratedTrip } from '@/services/tripService'
@@ -81,7 +81,7 @@ export default function GeneratingScreen() {
 
   return (
     <ScreenWrapper>
-      <Header title="Generating" leftIcon={<BackButton />} />
+      <Header title="Gerando" leftIcon={<BackButton />} />
 
       <View style={styles.content}>
         {/* 3D Abstract Shape */}
@@ -97,10 +97,10 @@ export default function GeneratingScreen() {
           </View>
         </View>
 
-        <Typo size={24} fontFamily={font.bold} color={colors.white} style={styles.locationText}>
+        <Typo variant={theme.textVariants.title22} style={styles.locationText}>
           {tripData.destination}
         </Typo>
-        <Typo size={16} fontFamily={font.regular} color={colors.gray2} style={styles.statusText}>
+        <Typo variant={theme.textVariants.text16} style={styles.statusText}>
           {status}
         </Typo>
 
@@ -109,10 +109,10 @@ export default function GeneratingScreen() {
             <View style={[styles.progressFill, { width: `${progress}%` }]} />
           </View>
           <View style={styles.progressLabels}>
-            <Typo size={14} fontFamily={font.regular} color={colors.gray2}>
+            <Typo variant={theme.textVariants.text14}>
               {progress}%
             </Typo>
-            <Typo size={14} fontFamily={font.regular} color={colors.gray2}>
+            <Typo variant={theme.textVariants.text14}>
               100%
             </Typo>
           </View>
@@ -120,10 +120,10 @@ export default function GeneratingScreen() {
 
         {/* Mostrar informações da viagem sendo processada */}
         <View style={styles.tripInfo}>
-          <Typo size={20} fontFamily={font.bold} color={colors.white} style={styles.tripName}>
+          <Typo variant={theme.textVariants.title22} style={styles.tripName}>
             {tripData.tripName}
           </Typo>
-          <Typo size={14} fontFamily={font.regular} color={colors.gray2}>
+          <Typo variant={theme.textVariants.text14}>
             {tripData.travelerType} • {tripData.selectedInterests.join(', ')}
           </Typo>
         </View>
@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 24,
   },
   shapeContainer: {
     width: 300,
@@ -156,9 +155,9 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: colors.primary,
+    backgroundColor: theme.colors.primary,
     opacity: 0.8,
-    shadowColor: colors.primary,
+    shadowColor: theme.colors.primary,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.8,
     shadowRadius: 20,
@@ -175,14 +174,14 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: 6,
-    backgroundColor: colors.gray1,
+    backgroundColor: theme.colors.gray1,
     borderRadius: 3,
     overflow: 'hidden',
     marginBottom: 8,
   },
   progressFill: {
     height: '100%',
-    backgroundColor: colors.primary,
+    backgroundColor: theme.colors.primary,
     borderRadius: 3,
   },
   progressLabels: {

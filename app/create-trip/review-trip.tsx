@@ -1,15 +1,18 @@
-import { BackButton } from '@/components/BackButton'
-import { Button } from '@/components/Button'
-import { Header } from '@/components/Header'
-import { Input } from '@/components/Input'
-import { ScreenWrapper } from '@/components/ScreenWrapper'
-import { Typo } from '@/components/Typo'
-import { colors, font } from '@/constants/theme'
-import { TripContext } from '@/contexts/TripContext'
+import { categoryIconMap } from '@/components/category/CategoryPill'
+import { Header } from '@/components/layout/Header'
+import { ScreenWrapper } from '@/components/layout/ScreenWrapper'
+import { BackButton } from '@/components/navigation/BackButton'
+import { Button } from '@/components/ui/Button'
+import { Icon } from '@/components/ui/Icon'
+import { Input } from '@/components/ui/Input'
+import { Typo } from '@/components/ui/Typo'
+import { theme } from '@/constants/theme'
+import { InterestType, TripContext } from '@/contexts/TripContext'
+import { categories } from '@/data/categories'
 import { dateUtils } from '@/utils/dateUtils'
 import { useRouter } from 'expo-router'
 import { use } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
 
 export default function ReviewScreen() {
   const { tripData, setTripName } = use(TripContext)
@@ -18,13 +21,13 @@ export default function ReviewScreen() {
   const getTravelerTypeText = (type: string) => {
     switch (type) {
       case 'solo':
-        return 'Just me'
+        return 'Só eu'
       case 'couple':
-        return 'A couple'
+        return 'Um casal'
       case 'family':
-        return 'Family'
+        return 'Família'
       case 'friends':
-        return 'Friends'
+        return 'Amigos'
       default:
         return type
     }
@@ -33,60 +36,48 @@ export default function ReviewScreen() {
   const getSpendingHabitText = (habit: string) => {
     switch (habit) {
       case 'cheap':
-        return 'Cheap'
+        return 'Econômico'
       case 'moderate':
-        return 'Moderate'
+        return 'Moderado'
       case 'luxury':
-        return 'Luxury'
+        return 'Luxo'
       default:
         return habit
     }
   }
 
-  const getInterestIcon = (interest: string) => {
-    switch (interest) {
-      case 'food':
-        return '🍽️'
-      case 'urban':
-        return '🏙️'
-      case 'adventure':
-        return '🏔️'
-      case 'educational':
-        return '🎓'
-      case 'beach':
-        return '🏖️'
-      case 'pool':
-        return '🏊'
-      case 'relax':
-        return '😌'
-      case 'camp':
-        return '🏕️'
-      default:
-        return '📍'
+  const getInterestIconName = (interest: InterestType) => {
+    // Mapeia InterestType para CategoryCode através do id da categoria
+    const category = categories.find((cat) => cat.id === interest)
+    if (category) {
+      return categoryIconMap[category.code]
     }
+    // Fallback para interesses antigos que não têm categoria correspondente
+    const interestToCodeMap: Record<string, string> = {
+      food: 'GASTRONOMY',
+      educational: 'CULTURE',
+      pool: 'BEACH',
+      relax: 'NATURE',
+      camp: 'NATURE',
+    }
+    const code = interestToCodeMap[interest]
+    return code ? categoryIconMap[code as keyof typeof categoryIconMap] : 'Urban'
   }
 
-  const getInterestText = (interest: string) => {
-    switch (interest) {
-      case 'food':
-        return 'Food & Drinks'
-      case 'urban':
-        return 'Urban Areas'
-      case 'adventure':
-        return 'Adventure'
-      case 'educational':
-        return 'Educational'
-      case 'beach':
-        return 'Beach'
-      case 'pool':
-        return 'Pool'
-      case 'relax':
-        return 'Relax'
-      case 'camp':
-        return 'Camp'
-      default:
-        return interest
+  const getInterestText = (interest: InterestType) => {
+    const category = categories.find((cat) => cat.id === interest)
+    if (category) {
+      return category.name
     }
+    // Fallback para interesses antigos
+    const interestToTextMap: Record<string, string> = {
+      food: 'Gastronomia',
+      educational: 'Cultura',
+      pool: 'Praia',
+      relax: 'Natureza',
+      camp: 'Natureza',
+    }
+    return interestToTextMap[interest] || interest
   }
 
   const getDateRangeText = () => {
@@ -95,21 +86,21 @@ export default function ReviewScreen() {
       const endDate = dateUtils.formatDayMonthYear(tripData.endDate.dateString)
       return `${startDate} - ${endDate}`
     }
-    return 'Select dates'
+    return 'Selecionar datas'
   }
 
   return (
     <ScreenWrapper>
-      <Header title="Review your trip" leftIcon={<BackButton />} />
+      <Header title="Revise sua viagem" leftIcon={<BackButton />} />
 
       <View style={styles.content}>
         <View style={styles.tripNameSection}>
-          <Typo fontFamily={font.semiBold} style={styles.sectionLabel}>
-            Trip Name
+          <Typo variant={theme.textVariants.title16} style={styles.sectionLabel}>
+            Nome da viagem
           </Typo>
           <Input
             value={tripData.tripName}
-            placeholder="Enter trip name"
+            placeholder="Digite o nome da viagem"
             onChangeText={setTripName}
           />
         </View>
@@ -117,12 +108,12 @@ export default function ReviewScreen() {
         <View style={styles.reviewSection}>
           <View style={styles.reviewItem}>
             <View style={styles.reviewItemHeader}>
-              <Typo size={20}>📍</Typo>
+              <Typo variant={theme.textVariants.title22}>📍</Typo>
               <View style={styles.reviewItemContent}>
-                <Typo size={14} color={colors.gray2}>
-                  Destination
+                <Typo variant={theme.textVariants.text14}>
+                  Destino
                 </Typo>
-                <Typo size={16} fontFamily={font.semiBold}>
+                <Typo variant={theme.textVariants.text16}>
                   {tripData.destination || 'Bali, Indonesia'}
                 </Typo>
               </View>
@@ -131,12 +122,12 @@ export default function ReviewScreen() {
 
           <View style={styles.reviewItem}>
             <View style={styles.reviewItemHeader}>
-              <Typo size={20}>👥</Typo>
+              <Typo variant={theme.textVariants.title22}>👥</Typo>
               <View style={styles.reviewItemContent}>
-                <Typo size={14} color={colors.gray2}>
-                  Choose your travelers
+                <Typo variant={theme.textVariants.text14}>
+                  Escolha seus viajantes
                 </Typo>
-                <Typo size={16} fontFamily={font.semiBold}>
+                <Typo variant={theme.textVariants.text16}>
                   {getTravelerTypeText(tripData.travelerType)}
                 </Typo>
               </View>
@@ -145,12 +136,12 @@ export default function ReviewScreen() {
 
           <View style={styles.reviewItem}>
             <View style={styles.reviewItemHeader}>
-              <Typo size={20}>📅</Typo>
+              <Typo variant={theme.textVariants.title22}>📅</Typo>
               <View style={styles.reviewItemContent}>
-                <Typo size={14} color={colors.gray2}>
-                  Travel dates
+                <Typo variant={theme.textVariants.text14}>
+                  Datas de viagem
                 </Typo>
-                <Typo size={16} fontFamily={font.semiBold}>
+                <Typo variant={theme.textVariants.text16}>
                   {getDateRangeText()}
                 </Typo>
               </View>
@@ -159,12 +150,12 @@ export default function ReviewScreen() {
 
           <View style={styles.reviewItem}>
             <View style={styles.reviewItemHeader}>
-              <Typo size={20}>💰</Typo>
+              <Typo variant={theme.textVariants.title22}>💰</Typo>
               <View style={styles.reviewItemContent}>
-                <Typo size={14} color={colors.gray2}>
-                  Budget
+                <Typo variant={theme.textVariants.text14}>
+                  Orçamento
                 </Typo>
-                <Typo size={16} fontFamily={font.semiBold}>
+                <Typo variant={theme.textVariants.text16}>
                   {getSpendingHabitText(tripData.spendingHabit)}
                 </Typo>
               </View>
@@ -173,28 +164,32 @@ export default function ReviewScreen() {
         </View>
 
         <View style={styles.interestsSection}>
-          <Typo fontFamily={font.semiBold} style={styles.sectionLabel}>
-            Interest
+          <Typo variant={theme.textVariants.title16} style={styles.sectionLabel}>
+            Interesses
           </Typo>
-          <View style={styles.interestTags}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.interestTags}
+            style={styles.interestTagsContainer}>
             {tripData.selectedInterests.map((interest) => (
               <View key={interest} style={styles.interestTag}>
-                <Typo size={20}>{getInterestIcon(interest)}</Typo>
-                <Typo size={16} fontFamily={font.semiBold}>
+                <Icon name={getInterestIconName(interest)} size={20} color="pureWhite" />
+                <Typo variant={theme.textVariants.text16}>
                   {getInterestText(interest)}
                 </Typo>
               </View>
             ))}
             <TouchableOpacity style={styles.addInterestButton}>
-              <Typo size={16}>+</Typo>
+              <Typo variant={theme.textVariants.text16}>+</Typo>
             </TouchableOpacity>
-          </View>
+          </ScrollView>
         </View>
       </View>
 
       <Button style={styles.searchButton} onPress={() => router.push('/create-trip/generating')}>
-        <Typo size={16} fontFamily={font.semiBold} color={colors.white}>
-          Continue
+        <Typo variant={theme.textVariants.text16} color={theme.colors.pureWhite}>
+          Continuar
         </Typo>
       </Button>
     </ScreenWrapper>
@@ -205,7 +200,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 24,
   },
   tripNameSection: {
     marginBottom: 30,
@@ -222,7 +216,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: colors.gray1,
+    borderBottomColor: theme.colors.gray1,
   },
   reviewItemHeader: {
     flexDirection: 'row',
@@ -237,33 +231,34 @@ const styles = StyleSheet.create({
   interestsSection: {
     marginBottom: 40,
   },
+  interestTagsContainer: {
+    marginTop: 8,
+  },
   interestTags: {
     flexDirection: 'row',
     gap: 12,
-    marginTop: 8,
+    paddingRight: 20,
   },
   interestTag: {
-    backgroundColor: colors.primary,
+    backgroundColor: theme.colors.primary,
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 8,
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
   },
   addInterestButton: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: colors.gray1,
+    backgroundColor: theme.colors.gray1,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: colors.gray2,
+    borderColor: theme.colors.gray2,
   },
   searchButton: {
-    backgroundColor: colors.primary,
-    paddingVertical: 16,
     marginBottom: 40,
-    marginHorizontal: 24,
   },
 })

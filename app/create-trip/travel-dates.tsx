@@ -1,9 +1,9 @@
-import { BackButton } from '@/components/BackButton'
-import { Button } from '@/components/Button'
-import { Header } from '@/components/Header'
-import { ScreenWrapper } from '@/components/ScreenWrapper'
-import { Typo } from '@/components/Typo'
-import { colors, font } from '@/constants/theme'
+import { Header } from '@/components/layout/Header'
+import { ScreenWrapper } from '@/components/layout/ScreenWrapper'
+import { BackButton } from '@/components/navigation/BackButton'
+import { Button } from '@/components/ui/Button'
+import { Typo } from '@/components/ui/Typo'
+import { theme } from '@/constants/theme'
 import { TripContext } from '@/contexts/TripContext'
 import { dateUtils } from '@/utils/dateUtils'
 import { Feather } from '@expo/vector-icons'
@@ -44,16 +44,16 @@ export default function DatesScreen() {
     if (tripData.startDate) {
       marked[tripData.startDate.dateString] = {
         startingDay: true,
-        color: colors.primary,
-        textColor: colors.white,
+        color: theme.colors.primary,
+        textColor: theme.colors.pureWhite,
       }
     }
 
     if (tripData.endDate) {
       marked[tripData.endDate.dateString] = {
         endingDay: true,
-        color: colors.primary,
-        textColor: colors.white,
+        color: theme.colors.primary,
+        textColor: theme.colors.pureWhite,
       }
     }
 
@@ -68,8 +68,8 @@ export default function DatesScreen() {
         if (dateString !== tripData.endDate.dateString) {
           marked[dateString] = {
             selected: true,
-            color: colors.primary,
-            textColor: colors.white,
+            color: theme.colors.primary,
+            textColor: theme.colors.pureWhite,
           }
         }
       }
@@ -80,29 +80,29 @@ export default function DatesScreen() {
 
   return (
     <ScreenWrapper>
-      <Header title="Travel dates" leftIcon={<BackButton />} />
+      <Header title="Datas de viagem" leftIcon={<BackButton />} />
 
       <View style={styles.calendarContainer}>
         <Calendar
           renderArrow={(direction: 'right' | 'left') => (
-            <Feather size={24} color={colors.white} name={`chevron-${direction}`} />
+            <Feather size={24} color={theme.colors.pureWhite} name={`chevron-${direction}`} />
           )}
           headerStyle={{
             borderBottomWidth: 0.5,
-            borderBottomColor: colors.white,
+            borderBottomColor: theme.colors.pureWhite,
             paddingBottom: 10,
             marginBottom: 10,
           }}
           theme={{
             textMonthFontSize: 18,
-            monthTextColor: colors.white,
-            todayTextColor: colors.primary,
-            selectedDayBackgroundColor: colors.primary,
-            selectedDayTextColor: colors.white,
-            arrowColor: colors.white,
+            monthTextColor: theme.colors.pureWhite,
+            todayTextColor: theme.colors.primary,
+            selectedDayBackgroundColor: theme.colors.primary,
+            selectedDayTextColor: theme.colors.pureWhite,
+            arrowColor: theme.colors.pureWhite,
             calendarBackground: 'transparent',
-            textDayStyle: { color: colors.white },
-            textDisabledColor: colors.gray2,
+            textDayStyle: { color: theme.colors.pureWhite },
+            textDisabledColor: theme.colors.gray2,
             arrowStyle: {
               margin: 0,
               padding: 0,
@@ -120,24 +120,24 @@ export default function DatesScreen() {
             <View style={styles.dateInfo}>
               <Text style={styles.dateIcon}>📅</Text>
               <View>
-                <Typo size={16}>
+                <Typo variant={theme.textVariants.text16}>
                   {tripData.startDate
                     ? dateUtils.formatDayMonthYear(tripData.startDate.dateString)
                     : 'Data inicial'}
                 </Typo>
-                <Typo size={12}>Início</Typo>
+                <Typo variant={theme.textVariants.text12}>Início</Typo>
               </View>
             </View>
             <Text style={styles.arrow}>→</Text>
             <View style={styles.dateInfo}>
               <Text style={styles.dateIcon}>📅</Text>
               <View>
-                <Typo size={16}>
+                <Typo variant={theme.textVariants.text16}>
                   {tripData.endDate
                     ? dateUtils.formatDayMonthYear(tripData.endDate.dateString)
                     : 'Data final'}
                 </Typo>
-                <Typo size={12}>Fim</Typo>
+                <Typo variant={theme.textVariants.text12}>Fim</Typo>
               </View>
             </View>
           </View>
@@ -152,8 +152,8 @@ export default function DatesScreen() {
           }
         }}
         disabled={!tripData.startDate || !tripData.endDate}>
-        <Typo size={16} fontFamily={font.semiBold} color={colors.white}>
-          Continue
+        <Typo variant={theme.textVariants.text16} color={theme.colors.pureWhite}>
+          Continuar
         </Typo>
       </Button>
     </ScreenWrapper>
@@ -164,7 +164,6 @@ const styles = StyleSheet.create({
   calendarContainer: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 24,
   },
   dateRangeContainer: {
     marginTop: 40,
@@ -173,7 +172,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: colors.gray1,
+    backgroundColor: theme.colors.gray1,
     borderRadius: 12,
     padding: 16,
   },
@@ -187,14 +186,11 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   arrow: {
-    color: colors.gray2,
+    color: theme.colors.gray2,
     fontSize: 18,
     marginHorizontal: 16,
   },
   continueButton: {
-    backgroundColor: colors.primary,
-    paddingVertical: 16,
     marginBottom: 40,
-    marginHorizontal: 24,
   },
 })

@@ -1,10 +1,10 @@
-import { BackButton } from '@/components/BackButton'
-import { Button } from '@/components/Button'
-import { Header } from '@/components/Header'
-import { Radio } from '@/components/Radio'
-import { ScreenWrapper } from '@/components/ScreenWrapper'
-import { Typo } from '@/components/Typo'
-import { colors, font } from '@/constants/theme'
+import { Header } from '@/components/layout/Header'
+import { ScreenWrapper } from '@/components/layout/ScreenWrapper'
+import { BackButton } from '@/components/navigation/BackButton'
+import { Button } from '@/components/ui/Button'
+import { Radio } from '@/components/ui/Radio'
+import { Typo } from '@/components/ui/Typo'
+import { theme } from '@/constants/theme'
 import { TripContext } from '@/contexts/TripContext'
 import { useRouter } from 'expo-router'
 import { use } from 'react'
@@ -17,33 +17,33 @@ export default function TravelersScreen() {
   const travelerOptions = [
     {
       id: 'solo' as const,
-      title: 'Just me',
-      description: 'A solo traveler in exploration',
+      title: 'Só eu',
+      description: 'Um viajante solo em exploração',
     },
     {
       id: 'couple' as const,
-      title: 'A couple',
-      description: "Two traveler's in tandem",
+      title: 'Um casal',
+      description: 'Dois viajantes em tandem',
     },
     {
       id: 'family' as const,
-      title: 'Family',
-      description: 'A group of fun-loving adventures',
+      title: 'Família',
+      description: 'Um grupo de aventureiros divertidos',
     },
     {
       id: 'friends' as const,
-      title: 'Friends',
-      description: 'A bunch of thrill-seekers',
+      title: 'Amigos',
+      description: 'Um bando de aventureiros',
     },
   ]
 
   return (
     <ScreenWrapper>
-      <Header leftIcon={<BackButton />} title="Who's going?" />
+      <Header leftIcon={<BackButton />} title="Quem vai?" />
 
       <View style={styles.content}>
-        <Typo size={22} fontFamily={font.semiBold} style={styles.subtitle}>
-          Choose your travelers
+        <Typo variant={theme.textVariants.title22} style={styles.subtitle}>
+          Escolha seus viajantes
         </Typo>
 
         <View style={styles.optionsContainer}>
@@ -59,16 +59,15 @@ export default function TravelersScreen() {
                   <Radio selected={tripData.travelerType === option.id} />
                 </View>
                 <View style={styles.optionText}>
-                  <Typo size={18} fontFamily={font.semiBold} color={colors.white}>
+                  <Typo variant={theme.textVariants.title22} color={theme.colors.pureWhite}>
                     {option.title}
                   </Typo>
                   <Typo
-                    size={16}
-                    fontFamily={font.regular}
+                    variant={theme.textVariants.text16}
                     color={
                       tripData.travelerType === option.id
-                        ? colors.white
-                        : colors.gray2
+                        ? theme.colors.pureWhite
+                        : theme.colors.gray2
                     }>
                     {option.description}
                   </Typo>
@@ -82,8 +81,8 @@ export default function TravelersScreen() {
       <Button
         style={styles.continueButton}
         onPress={() => router.push('/create-trip/travel-dates')}>
-        <Typo size={16} fontFamily={font.semiBold} color={colors.white}>
-          Continue
+        <Typo variant={theme.textVariants.text16} color={theme.colors.pureWhite}>
+          Continuar
         </Typo>
       </Button>
     </ScreenWrapper>
@@ -94,7 +93,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 24,
   },
   subtitle: {
     marginBottom: 20,
@@ -103,12 +101,12 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   option: {
-    backgroundColor: colors.gray1,
+    backgroundColor: theme.colors.gray1,
     padding: 20,
   },
   selectedOption: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
+    backgroundColor: theme.colors.primary,
+    borderColor: theme.colors.primary,
   },
   radioContainer: {
     flexDirection: 'row',
@@ -121,12 +119,9 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   selectedText: {
-    color: colors.white,
+    color: theme.colors.pureWhite,
   },
   continueButton: {
-    backgroundColor: colors.primary,
-    paddingVertical: 16,
     marginBottom: 40,
-    marginHorizontal: 24,
   },
 })

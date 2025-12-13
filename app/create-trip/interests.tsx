@@ -1,92 +1,95 @@
-import { BackButton } from '@/components/BackButton'
-import { Button } from '@/components/Button'
-import { Header } from '@/components/Header'
-import { ScreenWrapper } from '@/components/ScreenWrapper'
-import { Typo } from '@/components/Typo'
-import { colors, font } from '@/constants/theme'
-import { TripContext } from '@/contexts/TripContext'
+import { categoryIconMap } from '@/components/category/CategoryPill'
+import { Header } from '@/components/layout/Header'
+import { ScreenWrapper } from '@/components/layout/ScreenWrapper'
+import { BackButton } from '@/components/navigation/BackButton'
+import { Button } from '@/components/ui/Button'
+import { Icon } from '@/components/ui/Icon'
+import { Typo } from '@/components/ui/Typo'
+import { theme } from '@/constants/theme'
+import { InterestType, TripContext } from '@/contexts/TripContext'
+import { categories } from '@/data/categories'
 import { useRouter } from 'expo-router'
-import {
-  BuildingsIcon,
-  ForkKnifeIcon,
-  GraduationCapIcon,
-  MountainsIcon,
-  SmileyIcon,
-  SwimmingPoolIcon,
-  TentIcon,
-  UmbrellaIcon,
-} from 'phosphor-react-native'
 import { use } from 'react'
 import { StyleSheet, View } from 'react-native'
+
+// Mapeamento entre IDs das categorias e tipos de interesse válidos
+// Cada categoria agora mapeia diretamente para seu próprio ID como tipo de interesse único
+const categoryToInterestMap: Record<string, InterestType> = {
+  urban: 'urban',
+  beach: 'beach',
+  nature: 'nature',
+  culture: 'culture',
+  shopping: 'shopping',
+  history: 'history',
+  adventure: 'adventure',
+  luxury: 'luxury',
+  gastronomy: 'gastronomy',
+}
 
 export default function InterestsScreen() {
   const { tripData, addInterest, removeInterest } = use(TripContext)
   const router = useRouter()
 
-  const interests = [
-    { id: 'food', title: 'Food & Drinks', icon: ForkKnifeIcon },
-    { id: 'urban', title: 'Urban Areas', icon: BuildingsIcon },
-    { id: 'adventure', title: 'Adventure', icon: MountainsIcon },
-    { id: 'educational', title: 'Educational', icon: GraduationCapIcon },
-    { id: 'beach', title: 'Beach', icon: UmbrellaIcon },
-    { id: 'pool', title: 'Pool', icon: SwimmingPoolIcon },
-    { id: 'relax', title: 'Relax', icon: SmileyIcon },
-    { id: 'camp', title: 'Camp', icon: TentIcon },
-  ]
+  const toggleInterest = (categoryId: string) => {
+    const interestType = categoryToInterestMap[categoryId]
+    if (!interestType) return
 
-  const toggleInterest = (interestId: string) => {
-    if (tripData.selectedInterests.includes(interestId as any)) {
-      removeInterest(interestId as any)
+    if (tripData.selectedInterests.includes(interestType)) {
+      removeInterest(interestType)
     } else {
-      addInterest(interestId as any)
+      addInterest(interestType)
     }
   }
 
-  const isSelected = (interestId: string) => tripData.selectedInterests.includes(interestId as any)
+  const isSelected = (categoryId: string) => {
+    const interestType = categoryToInterestMap[categoryId]
+    return interestType ? tripData.selectedInterests.includes(interestType) : false
+  }
 
   return (
     <ScreenWrapper>
-      <Header title="Interest" leftIcon={<BackButton />} />
+      <Header title="Interesses" leftIcon={<BackButton />} />
 
       <View style={styles.selectionInfo}>
-        <Typo size={14} color={colors.gray2}>
+        <Typo variant={theme.textVariants.text14}>
           {tripData.selectedInterests.length}/3 interesses selecionados
         </Typo>
       </View>
 
       <View style={styles.interestsContainer}>
-        {interests.map((interest) => {
-          const isCurrentlySelected = isSelected(interest.id)
-          const isDisabled = !isCurrentlySelected && tripData.selectedInterests.length >= 3
-          const IconComponent = interest.icon
+        {categories
+          .filter((category) => category.code !== 'FAVORITE')
+          .map((category) => {
+            const isCurrentlySelected = isSelected(category.id)
+            const isDisabled = !isCurrentlySelected && tripData.selectedInterests.length >= 3
 
-          return (
-            <Button
-              key={interest.id}
-              style={
-                [
-                  styles.interestButton,
-                  isCurrentlySelected && styles.selectedInterest,
-                  isDisabled && styles.disabledInterest,
-                ] as any
-              }
-              onPress={() => toggleInterest(interest.id)}>
-              <IconComponent
-                size={20}
-                color={isCurrentlySelected ? colors.white : colors.white}
-                weight="fill"
-              />
-              <Typo size={16} fontFamily={font.semiBold} color={colors.white}>
-                {interest.title}
-              </Typo>
-            </Button>
-          )
-        })}
+            return (
+              <Button
+                key={category.id}
+                style={
+                  [
+                    styles.interestButton,
+                    isCurrentlySelected && styles.selectedInterest,
+                    isDisabled && styles.disabledInterest,
+                  ] as any
+                }
+                onPress={() => toggleInterest(category.id)}>
+                <Icon
+                  name={categoryIconMap[category.code]}
+                  size={20}
+                  color={isCurrentlySelected ? 'pureWhite' : 'pureWhite'}
+                />
+                <Typo variant={theme.textVariants.text16}>
+                  {category.name}
+                </Typo>
+              </Button>
+            )
+          })}
       </View>
 
       <Button style={styles.continueButton} onPress={() => router.push('/create-trip/review-trip')}>
-        <Typo size={16} fontFamily={font.semiBold} color={colors.white}>
-          Continue
+        <Typo variant={theme.textVariants.text16} color={theme.colors.pureWhite}>
+          Continuar
         </Typo>
       </Button>
     </ScreenWrapper>
@@ -96,24 +99,22 @@ export default function InterestsScreen() {
 const styles = StyleSheet.create({
   selectionInfo: {
     alignItems: 'center',
-    paddingHorizontal: 24,
   },
   interestsContainer: {
     flex: 1,
     justifyContent: 'center',
     gap: 14,
-    paddingHorizontal: 24,
   },
   interestButton: {
-    backgroundColor: colors.gray1,
+    backgroundColor: theme.colors.gray1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 8,
   },
   selectedInterest: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
+    backgroundColor: theme.colors.primary,
+    borderColor: theme.colors.primary,
   },
   disabledInterest: {
     opacity: 0.5,
@@ -123,9 +124,6 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   continueButton: {
-    backgroundColor: colors.primary,
-    paddingVertical: 16,
     marginBottom: 40,
-    marginHorizontal: 24,
   },
 })

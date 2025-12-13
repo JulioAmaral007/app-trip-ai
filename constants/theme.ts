@@ -63,7 +63,7 @@ export const theme = {
   },
   textVariants: {
     defaults: {
-      color: "text",
+      color: palette.pureWhite,
       fontFamily: "PoppinsRegular",
       fontSize: 16,
       lineHeight: 24,
@@ -106,7 +106,8 @@ export const theme = {
     },
   },
   borderRadius: {
-    default: 16,
+    small: 16,
+    default: 32,
     rounded: 500,
   },
   boxShadows: {

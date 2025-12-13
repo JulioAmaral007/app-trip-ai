@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "trip-ai",
-    "slug": "trip-ai",
+    "name": "Nomad",
+    "slug": "digital-nomad-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "tripai",
+    "scheme": "digitalnomadapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -17,7 +17,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.julioamaral.tripai"
+      "package": "com.julioamaral.digitalnomadapp"
     },
     "web": {
       "bundler": "metro",
@@ -25,35 +25,33 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "react-native-edge-to-edge",
+        {
+          "android": {
+            "parentTheme": "Default",
+            "enforceNavigationBarContrast": false
+          }
+        }
+      ],
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#292D32",
           "image": "./assets/images/splash-icon.png",
-          "dark": {
-            "image": "./assets/images/splash-icon.png",
-            "backgroundColor": "#000000"
-          },
+          "resizeMode": "contain",
+          "backgroundColor": "#1B1B1B",
           "imageWidth": 200
         }
       ],
-      [
-        "expo-web-browser",
-        {
-          "experimentalLauncherActivity": false
-        }
-      ],
+      "expo-web-browser",
       "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "296987db-69c3-451c-8610-fbc91826888c"
-      }
+      "router": {}
     }
   }
 }

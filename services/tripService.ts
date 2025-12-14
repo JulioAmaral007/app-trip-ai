@@ -8,7 +8,6 @@ export function toCamelCase(dbData: Record<string, any>): Partial<GeneratedTripT
     uid: dbData.uid,
     tripName: dbData.trip_name,
     destination: dbData.destination,
-    destinationImageUrl: dbData.destination_image_url,
     summary: dbData.summary,
     itinerary: dbData.itinerary,
     totalEstimatedCost: dbData.total_estimated_cost,
@@ -33,7 +32,6 @@ function toSnakeCase(tripData: Partial<GeneratedTripType>): Record<string, any> 
   if (tripData.uid !== undefined) result.uid = tripData.uid
   if (tripData.tripName !== undefined) result.trip_name = tripData.tripName
   if (tripData.destination !== undefined) result.destination = tripData.destination
-  if (tripData.destinationImageUrl !== undefined) result.destination_image_url = tripData.destinationImageUrl
   if (tripData.summary !== undefined) result.summary = tripData.summary
   if (tripData.itinerary !== undefined) result.itinerary = tripData.itinerary
   if (tripData.totalEstimatedCost !== undefined) result.total_estimated_cost = tripData.totalEstimatedCost
@@ -122,11 +120,6 @@ export async function saveGeneratedTrip(
       spending_habit: originalTripData.spendingHabit,
       selected_interests: originalTripData.selectedInterests,
       created: new Date().toISOString(),
-    }
-
-    // Adicionar URL da imagem do destino se disponível
-    if (aiGeneratedData.destinationImageUrl) {
-      tripToSave.destination_image_url = aiGeneratedData.destinationImageUrl
     }
 
     const { data, error } = await supabase

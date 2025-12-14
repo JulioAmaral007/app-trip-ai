@@ -58,7 +58,6 @@ export type GeneratedTripType = {
   id?: string
   tripName: string
   destination: string
-  destinationImageUrl?: string
   summary: string
   itinerary: TripItineraryDayType[]
   totalEstimatedCost: string

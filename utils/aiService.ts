@@ -46,7 +46,6 @@ Retorne APENAS um JSON válido, sem texto adicional antes ou depois. O JSON deve
 {
   "tripName": "Nome da viagem (use o nome fornecido)",
   "destination": "Destino completo (cidade, país)",
-  "destinationImageUrl": "URL de uma imagem de alta qualidade do destino (use Unsplash, Pexels, ou sites oficiais de turismo)",
   "summary": "Resumo da viagem em 2-3 frases, destacando os principais atrativos e experiências",
   "itinerary": [
     {
@@ -101,7 +100,6 @@ Retorne APENAS um JSON válido, sem texto adicional antes ou depois. O JSON deve
 - Os custos devem estar no formato "R$ XX.XX" e somar corretamente
 - Inclua pelo menos 2-3 opções de hotéis com diferentes faixas de preço
 - Para imagens, use URLs de sites confiáveis: Unsplash (unsplash.com), Pexels (pexels.com), sites oficiais de turismo, ou Booking.com
-- O destinationImageUrl deve ser uma imagem representativa e de alta qualidade do destino
 - As atividades devem ser cronologicamente ordenadas e realistas
 - O totalEstimatedCost deve ser a soma de todos os estimatedDailyCost
 - Inclua pelo menos 3-5 dicas práticas e úteis no array "tips"

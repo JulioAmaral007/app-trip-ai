@@ -1,6 +1,7 @@
 import { BlackOpacity } from "@/components/ui/BlackOpacity";
 import { Typo } from "@/components/ui/Typo";
 import { theme } from "@/constants/theme";
+import { cities } from "@/data/cities";
 import type { GeneratedTripType } from "@/services/types";
 import { Link } from "expo-router";
 import { ImageBackground, Pressable, StyleSheet, useWindowDimensions, View } from "react-native";
@@ -24,9 +25,38 @@ export function TripCard({
   const style =
     type === "small" ? { width: cardWith, height: cardHeight } : undefined;
 
-  console.log(trip);
-  const imageSource = trip.destinationImageUrl
-  ? { uri: "https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" } : { uri: trip.destinationImageUrl }
+  // Função para encontrar a cidade baseada no destino
+  const getCityImage = () => {
+    if (!trip.destination) {
+      return { uri: "https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" };
+    }
+
+    // Normaliza o destino: remove acentos, converte para minúsculas e pega apenas a primeira parte (antes da vírgula)
+    const normalizedDestination = trip.destination
+      .toLowerCase()
+      .split(',')[0]
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+
+    // Procura a cidade correspondente
+    const city = cities.find((c) => {
+      const normalizedCityName = c.name
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+      return normalizedCityName === normalizedDestination;
+    });
+
+    // Se encontrou a cidade, usa a imagem dela, senão usa a imagem padrão
+    if (city) {
+      return city.coverImage;
+    }
+
+    return { uri: "https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" };
+  };
+
+  const imageSource = getCityImage();
 
   return (
     <Link push href={`/trip-details/${trip.id}`} asChild>

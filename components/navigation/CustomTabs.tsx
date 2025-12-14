@@ -1,3 +1,4 @@
+import { Icon, type IconName } from '@/components/ui/Icon'
 import { theme } from '@/constants/theme'
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { useEffect } from 'react'
@@ -8,7 +9,6 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated'
-import { Icon, type IconName } from '@/components/ui/Icon'
 
 type TabConfig = {
   label: string
@@ -21,10 +21,6 @@ const TAB_CONFIG: Record<string, TabConfig> = {
     label: 'Inicio',
     icon: 'Home-outline',
     iconFilled: 'Home-fill',
-  },
-  explore: {
-    label: 'Explorar',
-    icon: 'Explore',
   },
   profile: {
     label: 'Perfil',

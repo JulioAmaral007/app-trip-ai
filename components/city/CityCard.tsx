@@ -9,12 +9,14 @@ type CityCardProps = {
   cityPreview: CityPreview;
   type?: "small" | "large";
   disableFavorite?: boolean;
+  onPress?: () => void;
 };
 
 export function CityCard({
   cityPreview,
   type = "large",
   disableFavorite = false,
+  onPress,
 }: CityCardProps) {
   const { width } = useWindowDimensions();
 
@@ -24,31 +26,39 @@ export function CityCard({
   const style =
     type === "small" ? { width: cardWith, height: cardHeight } : undefined;
 
+  const cardContent = (
+    <Pressable onPress={onPress}>
+      <ImageBackground
+        source={
+          typeof cityPreview.coverImage === "number"
+            ? cityPreview.coverImage
+            : { uri: cityPreview.coverImage }
+        }
+        style={[{ width: "100%", height: 280 }, style]}
+        imageStyle={{ borderRadius: theme.borderRadius.default }}
+        resizeMode="cover"
+      >
+        <BlackOpacity />
+        <View style={{ flex: 1, padding: 24, justifyContent: 'space-between' }}>
+          <View style={{ alignSelf: 'flex-end' }}>
+            {/* {!disableFavorite && <CityFavoriteButton city={city} />} */}
+          </View>
+          <View>
+            <Typo variant={theme.textVariants.title22}>{cityPreview.name}</Typo>
+            <Typo variant={theme.textVariants.text16}>{cityPreview.country}</Typo>
+          </View>
+        </View>
+      </ImageBackground>
+    </Pressable>
+  );
+
+  if (onPress) {
+    return cardContent;
+  }
+
   return (
     <Link push href={`/create-trip/travelers`} asChild>
-      <Pressable>
-        <ImageBackground
-          source={
-            typeof cityPreview.coverImage === "number"
-              ? cityPreview.coverImage
-              : { uri: cityPreview.coverImage }
-          }
-          style={[{ width: "100%", height: 280 }, style]}
-          imageStyle={{ borderRadius: theme.borderRadius.default }}
-          resizeMode="cover"
-        >
-          <BlackOpacity />
-          <View style={{ flex: 1, padding: 24, justifyContent: 'space-between' }}>
-            <View style={{ alignSelf: 'flex-end' }}>
-              {/* {!disableFavorite && <CityFavoriteButton city={city} />} */}
-            </View>
-            <View>
-              <Typo variant={theme.textVariants.title22}>{cityPreview.name}</Typo>
-              <Typo variant={theme.textVariants.text16}>{cityPreview.country}</Typo>
-            </View>
-          </View>
-        </ImageBackground>
-      </Pressable>
+      {cardContent}
     </Link>
   );
 }

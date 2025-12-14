@@ -35,6 +35,7 @@ export type IconName =
   | "Home-outline"
   | "Luxury"
   | "Nature"
+  | "Plus"
   | "Search-outline"
   | "Shopping"
   | "Star"
